@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Enemy
+  - Score
+  - Point
+  - UI
+  - ProjectileEnemy
+  - ExplosionEnemy
+  - Wall
+  - BossEnemy
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 4209160409
+    locked: 0
+  - name: Point
+    uniqueID: 3591144951
+    locked: 0
+  - name: GameStuff
+    uniqueID: 2566181105
+    locked: 0
+  - name: Player
+    uniqueID: 1422362647
+    locked: 0
+  - name: Above Player
+    uniqueID: 2234497231
+    locked: 0
+  - name: Walls
+    uniqueID: 1170177747
+    locked: 0
