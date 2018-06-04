@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour {
 
     void DoMove(int move) {
         inMove = true;
-        FirstBoss();
+        //FirstBoss();
         return;
         switch (move)
         {
