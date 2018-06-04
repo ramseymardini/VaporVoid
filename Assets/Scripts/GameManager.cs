@@ -388,6 +388,10 @@ public class GameManager : MonoBehaviour {
         firstBossController.GetComponent<FirstBossController>().SetGameManager(gameObject);
     }
 
+    void SecondBoss() {
+        GameObject secondBossController = Instantiate(secondBoss, new Vector2(0, 0), new Quaternion(0, 0, 0, 0));
+    }
+
     public void EndFirstBoss() {
         StartCoroutine(EndFirstBossHelper());
     }
