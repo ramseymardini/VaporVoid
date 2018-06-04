@@ -1134,7 +1134,7 @@ MonoBehaviour:
   scoreboard: {fileID: 217607440}
   player: {fileID: 1621998523}
   firstBoss: {fileID: 1630147004829990, guid: 15b58924d6e174c4c8b764cd7b62c433, type: 2}
-  secondBoss: {fileID: 0}
+  secondBoss: {fileID: 1298964867918322, guid: 445efe2340fd7446497a1e2c5238d63f, type: 2}
   thirdBoss: {fileID: 0}
   fourthBoss: {fileID: 0}
 --- !u!1001 &1070005571
