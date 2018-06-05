@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    protected bool deactivated;
     protected float accelerationX;
     protected float accelerationY;
 
@@ -51,5 +52,11 @@ public class Projectile : MonoBehaviour
     protected void SetRigidBodyAndCollider() {
         rb = GetComponent<Rigidbody2D>();
         cc = GetComponent<CircleCollider2D>();
+    }
+
+    public void Deactivate() {
+        deactivated = true;
+        SetAcceleration(new Vector2(0, 10));
+        gameObject.tag = "Untagged";
     }
 }

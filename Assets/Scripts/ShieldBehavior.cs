@@ -69,9 +69,9 @@ public class ShieldBehavior : MonoBehaviour {
         float colliderVelocityX = colliderRB.velocity.x;
         float colliderVelocityY = colliderRB.velocity.y;
 
+        //Move back the object a bit so that it can collide with the shield.
         colliderRB.position = new Vector2(colliderRB.position.x - colliderVelocityX * (Time.deltaTime * 2f), colliderRB.position.y - colliderVelocityY * (Time.deltaTime * 2f));
-        collision.GetComponent<Projectile>().SetAcceleration(new Vector2(0, -10));
-        collision.gameObject.tag = "Untagged";
+        collision.GetComponent<Projectile>().Deactivate();
 
         yield return new WaitForSeconds(timeToDeletion);
 
