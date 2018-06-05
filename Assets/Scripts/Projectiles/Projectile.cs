@@ -9,14 +9,14 @@ public class Projectile : MonoBehaviour
     protected float accelerationY;
 
     protected Rigidbody2D rb;
-    protected CircleCollider2D cc;
+    protected Collider2D coll;
 
-    protected void Start() {
+    protected virtual void Start() {
         SetRigidBodyAndCollider();
     }
 
     // Update is called once per frame
-    protected void FixedUpdate() {
+    protected virtual void FixedUpdate() {
         UpdateVelocity();
         CheckIfDestroy();
     }
@@ -26,7 +26,7 @@ public class Projectile : MonoBehaviour
         //rb.velocity += new Vector2(accelerationX, accelerationY);
     }
 
-    public void SetAcceleration(Vector2 accel) {
+    public virtual void SetAcceleration(Vector2 accel) {
         accelerationX = accel.x;
         accelerationY = accel.y;
 
@@ -37,9 +37,9 @@ public class Projectile : MonoBehaviour
         rb.velocity = velocity;
     }
 
-    protected void OnCollisionEnter2D(Collision2D collision) {
+    protected virtual void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "Wall") {
-            cc.isTrigger = true;
+            coll.isTrigger = true;
         }
     }
 
@@ -51,7 +51,7 @@ public class Projectile : MonoBehaviour
 
     protected void SetRigidBodyAndCollider() {
         rb = GetComponent<Rigidbody2D>();
-        cc = GetComponent<CircleCollider2D>();
+        coll = GetComponent<CircleCollider2D>();
     }
 
     public void Deactivate() {

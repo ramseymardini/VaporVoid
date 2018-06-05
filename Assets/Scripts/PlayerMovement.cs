@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour {
 
     readonly float MAX_VELOCITY = 1.5f;
 
-    Quaternion standardOrientation = new Quaternion(0, 0, 0, 0);
+    //Quaternion standardOrientation = new Quaternion(0, 0, 0, 0);
 
     Rigidbody2D rb;
     public GameObject gm;
@@ -21,8 +21,8 @@ public class PlayerMovement : MonoBehaviour {
     bool gameEnded;
     int playerSpeed;
 
-    float playerCorrectionFactorX = 0.3f;
-    float playerCorrectionFactorY = 1.3f;
+    //float playerCorrectionFactorX = 0.3f;
+    //float playerCorrectionFactorY = 1.3f;
 
     int shieldCounter;
     bool hasShield;
@@ -38,6 +38,7 @@ public class PlayerMovement : MonoBehaviour {
         gameEnded = false;
         shieldCounter = 0;
         hasShield = false;
+        rb.freezeRotation = true;
     }
 
     void Update() {
@@ -48,8 +49,6 @@ public class PlayerMovement : MonoBehaviour {
         if (gameEnded) {
             return;
         }
-
-        transform.rotation = standardOrientation;
 
         SetVelocity();
 	}

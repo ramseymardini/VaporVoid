@@ -21,7 +21,7 @@ public class PreferenceChanger : MonoBehaviour {
         int mouseSensitivity;
         try {
             mouseSensitivity = int.Parse(mouseSentivityInputText.GetComponent<UnityEngine.UI.Text>().text);
-        } catch (System.Exception e) {
+        } catch {
             mouseSensitivity = defaultMouseSensitivity;
         }
         PlayerPrefs.SetInt("Mouse Sensitivity", mouseSensitivity);

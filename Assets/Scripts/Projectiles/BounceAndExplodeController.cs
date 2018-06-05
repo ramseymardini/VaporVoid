@@ -3,14 +3,65 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BounceAndExplodeController : Projectile {
+    
+    float sizeToReachInExplosion = 1.2f;
+
+    bool hasBounced;
+    bool hasExploded;
+    float velocityBeforeExplosionX;
+    float veloictyBeforeExplosionY;
+
+
+    float defaultAccel = 10f;
 
 	// Use this for initialization
-	void Start () {
-		
+    protected override void Start () {
+        base.Start();
+
+        SetAcceleration(new Vector2(0, defaultAccel));
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    protected override void FixedUpdate()
+    {
+        if (!hasExploded) {
+            base.FixedUpdate();
+            if (hasBounced) {
+                
+            }
+        }
+    }
+
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (deactivated) {
+            base.OnCollisionEnter2D(collision);
+        }
+
+        if (collision.gameObject.tag == "Wall")
+        {
+            if (!hasBounced) {
+                StartCoroutine(Bounce());
+            }
+        }
+    }
+
+    protected void OnTriggerExit2D(Collider2D collision)
+    {
+        coll.isTrigger = false;
+    }
+
+    IEnumerator Bounce() {
+        hasBounced = true;
+
+
+        Debug.Log("BOUNCE!");
+        //while()
+        yield return new WaitForFixedUpdate();
+    }
+
+    void Explode() {
+        hasExploded = true;
+        transform.localScale = new Vector2(sizeToReachInExplosion, sizeToReachInExplosion);
+        gameObject.tag = "ExplosionEnemy";
+    }
 }

@@ -55,9 +55,9 @@ public class HexagonBomb : MonoBehaviour {
         transform.localScale = new Vector2(explosionSizeX, explosionSizeY);
         currColor = new Color(255, 0, 0);
         GetComponent<SpriteRenderer>().color = currColor;
-        yield return new WaitForEndOfFrame();
+        //yield return new WaitForEndOfFrame();
         GetComponent<PolygonCollider2D>().enabled = true;
-        yield return new WaitForEndOfFrame();
+        //yield return new WaitForEndOfFrame();
         bool colliderDisabled = false;
         while (currColor.a > 0) {
             currColor.a -= 0.02f;
@@ -65,7 +65,7 @@ public class HexagonBomb : MonoBehaviour {
 
             if (!colliderDisabled && currColor.a < 0.8) {
                 colliderDisabled = false;
-                yield return new WaitForEndOfFrame();
+                //yield return new WaitForEndOfFrame();
                 GetComponent<PolygonCollider2D>().enabled = false;
             }
             yield return new WaitForSeconds(0.00001f);

@@ -31,8 +31,7 @@ public class FloaterController : Projectile {
 
     GameObject player;
 
-    private void Start()
-    {
+    protected override void Start() {
         base.Start();
         accelerationX = DEFAULT_ACCELERATION_X;
         accelerationY = DEFAULT_ACCELERATION_Y;
@@ -42,7 +41,7 @@ public class FloaterController : Projectile {
         UpdateDistanceToStartSlowing();
     }
    
-    private void FixedUpdate() {
+    protected override void FixedUpdate() {
         if (!hasPerched) {
             if (!isSlowing && FindDistanceTraveled() > distanceToStartSlowing) {
                 StartCoroutine(StartSlowing());
@@ -54,6 +53,19 @@ public class FloaterController : Projectile {
         float newAccelX = originalAccelX + correctingForce * Mathf.Cos(FindAngleToPlayer());
         float newAccelY = originalAccelY + correctingForce * Mathf.Sin(FindAngleToPlayer());
         SetAcceleration(new Vector2(newAccelX, newAccelY));
+    }
+
+    public override void SetAcceleration(Vector2 newAccel)
+    {
+        base.SetAcceleration(newAccel);
+
+        if (!accelSet)
+        {
+            originalAccelX = newAccel.x;
+            originalAccelY = newAccel.y;
+        }
+
+        accelSet = true;
     }
 
     float FindDistanceTraveled() {
@@ -91,7 +103,7 @@ public class FloaterController : Projectile {
 
         yield return new WaitForSeconds(timeToStayPerched);
 
-        Debug.Log("Done!");
+        //Debug.Log("Done!");
         hasPerched = true;
 
     }
@@ -104,17 +116,6 @@ public class FloaterController : Projectile {
     public void SetPlayer(GameObject newPlayer)
     {
         player = newPlayer;
-    }
-
-    public void SetAcceleration(Vector2 newAccel) {
-        base.SetAcceleration(newAccel);
-
-        if (!accelSet) {
-            originalAccelX = newAccel.x;
-            originalAccelY = newAccel.y;
-        }
-
-        accelSet = true;
     }
 
     public void SetType(string type) {

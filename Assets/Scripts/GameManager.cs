@@ -47,6 +47,8 @@ public class GameManager : MonoBehaviour {
     Vector2 UpperRightCornerDropPos;
     float lowerLeftToTopRightDropAngle;
 
+    Quaternion defaultOrientation = new Quaternion(0, 0, 0, 0);
+
     float timeGameStarted;
     float timeSinceGameStarted;
 
@@ -100,6 +102,7 @@ public class GameManager : MonoBehaviour {
     void DoMove(int move) {
         inMove = true;
         //FirstBoss();
+        StartCoroutine(RandomMines());
         return;
         switch (move)
         {
@@ -146,12 +149,12 @@ public class GameManager : MonoBehaviour {
 
         for (float currX = farLeftCircleDropPosX + 1; currX <= farRightCircleDropPosX; currX += 2f)
         {
-            Instantiate(circleEnemy, new Vector2(currX, vertDropPos), new Quaternion(0, 0, 0, 0));
+            Instantiate(circleEnemy, new Vector2(currX, vertDropPos), defaultOrientation);
         }
 
         for (float currX = farLeftCircleDropPosX; currX <= farRightCircleDropPosX - 1; currX += 2f)
         {
-            Instantiate(circleEnemy, new Vector2(currX, -vertDropPos), new Quaternion(0, 0, 0, 0));
+            Instantiate(circleEnemy, new Vector2(currX, -vertDropPos), defaultOrientation);
         }
 
     }*/
@@ -162,20 +165,20 @@ public class GameManager : MonoBehaviour {
         int numBalls = 8;
 
         for (int i = 0; i < numBalls; i++) {
-            GameObject verticalFaller = Instantiate(circleEnemy, new Vector2(0, vertDropPos), new Quaternion(0, 0, 0, 0));
-            GameObject verticalRiser = Instantiate(circleEnemy, new Vector2(0, -vertDropPos), new Quaternion(0, 0, 0, 0));
+            GameObject verticalFaller = Instantiate(circleEnemy, new Vector2(0, vertDropPos), defaultOrientation);
+            GameObject verticalRiser = Instantiate(circleEnemy, new Vector2(0, -vertDropPos), defaultOrientation);
             verticalFaller.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, -currAccelVertCircles));
             verticalRiser.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, currAccelVertCircles));
 
-            GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, 0), new Quaternion(0, 0, 0, 0));
-            GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, 0), new Quaternion(0, 0, 0, 0));
+            GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, 0), defaultOrientation);
+            GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, 0), defaultOrientation);
             circleLeftToRight.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(currAccelHorCircles, 0));
             circleRightToLeft.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(-currAccelHorCircles, 0));
 
-            GameObject circleLowerLeft = Instantiate(circleEnemy, new Vector2(-horDropPos, -vertDropPos), new Quaternion(0, 0, 0, 0));
-            GameObject circleUpperLeft = Instantiate(circleEnemy, new Vector2(-horDropPos, vertDropPos), new Quaternion(0, 0, 0, 0));
-            GameObject circleLowerRight = Instantiate(circleEnemy, new Vector2(horDropPos, -vertDropPos), new Quaternion(0, 0, 0, 0));
-            GameObject circleUpperRight = Instantiate(circleEnemy, new Vector2(horDropPos, vertDropPos), new Quaternion(0, 0, 0, 0));
+            GameObject circleLowerLeft = Instantiate(circleEnemy, new Vector2(-horDropPos, -vertDropPos), defaultOrientation);
+            GameObject circleUpperLeft = Instantiate(circleEnemy, new Vector2(-horDropPos, vertDropPos), defaultOrientation);
+            GameObject circleLowerRight = Instantiate(circleEnemy, new Vector2(horDropPos, -vertDropPos), defaultOrientation);
+            GameObject circleUpperRight = Instantiate(circleEnemy, new Vector2(horDropPos, vertDropPos), defaultOrientation);
 
 
             //Cos and Sin to make them go from corner to corner and not a 45 degree angle since map is not a square
@@ -195,8 +198,8 @@ public class GameManager : MonoBehaviour {
         float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
         for (float currX = farLeftCircleDropPosX; currX <= farRightCircleDropPosX - 1; currX += 1f) {
-            GameObject verticalFaller = Instantiate(circleEnemy, new Vector2(currX, vertDropPos), new Quaternion(0, 0, 0, 0));
-            GameObject verticalRiser = Instantiate(circleEnemy, new Vector2(currX, -vertDropPos), new Quaternion(0, 0, 0, 0));
+            GameObject verticalFaller = Instantiate(circleEnemy, new Vector2(currX, vertDropPos), defaultOrientation);
+            GameObject verticalRiser = Instantiate(circleEnemy, new Vector2(currX, -vertDropPos), defaultOrientation);
             verticalFaller.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, -currAccelVertCircles));
             verticalRiser.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, currAccelVertCircles));
             yield return new WaitForSeconds(gapTime);
@@ -211,8 +214,8 @@ public class GameManager : MonoBehaviour {
         float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
         for (float currX = farRightCircleDropPosX; currX >= farLeftCircleDropPosX + 1; currX -= 1) {
-            GameObject verticalFaller = Instantiate(circleEnemy, new Vector2(currX, vertDropPos), new Quaternion(0, 0, 0, 0));
-            GameObject verticalRiser = Instantiate(circleEnemy, new Vector2(currX, -vertDropPos), new Quaternion(0, 0, 0, 0));
+            GameObject verticalFaller = Instantiate(circleEnemy, new Vector2(currX, vertDropPos), defaultOrientation);
+            GameObject verticalRiser = Instantiate(circleEnemy, new Vector2(currX, -vertDropPos), defaultOrientation);
             verticalFaller.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, -currAccelVertCircles));
             verticalRiser.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, currAccelVertCircles));
             yield return new WaitForSeconds(gapTime);
@@ -229,15 +232,15 @@ public class GameManager : MonoBehaviour {
         for (float currX = farRightCircleDropPosX; currX > 0.5f; currX -= 1) {
             if (currX > farRightCircleDropPosX - 3)
             {
-                GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, 0), new Quaternion(0, 0, 0, 0));
-                GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, 0), new Quaternion(0, 0, 0, 0));
+                GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, 0), defaultOrientation);
+                GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, 0), defaultOrientation);
                 circleLeftToRight.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(currAccelHorCircles, 0));
                 circleRightToLeft.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(-currAccelHorCircles, 0));
             }
-            GameObject verticalFaller_1 = Instantiate(circleEnemy, new Vector2(currX, vertDropPos), new Quaternion(0, 0, 0, 0));
-            GameObject verticalRiser_1 = Instantiate(circleEnemy, new Vector2(currX, -vertDropPos), new Quaternion(0, 0, 0, 0));
-            GameObject verticalFaller_2 = Instantiate(circleEnemy, new Vector2(-currX, vertDropPos), new Quaternion(0, 0, 0, 0));
-            GameObject verticalRiser_2 = Instantiate(circleEnemy, new Vector2(-currX, -vertDropPos), new Quaternion(0, 0, 0, 0));
+            GameObject verticalFaller_1 = Instantiate(circleEnemy, new Vector2(currX, vertDropPos), defaultOrientation);
+            GameObject verticalRiser_1 = Instantiate(circleEnemy, new Vector2(currX, -vertDropPos), defaultOrientation);
+            GameObject verticalFaller_2 = Instantiate(circleEnemy, new Vector2(-currX, vertDropPos), defaultOrientation);
+            GameObject verticalRiser_2 = Instantiate(circleEnemy, new Vector2(-currX, -vertDropPos), defaultOrientation);
             verticalFaller_1.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, -currAccelVertCircles));
             verticalFaller_2.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, -currAccelVertCircles));
             verticalRiser_1.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, currAccelVertCircles));
@@ -255,7 +258,7 @@ public class GameManager : MonoBehaviour {
         int numBalls = (int) Mathf.Floor(2.5f / gapTime);
 
         for (int i = 0; i < numBalls; i++) {
-            GameObject verticalFaller_1 = Instantiate(circleEnemy, new Vector2(UnityEngine.Random.Range(farLeftCircleDropPosX, farRightCircleDropPosX), vertDropPos), new Quaternion(0, 0, 0, 0));
+            GameObject verticalFaller_1 = Instantiate(circleEnemy, new Vector2(UnityEngine.Random.Range(farLeftCircleDropPosX, farRightCircleDropPosX), vertDropPos), defaultOrientation);
             verticalFaller_1.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, -currAccelVertCircles));
             yield return new WaitForSeconds(gapTime);
         }
@@ -270,7 +273,7 @@ public class GameManager : MonoBehaviour {
         int numBalls = (int) Mathf.Floor(2.5f / gapTime);
 
         for (int i = 0; i < numBalls; i++) {
-            GameObject verticalRiser_1 = Instantiate(circleEnemy, new Vector2(UnityEngine.Random.Range(farLeftCircleDropPosX, farRightCircleDropPosX), -vertDropPos), new Quaternion(0, 0, 0, 0));
+            GameObject verticalRiser_1 = Instantiate(circleEnemy, new Vector2(UnityEngine.Random.Range(farLeftCircleDropPosX, farRightCircleDropPosX), -vertDropPos), defaultOrientation);
             verticalRiser_1.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, currAccelVertCircles));
             yield return new WaitForSeconds(gapTime);
         }
@@ -285,7 +288,7 @@ public class GameManager : MonoBehaviour {
         int numBalls = (int) Mathf.Floor(2.5f / gapTime);
 
         for (int i = 0; i < numBalls; i++) {
-            GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, UnityEngine.Random.Range(minHorCircleDropPosY, maxHorCircleDropPosY)), new Quaternion(0, 0, 0, 0));
+            GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, UnityEngine.Random.Range(minHorCircleDropPosY, maxHorCircleDropPosY)), defaultOrientation);
             circleLeftToRight.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(currAccelHorCircles, 0));
             yield return new WaitForSeconds(gapTime);
         }
@@ -300,7 +303,7 @@ public class GameManager : MonoBehaviour {
         int numBalls = (int) Mathf.Floor(2.5f / gapTime);
 
         for (int i = 0; i < numBalls; i++) {
-            GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, UnityEngine.Random.Range(minHorCircleDropPosY, maxHorCircleDropPosY)), new Quaternion(0, 0, 0, 0));
+            GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, UnityEngine.Random.Range(minHorCircleDropPosY, maxHorCircleDropPosY)), defaultOrientation);
             circleRightToLeft.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(-currAccelHorCircles, 0));
             yield return new WaitForSeconds(gapTime);
         }
@@ -324,7 +327,7 @@ public class GameManager : MonoBehaviour {
                 nextMinePos = new Vector2(UnityEngine.Random.Range(minMinePosX, maxMinePosX), UnityEngine.Random.Range(minMinePosY, maxMinePosY));
             } while (!isValidPos(nextMinePos));
 
-            Instantiate(hexagonBomb, nextMinePos, new Quaternion(0, 0, 0, 0));
+            Instantiate(hexagonBomb, nextMinePos, defaultOrientation);
             yield return new WaitForSeconds(gapTime);
         }
 
@@ -348,8 +351,8 @@ public class GameManager : MonoBehaviour {
         float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
         for (float currY = maxHorCircleDropPosY; currY > minHorCircleDropPosY; currY -= 1) {
-            GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, currY), new Quaternion(0, 0, 0, 0));
-            GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, currY), new Quaternion(0, 0, 0, 0));
+            GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, currY), defaultOrientation);
+            GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, currY), defaultOrientation);
             circleLeftToRight.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(currAccelHorCircles, 0));
             circleRightToLeft.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(-currAccelHorCircles, 0));
             yield return new WaitForSeconds(gapTime);
@@ -363,8 +366,8 @@ public class GameManager : MonoBehaviour {
         float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
         for (float currY = minHorCircleDropPosY; currY < maxHorCircleDropPosY; currY += 1) {
-            GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, currY), new Quaternion(0, 0, 0, 0));
-            GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, currY), new Quaternion(0, 0, 0, 0));
+            GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, currY), defaultOrientation);
+            GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, currY), defaultOrientation);
             circleLeftToRight.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(currAccelHorCircles, 0));
             circleRightToLeft.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(-currAccelHorCircles, 0));
             yield return new WaitForSeconds(gapTime);
@@ -384,12 +387,20 @@ public class GameManager : MonoBehaviour {
     }
 
     void FirstBoss() {
-        GameObject firstBossController = Instantiate(firstBoss, new Vector2(0, 0), new Quaternion(0, 0, 0, 0));
+        GameObject firstBossController = Instantiate(firstBoss, new Vector2(0, 0), defaultOrientation);
         firstBossController.GetComponent<FirstBossController>().SetGameManager(gameObject);
     }
 
     void SecondBoss() {
-        GameObject secondBossController = Instantiate(secondBoss, new Vector2(0, 0), new Quaternion(0, 0, 0, 0));
+        GameObject secondBossController = Instantiate(secondBoss, new Vector2(0, 0), defaultOrientation);
+    }
+
+    void ThirdBoss() {
+        Instantiate(thirdBoss, new Vector2(0, 0), defaultOrientation);
+    }
+
+    void FourthBoss() {
+        Instantiate(fourthBoss, new Vector2(0, 0), defaultOrientation);
     }
 
     public void EndFirstBoss() {

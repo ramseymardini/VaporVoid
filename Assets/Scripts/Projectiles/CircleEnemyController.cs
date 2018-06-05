@@ -12,7 +12,7 @@ public class CircleEnemyController : Projectile {
     Sprite thisSprite;
 
     // Use this for initialization
-    void Start() {
+    protected override void Start() {
         base.Start();
         int numColors = 4;
         int color = Random.Range(0, numColors);
