@@ -1221,12 +1221,27 @@ Prefab:
     - target: {fileID: 50295973175234876, guid: fe6b60c1e0e554a3b86a54b75c1d855c,
         type: 2}
       propertyPath: m_GravityScale
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 58878410706574314, guid: fe6b60c1e0e554a3b86a54b75c1d855c,
         type: 2}
       propertyPath: m_IsTrigger
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 50295973175234876, guid: fe6b60c1e0e554a3b86a54b75c1d855c,
+        type: 2}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 212616841595688190, guid: fe6b60c1e0e554a3b86a54b75c1d855c,
+        type: 2}
+      propertyPath: m_SortingLayerID
+      value: -1728786191
+      objectReference: {fileID: 0}
+    - target: {fileID: 212616841595688190, guid: fe6b60c1e0e554a3b86a54b75c1d855c,
+        type: 2}
+      propertyPath: m_SortingLayer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fe6b60c1e0e554a3b86a54b75c1d855c, type: 2}

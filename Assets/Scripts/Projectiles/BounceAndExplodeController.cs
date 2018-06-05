@@ -18,7 +18,7 @@ public class BounceAndExplodeController : Projectile {
     protected override void Start () {
         base.Start();
 
-        SetAcceleration(new Vector2(0, defaultAccel));
+        //SetAcceleration(new Vector2(0, defaultAccel));
 	}
 
     protected override void FixedUpdate()
@@ -31,18 +31,18 @@ public class BounceAndExplodeController : Projectile {
         }
     }
 
+    //protected void OnCollision
+
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
         if (deactivated) {
             base.OnCollisionEnter2D(collision);
         }
 
-        if (collision.gameObject.tag == "Wall")
-        {
-            if (!hasBounced) {
-                StartCoroutine(Bounce());
-            }
+        if (!hasBounced && collision.gameObject.tag.Equals("Wall")) {
+            Bounce();
         }
+
     }
 
     protected void OnTriggerExit2D(Collider2D collision)
@@ -53,6 +53,8 @@ public class BounceAndExplodeController : Projectile {
     IEnumerator Bounce() {
         hasBounced = true;
 
+        Vector2 velocityBeforeBounce = rb.velocity;
+        Debug.Log(velocityBeforeBounce);
 
         Debug.Log("BOUNCE!");
         //while()
