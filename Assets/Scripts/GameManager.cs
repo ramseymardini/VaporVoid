@@ -57,6 +57,8 @@ public class GameManager : MonoBehaviour {
 
     int numMoves = 11;
 
+    int level;
+
 
 	// Use this for initialization
 	void Start () {
@@ -65,14 +67,19 @@ public class GameManager : MonoBehaviour {
         inMove = false;
         timeTillNextMove = 0;
         gameEnded = false;
+
         currAccelVertCircles = startingAccelVertCircles;
         currAccelHorCircles = startingAccelHorCircles;
         currAccelDefaultCircles = startingAccelDefaultCircles;
+
         timeGameStarted = Time.time;
         timeSinceGameStarted = 0;
+
         lowerLeftCornerDropPos = new Vector2(-horDropPos, -vertDropPos);
         UpperRightCornerDropPos = new Vector2(horDropPos, vertDropPos);
         lowerLeftToTopRightDropAngle = Mathf.Atan((UpperRightCornerDropPos.y - lowerLeftCornerDropPos.y) / (UpperRightCornerDropPos.x - lowerLeftCornerDropPos.x));
+
+        level = 1;
         /*Debug.Log(lowerLeftToTopRightDropAngle);
         Debug.Log("Bottom left: " + lowerLeftCornerDropPos);
         Debug.Log("Upper Right: " + UpperRightCornerDropPos);*/
@@ -95,9 +102,35 @@ public class GameManager : MonoBehaviour {
         timeToWaitVertCircleFall = Mathf.Sqrt(2 * screenHeight / currAccelVertCircles);
         timeToWaitHorCircleFall = Mathf.Sqrt(2 * screenWidth / currAccelVertCircles);
 
-        int move = UnityEngine.Random.Range(0, numMoves);
-        DoRandomMove(move);
+        /*int move = UnityEngine.Random.Range(0, numMoves);
+        DoRandomMove(move);*/
+
+        if (level == 1) {
+            DoMoveLevelOne();
+        } else if (level == 2) {
+            FirstBoss();
+        } else if (level == 3) {
+            DoMoveLevelTwo();
+        } else if (level == 3) {
+            SecondBoss();
+        } else if (level == 4) {
+            DoMoveLevelThree();
+        } else if (level == 5) {
+            ThirdBoss();
+        } else if (level == 6) {
+            DoMoveLevelFour();
+        } else if (level == 7) {
+            doMoveLevelFive();
+        } else {
+            DoMovelevelFour();
+        }
+
+
 	}
+
+    void DoMoveLevelOne(int move) {
+        
+    }
 
     void DoRandomMove(int move) {
         inMove = true;
@@ -425,6 +458,10 @@ public class GameManager : MonoBehaviour {
 
     public float GetTimeSinceGameStarted() {
         return timeSinceGameStarted;
+    }
+
+    public void IncrementLevel() {
+        level++;
     }
 
 }
