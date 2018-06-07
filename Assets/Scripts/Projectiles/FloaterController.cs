@@ -118,14 +118,14 @@ public class FloaterController : Projectile {
         player = newPlayer;
     }
 
-    public void SetType(string type) {
-        if (type.Equals("TopToBottom")) {
+    public void Setdirection(string direction) {
+        if (direction.Equals("TopToBottom")) {
             isVertical = true;
             isTopToBottom = true;
-        } else if (type.Equals("BottomToTop")) {
+        } else if (direction.Equals("BottomToTop")) {
             isVertical = true;
             isTopToBottom = false;
-        } else if (type.Equals("LeftToRight")) {
+        } else if (direction.Equals("LeftToRight")) {
             isVertical = false;
             isLeftToRight = true;
         } else {

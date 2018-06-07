@@ -12,6 +12,7 @@ TagManager:
   - ExplosionEnemy
   - Wall
   - BossEnemy
+  - ShieldPoint
   layers:
   - Default
   - TransparentFX

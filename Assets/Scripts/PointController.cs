@@ -17,4 +17,12 @@ public class PointController : MonoBehaviour {
     public void Reposition() {
         transform.position = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
     }
+
+    public void SetIsWorthPoint(bool worth) {
+        if (worth) {
+            gameObject.tag = "Point";
+        } else {
+            gameObject.tag = "ShieldPoint";
+        }
+    }
 }

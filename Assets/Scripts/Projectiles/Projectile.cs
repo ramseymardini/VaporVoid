@@ -45,6 +45,7 @@ public class Projectile : MonoBehaviour
 
     protected void CheckIfDestroy() {
         if (Mathf.Abs(transform.position.x) > 15 || Mathf.Abs(transform.position.y) > 10) {
+            //Debug.Log("Destroy: " + gameObject.name);
             Destroy(gameObject);
         }
     }

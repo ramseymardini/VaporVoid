@@ -96,14 +96,14 @@ public class GameManager : MonoBehaviour {
         timeToWaitHorCircleFall = Mathf.Sqrt(2 * screenWidth / currAccelVertCircles);
 
         int move = UnityEngine.Random.Range(0, numMoves);
-        DoMove(move);
+        DoRandomMove(move);
 	}
 
-    void DoMove(int move) {
+    void DoRandomMove(int move) {
         inMove = true;
         //FirstBoss();
-        StartCoroutine(RandomMines());
-        return;
+        //StartCoroutine(RandomMines());
+        //return;
         switch (move)
         {
             case 0:

@@ -76,6 +76,16 @@ public class PlayerMovement : MonoBehaviour {
             scoreboard.GetComponent<Scoreboard>().IncrementScore();
             collision.gameObject.GetComponent<PointController>().Reposition();
         }
+
+        if (collision.gameObject.tag.Equals("ShieldPoint")) {
+            if (shieldCounter < 4)
+            {
+                shieldCounter++;
+            }
+            UpdateSprite();
+            collision.gameObject.GetComponent<PointController>().Reposition();
+        }
+
     }
 
     private void OnTriggerStay2D(Collider2D collision) {
