@@ -95,15 +95,17 @@ public class GameManager : MonoBehaviour {
             return;
         }
             
-        currAccelVertCircles = (Mathf.Log(timeSinceGameStarted) * 0.5f) + startingAccelVertCircles;
+        /*currAccelVertCircles = (Mathf.Log(timeSinceGameStarted) * 0.5f) + startingAccelVertCircles;
         currAccelHorCircles = (Mathf.Log(timeSinceGameStarted) * 0.5f) + startingAccelHorCircles;
-        currAccelDefaultCircles = (Mathf.Log(timeSinceGameStarted) * 0.5f) + startingAccelDefaultCircles;
+        currAccelDefaultCircles = (Mathf.Log(timeSinceGameStarted) * 0.5f) + startingAccelDefaultCircles;*/
 
         timeToWaitVertCircleFall = Mathf.Sqrt(2 * screenHeight / currAccelVertCircles);
         timeToWaitHorCircleFall = Mathf.Sqrt(2 * screenWidth / currAccelVertCircles);
 
         /*int move = UnityEngine.Random.Range(0, numMoves);
         DoRandomMove(move);*/
+
+        inMove = true;
 
         if (level == 1) {
             DoMoveLevelOne();
@@ -120,15 +122,27 @@ public class GameManager : MonoBehaviour {
         } else if (level == 6) {
             DoMoveLevelFour();
         } else if (level == 7) {
-            doMoveLevelFive();
+            FourthBoss();
         } else {
-            DoMovelevelFour();
+            DoMoveLevelFour();
         }
 
 
 	}
 
-    void DoMoveLevelOne(int move) {
+    void DoMoveLevelOne() {
+        inMove = false;
+    }
+
+    void DoMoveLevelTwo() {
+        
+    }
+
+    void DoMoveLevelThree() {
+        
+    }
+
+    void DoMoveLevelFour() {
         
     }
 
@@ -194,7 +208,8 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator BritishFlag() {
         //Debug.Log("British Flag");
-        float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
+        //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
+        float gapTime = 0.1f - level * 0.002f;
         int numBalls = 8;
 
         for (int i = 0; i < numBalls; i++) {
@@ -228,7 +243,8 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator StairLeftToRight() {
         //Debug.Log("Rain Left");
-        float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
+        //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
+        float gapTime = 0.1f - level * 0.002f;
 
         for (float currX = farLeftCircleDropPosX; currX <= farRightCircleDropPosX - 1; currX += 1f) {
             GameObject verticalFaller = Instantiate(circleEnemy, new Vector2(currX, vertDropPos), defaultOrientation);
@@ -244,7 +260,8 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator StairRightToLeft() {
         //Debug.Log("Rain Right");
-        float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
+        //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
+        float gapTime = 0.1f - level * 0.002f;
 
         for (float currX = farRightCircleDropPosX; currX >= farLeftCircleDropPosX + 1; currX -= 1) {
             GameObject verticalFaller = Instantiate(circleEnemy, new Vector2(currX, vertDropPos), defaultOrientation);
@@ -260,7 +277,8 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator RainSides() {
         //Debug.Log("Rain Sides");
-        float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
+        //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
+        float gapTime = 0.1f - level * 0.002f;
 
         for (float currX = farRightCircleDropPosX; currX > 0.5f; currX -= 1) {
             if (currX > farRightCircleDropPosX - 3)
@@ -287,7 +305,9 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator RainRandomDown() {
         //Debug.Log("Rain Random Down");
-        float gapTime = 0.11f - Mathf.Log(timeSinceGameStarted) * 0.015f;
+        //float gapTime = 0.11f - Mathf.Log(timeSinceGameStarted) * 0.015f;
+        float gapTime = 0.11f - level * 0.005f;
+
         int numBalls = (int) Mathf.Floor(2.5f / gapTime);
 
         for (int i = 0; i < numBalls; i++) {
@@ -302,7 +322,9 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator BubbleUp() {
         //Debug.Log("Bubble Up");
-        float gapTime = 0.11f - Mathf.Log(timeSinceGameStarted) * 0.015f;
+        //float gapTime = 0.11f - Mathf.Log(timeSinceGameStarted) * 0.015f;
+        float gapTime = 0.11f - level * 0.005f;
+
         int numBalls = (int) Mathf.Floor(2.5f / gapTime);
 
         for (int i = 0; i < numBalls; i++) {
@@ -317,7 +339,9 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator RainRandomLeft() {
         //Debug.Log("Rain Random Left");
-        float gapTime = 0.11f - Mathf.Log(timeSinceGameStarted) * 0.015f;
+        //float gapTime = 0.11f - Mathf.Log(timeSinceGameStarted) * 0.015f;
+        float gapTime = 0.11f - level * 0.005f;
+
         int numBalls = (int) Mathf.Floor(2.5f / gapTime);
 
         for (int i = 0; i < numBalls; i++) {
@@ -332,7 +356,9 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator RainRandomRight() {
         //Debug.Log("Rain Random Right");
-        float gapTime = 0.11f - Mathf.Log(timeSinceGameStarted) * 0.015f;
+        //float gapTime = 0.11f - Mathf.Log(timeSinceGameStarted) * 0.015f;
+        float gapTime = 0.11f - level * 0.005f;
+
         int numBalls = (int) Mathf.Floor(2.5f / gapTime);
 
         for (int i = 0; i < numBalls; i++) {
@@ -381,7 +407,9 @@ public class GameManager : MonoBehaviour {
     }
 
     IEnumerator StairTopToBottom() {
-        float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
+        //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
+        float gapTime = 0.1f - level * 0.002f;
+
 
         for (float currY = maxHorCircleDropPosY; currY > minHorCircleDropPosY; currY -= 1) {
             GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, currY), defaultOrientation);
@@ -396,7 +424,8 @@ public class GameManager : MonoBehaviour {
     }
 
     IEnumerator StairBottomToTop() {
-        float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
+        //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
+        float gapTime = 0.1f - level * 0.002f;
 
         for (float currY = minHorCircleDropPosY; currY < maxHorCircleDropPosY; currY += 1) {
             GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, currY), defaultOrientation);
@@ -411,7 +440,8 @@ public class GameManager : MonoBehaviour {
     }
 
     IEnumerator DiagonalCirclesLeftToRight() {
-        float gapTime = 0.3f - Mathf.Log(timeSinceGameStarted) * 0.005f;
+        //float gapTime = 0.3f - Mathf.Log(timeSinceGameStarted) * 0.005f;
+        float gapTime = 0.3f - level * 0.0025f;
         /*for (float currX = minHorCircleDropPosY; currY < maxHorCircleDropPosY; currY += 1)
         {
             new Vector2(currAccelDefaultCircles * Mathf.Cos(lowerLeftToTopRightDropAngle), currAccelDefaultCircles * Mathf.Sin(lowerLeftToTopRightDropAngle)));
@@ -462,6 +492,9 @@ public class GameManager : MonoBehaviour {
 
     public void IncrementLevel() {
         level++;
+        currAccelVertCircles = (level * 0.2f) + startingAccelVertCircles;
+        currAccelHorCircles = (level * 0.2f) + startingAccelHorCircles;
+        currAccelDefaultCircles = (level * 0.2f) + startingAccelDefaultCircles;
     }
 
 }

@@ -17,7 +17,7 @@ public class BounceAndExplodeController : Projectile {
 
     float defaultAccel = 10f;
 
-    float bouncePercentage = 0.5f;
+    float bouncePercentage = 0.9f;
 
 	// Use this for initialization
     protected override void Start () {

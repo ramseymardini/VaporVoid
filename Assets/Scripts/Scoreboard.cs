@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Scoreboard : MonoBehaviour {
 
+    public GameObject gameManager;
     public GameObject bestScoreIndicator;
     public GameObject bestText;
     public GameObject yourScoreText;
@@ -30,6 +31,10 @@ public class Scoreboard : MonoBehaviour {
         }
         currScore++;
         text.text = "" + currScore;
+
+        if (currScore % 5 == 0) {
+            gameManager.GetComponent<GameManager>().IncrementLevel();
+        }
     }
 
     public void ChangeHighScore() {
