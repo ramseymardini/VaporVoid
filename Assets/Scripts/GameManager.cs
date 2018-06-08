@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
 
         pointController = point.GetComponent<PointController>();
 
-        level = 1;
+        level = 9;
         /*Debug.Log(lowerLeftToTopRightDropAngle);
         Debug.Log("Bottom left: " + lowerLeftCornerDropPos);
         Debug.Log("Upper Right: " + UpperRightCornerDropPos);*/
@@ -560,6 +560,7 @@ public class GameManager : MonoBehaviour
 
     public void EndFirstBoss() {
         StartCoroutine(EndBoss());
+        scoreboard.GetComponent<Scoreboard>().AddPoints(5);
     }
 
     public void EndSecondBoss() {

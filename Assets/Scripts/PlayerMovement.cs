@@ -10,7 +10,8 @@ public class PlayerMovement : MonoBehaviour {
     public Sprite threePointsShield;
     public Sprite fourPointsShield;
 
-    readonly float MAX_VELOCITY = 1.5f;
+    readonly float MAX_VELOCITY = 1.0f;
+    readonly float COOLDOWN_POINT = 0.1f;
 
     //Quaternion standardOrientation = new Quaternion(0, 0, 0, 0);
 
@@ -27,6 +28,8 @@ public class PlayerMovement : MonoBehaviour {
     int shieldCounter;
     bool hasShield;
 
+    bool canPickUpPoint;
+
 
     // Use this for initialization
     void Start() {
@@ -39,6 +42,7 @@ public class PlayerMovement : MonoBehaviour {
         shieldCounter = 0;
         hasShield = false;
         rb.freezeRotation = true;
+        canPickUpPoint = true;
     }
 
     void Update() {
@@ -67,11 +71,13 @@ public class PlayerMovement : MonoBehaviour {
             SetGameEnded();
         }
 
-        if (collision.gameObject.tag.Equals("Point")) {
+        if (collision.gameObject.tag.Equals("Point") && canPickUpPoint) {
             if (shieldCounter < 4)
             {
                 shieldCounter++;
             }
+            canPickUpPoint = false;
+            StartCoroutine(WaitCooldownPoint());
             UpdateSprite();
             scoreboard.GetComponent<Scoreboard>().IncrementScore();
             collision.gameObject.GetComponent<PointController>().Reposition();
@@ -145,6 +151,11 @@ public class PlayerMovement : MonoBehaviour {
         //rb.velocity = new Vector2(touchX * playerSpeed, touchY * playerSpeed);
         rb.velocity = new Vector2(Mathf.Min(mouseX, MAX_VELOCITY) * playerSpeed, Mathf.Min(mouseY, MAX_VELOCITY) * playerSpeed);
 
+    }
+
+    IEnumerator WaitCooldownPoint() {
+        yield return new WaitForSeconds(COOLDOWN_POINT);
+        canPickUpPoint = true;
     }
 
     void UpdateSprite() {

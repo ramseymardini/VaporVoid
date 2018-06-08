@@ -32,7 +32,7 @@ public class Scoreboard : MonoBehaviour {
         currScore++;
         text.text = "" + currScore;
 
-        if (currScore % 5 == 0) {
+        if (currScore == 15) {
             gameManager.GetComponent<GameManager>().IncrementLevel();
         }
     }
@@ -51,5 +51,16 @@ public class Scoreboard : MonoBehaviour {
         bestText.GetComponent<UnityEngine.UI.Text>().text = "Best: \n" + PlayerPrefs.GetInt("highestScore");
         yourScoreText.GetComponent<UnityEngine.UI.Text>().text = "Your Score: \n" + currScore;
         Destroy(gameObject);
+    }
+
+    public void AddPoints(int points) {
+        StartCoroutine(AddPointsHelper(points));
+    }
+
+    IEnumerator AddPointsHelper(int points) {
+        for (int i = 0; i < points; i++) {
+            IncrementScore();
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }
