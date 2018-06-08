@@ -25,7 +25,31 @@ public class ThirdBossController : FloaterController {
             return;
         }
 
+        inMove = true;
+        DoMove();
+    }
 
+    private void DoMove() {
+        int numMoves = 5;
+        int move = Random.Range(0, numMoves);
+
+        switch (move) {
+            case 0:
+                StartCoroutine(HorizontalAssault());
+                break;
+            case 1:
+                StartCoroutine(VerticalAssault());
+                break;
+            case 2:
+                StartCoroutine(RainDownRandom());
+                break;
+            case 3:
+                StartCoroutine(RainDownAtOnce());
+                break;
+            case 4:
+                StartCoroutine(DiveBomb());
+                break;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -33,6 +57,31 @@ public class ThirdBossController : FloaterController {
         if (collision.gameObject.tag.Equals("ProjectileEnemy")) {
             StartCoroutine(TakeDamage(damageTakenPerProjectile));
         }
+    }
+
+    IEnumerator HorizontalAssault() {
+        yield return new WaitForEndOfFrame();
+        inMove = false;
+    }
+
+    IEnumerator VerticalAssault() {
+        yield return new WaitForEndOfFrame();
+        inMove = false;
+    }
+
+    IEnumerator RainDownRandom() {
+        yield return new WaitForEndOfFrame();
+        inMove = false;
+    }
+
+    IEnumerator RainDownAtOnce() {
+        yield return new WaitForEndOfFrame();
+        inMove = false;
+    }
+
+    IEnumerator DiveBomb() {
+        yield return new WaitForEndOfFrame();
+        inMove = false;
     }
 
     private IEnumerator TakeDamage(float damage)

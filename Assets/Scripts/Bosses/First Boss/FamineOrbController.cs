@@ -5,7 +5,7 @@ using UnityEngine;
 public class FamineOrbController : OrbitingFirerer {
 
 	// Use this for initialization
-	void Start () {
+    protected override void Start() {
         base.Start();
 
         SetAccelerationOfProjectiles(9f);

@@ -10,7 +10,7 @@ public class OrbitingFirerer : MonoBehaviour
     protected GameObject player;
     protected Vector2 currentPlayerPosition;
 
-    protected Collider2D collider;
+    protected Collider2D coll;
     protected Rigidbody2D rb;
 
     protected float defaultAccelProjectile;
@@ -38,7 +38,7 @@ public class OrbitingFirerer : MonoBehaviour
     protected float timePerProjectile;
 
     // Use this for initialization
-    protected void Start() {
+    protected virtual void Start() {
         player = GameObject.FindGameObjectWithTag("Player");
 
         radiusOfRotation = FirstBossController.GetRadius();
@@ -52,7 +52,7 @@ public class OrbitingFirerer : MonoBehaviour
         defaultAccelProjectile = 3f;
         currAccelProjectile = defaultAccelProjectile;
 
-        collider = GetComponent<Collider2D>();
+        coll = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
 
         timeCreated = Time.time;
