@@ -16,7 +16,7 @@ public class OrbitingFirerer : MonoBehaviour
     protected float defaultAccelProjectile;
     protected float currAccelProjectile;
 
-    protected float currentHealth;
+    protected float health;
     protected Vector2 centerOfRotation;
     protected float radiusOfRotation;
     protected float speedOfRotation;
@@ -47,7 +47,7 @@ public class OrbitingFirerer : MonoBehaviour
         originalScaleX = transform.localScale.x;
         originalScaleY = transform.localScale.y;
 
-        currentHealth = 100f;
+        health = 100f;
         centerOfRotation = new Vector2(0, 0);
         defaultAccelProjectile = 3f;
         currAccelProjectile = defaultAccelProjectile;
@@ -138,7 +138,7 @@ public class OrbitingFirerer : MonoBehaviour
 
     protected IEnumerator TakeDamage(float damage) {
         GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);
-        currentHealth -= damage;
+        health -= damage;
         CheckIfDead();
         yield return new WaitForSeconds(0.1f);
 
@@ -146,7 +146,7 @@ public class OrbitingFirerer : MonoBehaviour
     }
 
     protected void CheckIfDead() {
-        if (currentHealth <= 0 || (isLastOrb && transform.localScale.x <= 0.6))
+        if (health <= 0 || (isLastOrb && transform.localScale.x <= 0.6))
         {
             Die();
         }
@@ -169,8 +169,8 @@ public class OrbitingFirerer : MonoBehaviour
         currAccelProjectile = newAcceleration;
     }
 
-    public void SetHealth(float health) {
-        currentHealth = health;
+    public void SetHealth(float newHealth) {
+        health = newHealth;
     }
 
     public void SetTimePerProjectile(float time) {

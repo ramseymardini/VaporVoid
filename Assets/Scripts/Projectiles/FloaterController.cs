@@ -82,7 +82,6 @@ public class FloaterController : Projectile {
     IEnumerator StartSlowing() {
         isSlowing = true;
         while (Mathf.Abs(rb.velocity.x) > 0.001f || Mathf.Abs(rb.velocity.y) > 0.001f) {
-            Debug.Log(rb.velocity);
             if (rb.velocity.y > 0) {
                 rb.AddForce(new Vector2(0, -rb.mass * accelerationToSlowBeforePerch));
             }
@@ -103,7 +102,6 @@ public class FloaterController : Projectile {
 
         yield return new WaitForSeconds(timeToStayPerched);
 
-        //Debug.Log("Done!");
         hasPerched = true;
 
     }
@@ -142,6 +140,6 @@ public class FloaterController : Projectile {
     private void UpdateDistanceToStartSlowing() {
         float timeToStop = velocityBeforePerch / accelerationToSlowBeforePerch;
         distanceToStartSlowing = distanceBeforePerch - (Mathf.Abs(velocityBeforePerch * timeToStop) - Mathf.Abs(0.5f * accelerationToSlowBeforePerch * timeToStop * timeToStop));
-        Debug.Log(distanceToStartSlowing);
+        //Debug.Log(distanceToStartSlowing);
     }
 }

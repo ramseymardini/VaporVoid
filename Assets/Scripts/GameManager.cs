@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     PointController pointController;
 
     bool inMove;
-    float timeTillNextMove;
     bool gameEnded;
 
     static readonly float topEdgeY = 5f;
@@ -74,7 +73,6 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         //player = GameObject.FindGameObjectWithTag("Player");
         inMove = false;
-        timeTillNextMove = 0;
         gameEnded = false;
 
         currAccelVertCircles = startingAccelVertCircles;
@@ -604,6 +602,10 @@ public class GameManager : MonoBehaviour
         currAccelHorCircles = (level * 0.2f) + startingAccelHorCircles;
         currAccelDefaultCircles = (level * 0.2f) + startingAccelDefaultCircles;
         pointController.SetIsWorthPoint(!pointController.GetIsWorthPoint());
+    }
+
+    public bool IsGameEnded() {
+        return gameEnded;
     }
 
     void UpdateDifficulty() {
