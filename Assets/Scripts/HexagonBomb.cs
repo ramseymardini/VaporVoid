@@ -68,7 +68,7 @@ public class HexagonBomb : MonoBehaviour {
                 //yield return new WaitForEndOfFrame();
                 GetComponent<PolygonCollider2D>().enabled = false;
             }
-            yield return new WaitForSeconds(0.00001f);
+            yield return new WaitForSeconds(0.0000075f);
         }
 
         Destroy(gameObject);

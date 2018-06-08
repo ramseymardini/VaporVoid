@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BounceAndExplodeController : Projectile {
     
-    float sizeToReachInExplosion = 1.5f;
+    float sizeToReachInExplosion = 1.6f;
 
     bool isVertical;
     bool isTopToBottom;
@@ -23,7 +23,7 @@ public class BounceAndExplodeController : Projectile {
     protected override void Start () {
         base.Start();
         SetDirection("TopToBottom");
-        SetAcceleration(new Vector2(0, -defaultAccel));
+        SetAcceleration(new Vector2(2, -defaultAccel));
 	}
 
     protected override void FixedUpdate() {
@@ -63,14 +63,31 @@ public class BounceAndExplodeController : Projectile {
             rb.velocity = new Vector2(-velocityBeforeBounce.x, velocityBeforeBounce.y * bouncePercentage);
         }
 
-        //while()
+        coll.isTrigger = true;
         yield return new WaitForFixedUpdate();
     }
 
-    void Explode() {
+    IEnumerator Explode() {
         hasExploded = true;
         transform.localScale = new Vector2(sizeToReachInExplosion, sizeToReachInExplosion);
         gameObject.tag = "ExplosionEnemy";
+        SetAcceleration(new Vector2(0, 0));
+        rb.bodyType = RigidbodyType2D.Static;
+
+        Color currColor = GetComponent<SpriteRenderer>().color;
+
+        while (currColor.a > 0)
+        {
+            currColor.a -= 0.02f;
+            GetComponent<SpriteRenderer>().color = currColor;
+
+            if (currColor.a < 0.8) {
+                GetComponent<CircleCollider2D>().enabled = false;
+            }
+            yield return new WaitForSeconds(0.0000075f);
+        }
+
+        Destroy(gameObject);
     }
 
     void UpdateVelocityBeforeBounce() {
@@ -78,7 +95,7 @@ public class BounceAndExplodeController : Projectile {
             velocityBeforeBounce = rb.velocity;
         }
 
-        Debug.Log(velocityBeforeBounce);
+        //Debug.Log(velocityBeforeBounce);
     }
 
     void CheckIfExplode() {
@@ -87,13 +104,13 @@ public class BounceAndExplodeController : Projectile {
         }
 
         if (isTopToBottom && rb.velocity.y <= 0) {
-            Explode();
+            StartCoroutine(Explode());
         } else if (isVertical && !isTopToBottom && rb.velocity.y >= 0) {
-            Explode();
+            StartCoroutine(Explode());
         } else if (isLeftToRight && rb.velocity.x >= 0) {
-            Explode();
+            StartCoroutine(Explode());
         } else if (!isVertical && !isLeftToRight && rb.velocity.x <= 0) {
-            Explode();
+            StartCoroutine(Explode());
         }
     }
 

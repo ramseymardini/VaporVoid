@@ -25,4 +25,8 @@ public class PointController : MonoBehaviour {
             gameObject.tag = "ShieldPoint";
         }
     }
+
+    public bool GetIsWorthPoint() {
+        return gameObject.tag.Equals("Point");
+    }
 }
