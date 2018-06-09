@@ -25,8 +25,8 @@ public class GameManager : MonoBehaviour
     static readonly float topEdgeY = 5f;
     static readonly float botEdgeY = -5f;
     static readonly float screenHeight = topEdgeY - botEdgeY;
-    static readonly float leftEdgeX = -6.3f;
-    static readonly float rightEdgeX = 6.3f;
+    static readonly float leftEdgeX = -6.35f;
+    static readonly float rightEdgeX = 6.35f;
     static readonly float screenWidth = rightEdgeX - leftEdgeX;
 
     float gapTimePatternMoves;

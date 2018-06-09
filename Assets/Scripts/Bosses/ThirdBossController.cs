@@ -3,20 +3,58 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ThirdBossController : FloaterController {
-
-    public GameObject thirdBossAngel;
+    
+    public GameObject angel;
     public GameObject gameManager;
 
-    GameManager gameManagerScript; 
+    GameManager gameManagerScript;
+
+    GameObject leftWing;
+    GameObject rightWing;
 
     float health;
     float damageTakenPerProjectile;
     bool inMove;
 
+    Vector2 defaultPosition;
+
+    float minXDropPosTopLocal;
+    float maxXDropPosTopLocal;
+
+
+    float radiusOfAngel;
+    Vector2 wingPosition;
+    Vector2 wingScale;
+    float wingAngle;
+
+    float angelAccel;
+    float angelCorrectingForce;
+    float angelSpeedUntilStop;
+    float distanceTraveledBeforeStopAngels;
+
+    float speedUntilStop;
+    float diveBombAccel;
+
 	// Use this for initialization
 	void Start () {
         SetHealth(30);
         damageTakenPerProjectile = 1;
+        leftWing = transform.GetChild(0).gameObject;
+        rightWing = transform.GetChild(1).gameObject;
+
+        radiusOfAngel = transform.localScale.x;
+        wingPosition = rightWing.transform.localPosition;
+        wingScale = rightWing.transform.localScale;
+        maxXDropPosTopLocal = wingPosition.x + (wingScale.x / 2) * Mathf.Cos(wingAngle);
+        minXDropPosTopLocal = -1 * maxXDropPosTopLocal;
+
+        angelAccel = 10;
+        angelCorrectingForce = 10;
+        angelSpeedUntilStop = 1.75f;
+        distanceTraveledBeforeStopAngels = 1.5f;
+
+        speedUntilStop = 1.1f;
+        diveBombAccel = 10;
 	}
 
     private void Update()
