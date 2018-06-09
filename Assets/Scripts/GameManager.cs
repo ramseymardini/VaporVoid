@@ -17,30 +17,34 @@ public class GameManager : MonoBehaviour
     public GameObject thirdBoss;
     public GameObject fourthBoss;
 
+    public GameObject levelDataManager;
+
     PointController pointController;
 
     bool inMove;
     bool gameEnded;
 
-    static readonly float topEdgeY = 5f;
-    static readonly float botEdgeY = -5f;
-    static readonly float screenHeight = topEdgeY - botEdgeY;
-    static readonly float leftEdgeX = -6.35f;
-    static readonly float rightEdgeX = 6.35f;
-    static readonly float screenWidth = rightEdgeX - leftEdgeX;
+    WallCoordinateManager wallCoordinateManager;
+
+    float topEdgeY;
+    float botEdgeY;
+    float screenHeight;
+    float leftEdgeX;
+    float rightEdgeX;
+    float screenWidth;
+
+    float vertDropPos;
+    float horDropPos;
+
+    float farRightCircleDropPosX;
+    float farLeftCircleDropPosX;
+    float minHorCircleDropPosY;
+    float maxHorCircleDropPosY;
 
     float gapTimePatternMoves;
     float gapTimeRainMoves;
     float gapTimeStairMoves;
     float gapTimeDiagonalMoves;
-
-    float vertDropPos = 6;
-    float horDropPos = 7;
-    float horDropPosFar = 13;
-    float farRightCircleDropPosX = 5.5f;
-    float farLeftCircleDropPosX = -5.5f;
-    float minHorCircleDropPosY = -4.5f;
-    float maxHorCircleDropPosY = 4.5f;
 
     float startingAccelVertCircles = 7.2f;
     float startingAccelHorCircles = 7.2f;
@@ -88,10 +92,33 @@ public class GameManager : MonoBehaviour
 
         pointController = point.GetComponent<PointController>();
 
-        level = 9;
+        level = 1;
+
+        wallCoordinateManager = levelDataManager.GetComponent<WallCoordinateManager>();
+
+        SetScreenCoordinates();
         /*Debug.Log(lowerLeftToTopRightDropAngle);
         Debug.Log("Bottom left: " + lowerLeftCornerDropPos);
         Debug.Log("Upper Right: " + UpperRightCornerDropPos);*/
+
+    }
+
+    void SetScreenCoordinates() {
+
+        topEdgeY = wallCoordinateManager.getTopWallPositionY();
+        botEdgeY = wallCoordinateManager.getBottomWallPositionY();
+        screenHeight = wallCoordinateManager.getScreenHeight();
+        leftEdgeX = wallCoordinateManager.getLeftWallPositionX();
+        rightEdgeX = wallCoordinateManager.getRightWallPositionX();
+        screenWidth = wallCoordinateManager.getScreenWidth();
+
+        vertDropPos = topEdgeY + 1;
+        horDropPos = rightEdgeX + 1;
+
+        farRightCircleDropPosX = rightEdgeX - 0.82f;
+        farLeftCircleDropPosX = leftEdgeX + 0.82f;
+        minHorCircleDropPosY = botEdgeY + 0.82f;
+        maxHorCircleDropPosY = topEdgeY - 0.82f;
 
     }
 
