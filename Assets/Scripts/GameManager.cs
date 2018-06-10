@@ -115,10 +115,10 @@ public class GameManager : MonoBehaviour
         vertDropPos = topEdgeY + 1;
         horDropPos = rightEdgeX + 1;
 
-        farRightCircleDropPosX = rightEdgeX - 0.82f;
-        farLeftCircleDropPosX = leftEdgeX + 0.82f;
-        minHorCircleDropPosY = botEdgeY + 0.82f;
-        maxHorCircleDropPosY = topEdgeY - 0.82f;
+        farRightCircleDropPosX = rightEdgeX - 0.5f;
+        farLeftCircleDropPosX = leftEdgeX + 0.5f;
+        minHorCircleDropPosY = botEdgeY + 0.5f;
+        maxHorCircleDropPosY = topEdgeY - 0.5f;
 
     }
 
@@ -172,8 +172,8 @@ public class GameManager : MonoBehaviour
         int move = UnityEngine.Random.Range(0, numMoves);
 
         /*StartCoroutine(DiagonalCirclesRightToLeft());
-        return;*/ 
-
+        return;*/
+        return;
         switch (move) {
             case 0:
                 StartCoroutine(StairLeftToRight());
@@ -400,7 +400,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Rain Sides");
         //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
-        for (float currX = farRightCircleDropPosX; currX > 0.5f; currX -= 1) {
+        for (float currX = farRightCircleDropPosX; currX > 0.6f; currX -= 0.9f) {
             if (currX > farRightCircleDropPosX - 3)
             {
                 GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, 0), defaultOrientation);
@@ -642,4 +642,19 @@ public class GameManager : MonoBehaviour
         gapTimeDiagonalMoves = 0.28f - level * 0.0025f;
     }
 
+    public float getFarRightCircleDropPosX() {
+        return farRightCircleDropPosX;
+    }
+
+    public float getMaxHorCircleDropPosY() {
+        return maxHorCircleDropPosY;
+    }
+
+    public float getVertDropPos() {
+        return vertDropPos;
+    }
+
+    public float getHorDropPos() {
+        return horDropPos;
+    }
 }

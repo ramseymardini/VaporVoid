@@ -4,41 +4,42 @@ using UnityEngine;
 
 public class FloaterController : Projectile {
 
-    bool hasPerched;
-    bool isSlowing;
+    protected bool hasPerched;
+    protected bool isSlowing;
 
     bool isVertical;
     bool isTopToBottom;
     bool isLeftToRight;
 
-    float correctingForce = 5f;
+    protected float correctingForce = 5f;
 
     readonly float DEFAULT_ACCELERATION_X = 0f;
-    readonly float DEFAULT_ACCELERATION_Y = 10f;
+    readonly float DEFAULT_ACCELERATION_Y = -10f;
 
-    float velocityBeforePerch = 5f;
-    float distanceBeforePerch = 2.5f;
-    float accelerationToSlowBeforePerch = 5f;
-    float distanceToStartSlowing;
-    float timeToStayPerched = 0.5f;
+    protected float velocityBeforePerch = 5f;
+    protected float distanceBeforePerch = 2.5f;
+    protected float accelerationToSlowBeforePerch = 5f;
+    protected float distanceToStartSlowing;
+    protected float timeToStayPerched = 0.5f;
 
-    Vector2 originalPos;
+    protected Vector2 originalPos;
 
-    float originalAccelX;
-    float originalAccelY;
+    protected float originalAccelX;
+    protected float originalAccelY;
 
-    bool accelSet;
+    protected bool accelSet;
+    protected bool isEnabled;
 
-    GameObject player;
+    protected GameObject player;
 
     protected override void Start() {
         base.Start();
         accelerationX = DEFAULT_ACCELERATION_X;
         accelerationY = DEFAULT_ACCELERATION_Y;
-        originalPos = transform.position;
         player = GameObject.FindGameObjectWithTag("Player");
         rb.velocity = new Vector2(0, -velocityBeforePerch);
         UpdateDistanceToStartSlowing();
+        SetPositionAsOriginalPosition();
     }
    
     protected override void FixedUpdate() {
@@ -68,19 +69,21 @@ public class FloaterController : Projectile {
         accelSet = true;
     }
 
-    float FindDistanceTraveled() {
-        //Debug.Log(Mathf.Sqrt(Mathf.Pow(transform.position.x - originalPos.x, 2) + Mathf.Pow(transform.position.y - originalPos.y, 2)));
+    protected float FindDistanceTraveled() {
+        Debug.Log("Distance Traveled " + Mathf.Sqrt(Mathf.Pow(transform.position.x - originalPos.x, 2) + Mathf.Pow(transform.position.y - originalPos.y, 2)));
         return Mathf.Sqrt(Mathf.Pow(transform.position.x - originalPos.x, 2) + Mathf.Pow(transform.position.y - originalPos.y, 2));
     }
 
 
-    float FindAngleToPlayer() {
+    protected float FindAngleToPlayer() {
         Vector2 currentPlayerPosition = player.transform.position;
         return Mathf.Atan2((currentPlayerPosition.y - transform.position.y), (currentPlayerPosition.x - transform.position.x));
     }
 
-    IEnumerator StartSlowing() {
+    protected IEnumerator StartSlowing() {
         isSlowing = true;
+        Debug.Log("started slowing at " + FindDistanceTraveled());
+
         while (Mathf.Abs(rb.velocity.x) > 0.001f || Mathf.Abs(rb.velocity.y) > 0.001f) {
             if (rb.velocity.y > 0) {
                 rb.AddForce(new Vector2(0, -rb.mass * accelerationToSlowBeforePerch));
@@ -116,7 +119,7 @@ public class FloaterController : Projectile {
         player = newPlayer;
     }
 
-    public void Setdirection(string direction) {
+    public void SetDirection(string direction) {
         if (direction.Equals("TopToBottom")) {
             isVertical = true;
             isTopToBottom = true;
@@ -137,9 +140,24 @@ public class FloaterController : Projectile {
         UpdateDistanceToStartSlowing();
     }
 
-    private void UpdateDistanceToStartSlowing() {
+    public void SetVelocityBeforePerch(float newVelocity) {
+        velocityBeforePerch = newVelocity;
+        UpdateDistanceToStartSlowing();
+    }
+
+    public void SetAccelerationBeforePerch(float newAcceleration) {
+        accelerationToSlowBeforePerch = newAcceleration;
+        UpdateDistanceToStartSlowing();
+    }
+
+    protected void UpdateDistanceToStartSlowing() {
         float timeToStop = velocityBeforePerch / accelerationToSlowBeforePerch;
-        distanceToStartSlowing = distanceBeforePerch - (Mathf.Abs(velocityBeforePerch * timeToStop) - Mathf.Abs(0.5f * accelerationToSlowBeforePerch * timeToStop * timeToStop));
-        //Debug.Log(distanceToStartSlowing);
+        distanceToStartSlowing = Mathf.Max(0, distanceBeforePerch - (Mathf.Abs(velocityBeforePerch * timeToStop) - Mathf.Abs(0.5f * accelerationToSlowBeforePerch * timeToStop * timeToStop)));
+        Debug.Log("Distance to start slowing: " + distanceToStartSlowing);
+    }
+
+    protected void SetPositionAsOriginalPosition() {
+        originalPos = transform.position;
+        Debug.Log(originalPos);
     }
 }

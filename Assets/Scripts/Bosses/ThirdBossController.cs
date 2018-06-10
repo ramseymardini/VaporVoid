@@ -6,8 +6,9 @@ public class ThirdBossController : FloaterController {
     
     public GameObject angel;
     public GameObject gameManager;
+    public GameObject levelDataManager;
 
-    GameManager gameManagerScript;
+    GameManager gmScript;
 
     GameObject leftWing;
     GameObject rightWing;
@@ -21,26 +22,34 @@ public class ThirdBossController : FloaterController {
     float minXDropPosTopLocal;
     float maxXDropPosTopLocal;
 
-
     float radiusOfAngel;
     Vector2 wingPosition;
     Vector2 wingScale;
     float wingAngle;
 
-    float angelAccel;
-    float angelCorrectingForce;
-    float angelSpeedUntilStop;
-    float distanceTraveledBeforeStopAngels;
+    float angelAccel = 10;
+    float angelCorrectingForce = 10;
+    float angelSpeedUntilStop = 1.75f;
+    float distanceTraveledBeforeStopAngels = 1.5f;
 
-    float speedUntilStop;
-    float diveBombAccel;
+    float bossCorrectingForce = 8;
+    //float speedUntilStop = 1.1f;
+    float diveBombAccel = 10;
+
+    Quaternion standardOrientation = new Quaternion(0, 0, 0, 0);
 
 	// Use this for initialization
-	void Start () {
+	protected override void Start () {
+        base.Start();
+
         SetHealth(30);
         damageTakenPerProjectile = 1;
         leftWing = transform.GetChild(0).gameObject;
         rightWing = transform.GetChild(1).gameObject;
+
+        defaultPosition = new Vector2(0, levelDataManager.GetComponent<WallCoordinateManager>().getTopWallPositionY() - 2);
+
+        gmScript = gameManager.GetComponent<GameManager>();
 
         radiusOfAngel = transform.localScale.x;
         wingPosition = rightWing.transform.localPosition;
@@ -48,28 +57,36 @@ public class ThirdBossController : FloaterController {
         maxXDropPosTopLocal = wingPosition.x + (wingScale.x / 2) * Mathf.Cos(wingAngle);
         minXDropPosTopLocal = -1 * maxXDropPosTopLocal;
 
-        angelAccel = 10;
-        angelCorrectingForce = 10;
-        angelSpeedUntilStop = 1.75f;
-        distanceTraveledBeforeStopAngels = 1.5f;
-
-        speedUntilStop = 1.1f;
-        diveBombAccel = 10;
+        SetDistanceBeforePerch(1);
+        SetDirection("TopToBottom");
+        SetAcceleration(new Vector2(0, diveBombAccel));
+        SetVelocityBeforePerch(0.01f);
+        SetAccelerationBeforePerch(1f);
+        SetCorrectingForce(bossCorrectingForce);
 	}
 
     private void Update()
     {
-        if (inMove || gameManagerScript.IsGameEnded()) {
+        if (inMove || gmScript.IsGameEnded()) {
             return;
         }
-
+            
         inMove = true;
-        DoMove();
+        //DoMove();
+    }
+
+    private void FixedUpdate()
+    {
+        if (!hasPerched) {
+            base.FixedUpdate();
+        }
     }
 
     private void DoMove() {
         int numMoves = 5;
         int move = Random.Range(0, numMoves);
+        StartCoroutine(DiveBomb());
+        return;
 
         switch (move) {
             case 0:
@@ -98,6 +115,13 @@ public class ThirdBossController : FloaterController {
     }
 
     IEnumerator HorizontalAssault() {
+        for (float pos = gmScript.getMaxHorCircleDropPosY(); pos >= 0; pos -= 1) {
+            Instantiate(angel, new Vector2(gmScript.getHorDropPos(), pos), standardOrientation);
+            Instantiate(angel, new Vector2(-1 * gmScript.getHorDropPos(), pos), standardOrientation);
+            Instantiate(angel, new Vector2(gmScript.getHorDropPos(), -1 * pos), standardOrientation);
+            Instantiate(angel, new Vector2(-1 * gmScript.getHorDropPos(), pos), standardOrientation);
+        }
+
         yield return new WaitForEndOfFrame();
         inMove = false;
     }
@@ -119,6 +143,16 @@ public class ThirdBossController : FloaterController {
 
     IEnumerator DiveBomb() {
         yield return new WaitForEndOfFrame();
+
+        leftWing.SetActive(false);
+        rightWing.SetActive(false);
+
+        while (transform.position.y > -10) {
+            base.FixedUpdate();
+        }
+
+        transform.position = defaultPosition;
+
         inMove = false;
     }
 
@@ -142,6 +176,7 @@ public class ThirdBossController : FloaterController {
 
     private void Die()
     {
+        gmScript.EndThirdBoss();
         Destroy(gameObject);
     }
 
@@ -152,7 +187,7 @@ public class ThirdBossController : FloaterController {
 
     void SetGameManager (GameObject newGameManager) {
         gameManager = newGameManager;
-        gameManagerScript = gameManager.GetComponent<GameManager>();
+        gmScript = gameManager.GetComponent<GameManager>();
     }
 
 
