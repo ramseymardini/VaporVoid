@@ -7,18 +7,18 @@ public class FloaterController : Projectile {
     protected bool hasPerched;
     protected bool isSlowing;
 
-    bool isVertical;
+    /*bool isVertical;
     bool isTopToBottom;
-    bool isLeftToRight;
+    bool isLeftToRight;*/
 
     protected float correctingForce = 5f;
 
     readonly float DEFAULT_ACCELERATION_X = 0f;
     readonly float DEFAULT_ACCELERATION_Y = -10f;
 
-    protected float velocityBeforePerch = 5f;
+    protected Vector2 velocityBeforePerch = new Vector2(0, -10);
     protected float distanceBeforePerch = 2.5f;
-    protected float accelerationToSlowBeforePerch = 5f;
+    protected Vector2 accelerationToSlowBeforePerch = new Vector2(5, 5);
     protected float distanceToStartSlowing;
     protected float timeToStayPerched = 0.5f;
 
@@ -34,8 +34,8 @@ public class FloaterController : Projectile {
 
     protected override void Start() {
         base.Start();
-        accelerationX = DEFAULT_ACCELERATION_X;
-        accelerationY = DEFAULT_ACCELERATION_Y;
+        /*accelerationX = DEFAULT_ACCELERATION_X;
+        accelerationY = DEFAULT_ACCELERATION_Y;*/
         player = GameObject.FindGameObjectWithTag("Player");
         UpdateDistanceToStartSlowing();
         SetPositionAsOriginalPosition();
@@ -45,8 +45,8 @@ public class FloaterController : Projectile {
         if (!hasPerched) {
             if (!isSlowing && FindDistanceTraveled() > distanceToStartSlowing) {
                 StartCoroutine(StartSlowing());
-            } else {
-                //MaintainVelocityBeforePerch();
+            } else if (!isSlowing){
+                MaintainVelocityBeforePerch();
             }
             //Debug.Log(Mathf.Sqrt(Mathf.Pow(transform.position.x - originalPos.x, 2) + Mathf.Pow(transform.position.y - originalPos.y, 2)) + " " + distanceToStartSlowing);
             return;
@@ -87,19 +87,19 @@ public class FloaterController : Projectile {
 
         while (Mathf.Abs(rb.velocity.x) > 0.001f || Mathf.Abs(rb.velocity.y) > 0.001f) {
             if (rb.velocity.y > 0) {
-                rb.AddForce(new Vector2(0, -rb.mass * accelerationToSlowBeforePerch));
+                rb.AddForce(new Vector2(0, -rb.mass * accelerationToSlowBeforePerch.y));
             }
 
             if (rb.velocity.y < 0) {
-                rb.AddForce(new Vector2(0, rb.mass * accelerationToSlowBeforePerch));
+                rb.AddForce(new Vector2(0, rb.mass * accelerationToSlowBeforePerch.y));
             }
 
             if (rb.velocity.x > 0) {
-                rb.AddForce(new Vector2(-rb.mass * accelerationToSlowBeforePerch, 0));
+                rb.AddForce(new Vector2(-rb.mass * accelerationToSlowBeforePerch.x, 0));
             }
 
             if (rb.velocity.x < 0) {
-                rb.AddForce(new Vector2(rb.mass * accelerationToSlowBeforePerch, 0));
+                rb.AddForce(new Vector2(rb.mass * accelerationToSlowBeforePerch.x, 0));
             }
             yield return new WaitForFixedUpdate();
         }
@@ -121,7 +121,7 @@ public class FloaterController : Projectile {
     }
 
     public void SetDirection(string direction) {
-        if (direction.Equals("TopToBottom")) {
+        /*if (direction.Equals("TopToBottom")) {
             isVertical = true;
             isTopToBottom = true;
         } else if (direction.Equals("BottomToTop")) {
@@ -133,7 +133,7 @@ public class FloaterController : Projectile {
         } else {
             isVertical = false;
             isLeftToRight = false;
-        }
+        }*/
     }
 
     public void SetDistanceBeforePerch(float newDistance) {
@@ -142,41 +142,38 @@ public class FloaterController : Projectile {
         UpdateDistanceToStartSlowing();
     }
 
-    public void SetVelocityBeforePerch(float newVelocity) {
-        velocityBeforePerch = newVelocity;
+    public void SetVelocityBeforePerch(Vector2 vel) {
+        velocityBeforePerch = vel;
         MaintainVelocityBeforePerch();
         UpdateDistanceToStartSlowing();
     }
 
-    public void SetAccelerationBeforePerch(float newAcceleration) {
-        accelerationToSlowBeforePerch = newAcceleration;
-        MaintainVelocityBeforePerch();
+    public void SetAccelerationBeforePerch(Vector2 accel) {
+        accelerationToSlowBeforePerch = accel;
         UpdateDistanceToStartSlowing();
     }
 
     public void MaintainVelocityBeforePerch() {
-        if (isTopToBottom) {
-            rb.velocity = new Vector2(0, -velocityBeforePerch);
-        }
-        else if (isLeftToRight) {
-            rb.velocity = new Vector2(velocityBeforePerch, 0);
-        }
-        else if (isTopToBottom && !isTopToBottom) {
-            rb.velocity = new Vector2(0, velocityBeforePerch);
-        }
-        else {
-            rb.velocity = new Vector2(-velocityBeforePerch, 0);
-        }
+        rb.velocity = velocityBeforePerch;
     }
 
     protected void UpdateDistanceToStartSlowing() {
-        float timeToStop = velocityBeforePerch / accelerationToSlowBeforePerch;
-        distanceToStartSlowing = Mathf.Max(0, distanceBeforePerch - (Mathf.Abs(velocityBeforePerch * timeToStop) - Mathf.Abs(0.5f * accelerationToSlowBeforePerch * timeToStop * timeToStop)));
+        float timeToStop = Mathf.Max(velocityBeforePerch.x / accelerationToSlowBeforePerch.x, velocityBeforePerch.y / accelerationToSlowBeforePerch.y);
+        float distanceTraveledWhileSlowingX = Mathf.Abs(velocityBeforePerch.x * timeToStop) - Mathf.Abs(0.5f * accelerationToSlowBeforePerch.x * timeToStop * timeToStop);
+        float distanceTraveledWhileSlowingY = Mathf.Abs(velocityBeforePerch.y * timeToStop) - Mathf.Abs(0.5f * accelerationToSlowBeforePerch.y * timeToStop * timeToStop);
+        float distanceTraveledWhileSlowing = Mathf.Sqrt(Mathf.Pow(distanceTraveledWhileSlowingX, 2) + Mathf.Pow(distanceTraveledWhileSlowingY, 2));
+        distanceToStartSlowing = Mathf.Max(0, distanceBeforePerch - distanceTraveledWhileSlowing);
         //Debug.Log("Distance to start slowing: " + distanceToStartSlowing);
     }
 
     protected void SetPositionAsOriginalPosition() {
         originalPos = transform.position;
         //Debug.Log(originalPos);
+    }
+
+    protected void ResetConditionals()
+    {
+        hasPerched = false;
+        isSlowing = false;
     }
 }

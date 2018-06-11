@@ -20,7 +20,7 @@ public class ThirdBossController : FloaterController {
     float minXDropPosTopLocal;
     float maxXDropPosTopLocal;
 
-    float radiusOfAngel;
+    float radiusOfBody;
     Vector2 wingPosition;
     Vector2 wingScale;
     float wingAngle;
@@ -28,11 +28,11 @@ public class ThirdBossController : FloaterController {
     float angelAccel = 10;
     float angelCorrectingForce = 10;
     float angelSpeedUntilStop = 1.75f;
-    float distanceTraveledBeforeStopAngels = 1.5f;
+    float distanceBeforePerchAngels = 1.5f;
 
-    float bossCorrectingForce = 8;
+    float bossCorrectingForce = 40;
     //float speedUntilStop = 1.1f;
-    float diveBombAccel = 10;
+    float diveBombAccel = -5;
 
     Quaternion standardOrientation = new Quaternion(0, 0, 0, 0);
 
@@ -47,7 +47,7 @@ public class ThirdBossController : FloaterController {
 
         gmScript = gameManager.GetComponent<GameManager>();
 
-        radiusOfAngel = transform.localScale.x;
+        radiusOfBody = transform.localScale.x;
         wingPosition = rightWing.transform.localPosition;
         wingScale = rightWing.transform.localScale;
         maxXDropPosTopLocal = wingPosition.x + (wingScale.x / 2) * Mathf.Cos(wingAngle);
@@ -56,10 +56,10 @@ public class ThirdBossController : FloaterController {
         //SetPlayer(GameObject.FindGameObjectWithTag("Player"));
 
         SetDistanceBeforePerch(2);
-        SetDirection("TopToBottom");
+        //SetDirection("TopToBottom");
         SetAcceleration(new Vector2(0, diveBombAccel));
-        SetVelocityBeforePerch(1f);
-        SetAccelerationBeforePerch(1f);
+        SetVelocityBeforePerch(new Vector2(0, -1));
+        SetAccelerationBeforePerch(new Vector2(0, 1));
         SetCorrectingForce(bossCorrectingForce);
 	}
 
@@ -84,7 +84,7 @@ public class ThirdBossController : FloaterController {
     private void DoMove() {
         int numMoves = 5;
         int move = Random.Range(0, numMoves);
-        StartCoroutine(DiveBomb());
+        StartCoroutine(HorizontalAssault());
         return;
 
         switch (move) {
@@ -114,11 +114,38 @@ public class ThirdBossController : FloaterController {
     }
 
     IEnumerator HorizontalAssault() {
-        for (float pos = gmScript.getMaxHorCircleDropPosY(); pos >= 0; pos -= 1) {
-            Instantiate(angel, new Vector2(gmScript.getHorDropPos(), pos), standardOrientation);
-            Instantiate(angel, new Vector2(-1 * gmScript.getHorDropPos(), pos), standardOrientation);
-            Instantiate(angel, new Vector2(gmScript.getHorDropPos(), -1 * pos), standardOrientation);
-            Instantiate(angel, new Vector2(-1 * gmScript.getHorDropPos(), pos), standardOrientation);
+        for (float pos = gmScript.getMaxHorCircleDropPosY(); pos >= 0; pos -= 1)
+        {
+            GameObject angelTopRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), pos), standardOrientation);
+            GameObject angelTopLeft = Instantiate(angel, new Vector2(-1 * gmScript.getHorDropPos(), pos), standardOrientation);
+            GameObject angelBotRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), -1 * pos), standardOrientation);
+            GameObject angelBotLeft = Instantiate(angel, new Vector2(-1 * gmScript.getHorDropPos(), pos), standardOrientation);
+
+            FloaterController angelTopRightController = angelTopRight.GetComponent<FloaterController>();
+            FloaterController angelTopLeftController = angelTopLeft.GetComponent<FloaterController>();
+            FloaterController angelBotRightController = angelBotRight.GetComponent<FloaterController>();
+            FloaterController angelBotLeftController = angelBotLeft.GetComponent<FloaterController>();
+
+            angelTopRightController.SetDistanceBeforePerch(distanceBeforePerchAngels);
+            angelTopLeftController.SetDistanceBeforePerch(distanceBeforePerchAngels);
+            angelBotRightController.SetDistanceBeforePerch(distanceBeforePerchAngels);
+            angelBotLeftController.SetDistanceBeforePerch(distanceBeforePerchAngels);
+
+            angelTopRightController.SetCorrectingForce(distanceBeforePerchAngels);
+            angelTopLeftController.SetCorrectingForce(distanceBeforePerchAngels);
+            angelBotRightController.SetCorrectingForce(distanceBeforePerchAngels);
+            angelBotLeftController.SetCorrectingForce(distanceBeforePerchAngels);
+
+            angelTopRightController.SetAcceleration(new Vector2(-1 * angelAccel, 0));
+            angelTopLeftController.SetAcceleration(new Vector2(angelAccel, 0));
+            angelBotRightController.SetAcceleration(new Vector2(-1 * angelAccel, 0));
+            angelBotLeftController.SetAcceleration(new Vector2(angelAccel, 0));
+
+            angelTopRightController.SetVelocityBeforePerch(new Vector2(-1 * angelSpeedUntilStop, 0));
+            angelTopLeftController.SetVelocityBeforePerch(new Vector2(angelSpeedUntilStop, 0));
+            angelBotRightController.SetVelocityBeforePerch(new Vector2(-1 * angelSpeedUntilStop, 0));
+            angelBotLeftController.SetVelocityBeforePerch(new Vector2(angelSpeedUntilStop, 0));
+
         }
 
         yield return new WaitForEndOfFrame();
@@ -147,6 +174,7 @@ public class ThirdBossController : FloaterController {
 
         while (transform.position.y > -10) {
             base.FixedUpdate();
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Min(-4, rb.velocity.y));
             yield return new WaitForEndOfFrame();
         }
 
@@ -155,7 +183,7 @@ public class ThirdBossController : FloaterController {
         rightWing.SetActive(true);
 
         transform.position = originalPos;
-        hasPerched = false;
+        ResetConditionals();
 
         inMove = false;
     }

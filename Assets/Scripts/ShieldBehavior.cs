@@ -11,7 +11,7 @@ public class ShieldBehavior : MonoBehaviour {
     float maxScaleX = 1.55f;
     float maxScaleY = 1.55f;
 
-    float timeToDeletion = 0.3f;
+    float timeToDeletion = 0.35f;
 
     CircleCollider2D cc;
 
@@ -84,7 +84,7 @@ public class ShieldBehavior : MonoBehaviour {
     IEnumerator DoCollisionWithExplosionOrBoss(Collider2D collision) {
         cc.isTrigger = false;
         GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);
-        collision.gameObject.tag = "Untagged";
+        //collision.gameObject.tag = "Untagged";
         yield return new WaitForSeconds(timeToDeletion);
         cc.isTrigger = true;
         parent.GetComponent<PlayerMovement>().RemoveShield();
