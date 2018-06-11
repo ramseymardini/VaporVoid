@@ -17,8 +17,6 @@ public class ThirdBossController : FloaterController {
     float damageTakenPerProjectile;
     bool inMove;
 
-    Vector2 defaultPosition;
-
     float minXDropPosTopLocal;
     float maxXDropPosTopLocal;
 
@@ -47,8 +45,6 @@ public class ThirdBossController : FloaterController {
         leftWing = transform.GetChild(0).gameObject;
         rightWing = transform.GetChild(1).gameObject;
 
-        defaultPosition = new Vector2(0, levelDataManager.GetComponent<WallCoordinateManager>().getTopWallPositionY() - 2);
-
         gmScript = gameManager.GetComponent<GameManager>();
 
         radiusOfAngel = transform.localScale.x;
@@ -57,22 +53,24 @@ public class ThirdBossController : FloaterController {
         maxXDropPosTopLocal = wingPosition.x + (wingScale.x / 2) * Mathf.Cos(wingAngle);
         minXDropPosTopLocal = -1 * maxXDropPosTopLocal;
 
-        SetDistanceBeforePerch(1);
+        //SetPlayer(GameObject.FindGameObjectWithTag("Player"));
+
+        SetDistanceBeforePerch(2);
         SetDirection("TopToBottom");
         SetAcceleration(new Vector2(0, diveBombAccel));
-        SetVelocityBeforePerch(0.01f);
+        SetVelocityBeforePerch(1f);
         SetAccelerationBeforePerch(1f);
         SetCorrectingForce(bossCorrectingForce);
 	}
 
     private void Update()
     {
-        if (inMove || gmScript.IsGameEnded()) {
+        if (inMove || gmScript.IsGameEnded() || !hasPerched) {
             return;
         }
             
         inMove = true;
-        //DoMove();
+        DoMove();
     }
 
     private void FixedUpdate()
@@ -80,6 +78,7 @@ public class ThirdBossController : FloaterController {
         if (!hasPerched) {
             base.FixedUpdate();
         }
+
     }
 
     private void DoMove() {
@@ -142,16 +141,21 @@ public class ThirdBossController : FloaterController {
     }
 
     IEnumerator DiveBomb() {
-        yield return new WaitForEndOfFrame();
 
         leftWing.SetActive(false);
         rightWing.SetActive(false);
 
         while (transform.position.y > -10) {
             base.FixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
 
-        transform.position = defaultPosition;
+        yield return new WaitForSeconds(1.0f);
+        leftWing.SetActive(true);
+        rightWing.SetActive(true);
+
+        transform.position = originalPos;
+        hasPerched = false;
 
         inMove = false;
     }
