@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour {
     public Sprite fourPointsShield;
 
     readonly float MAX_VELOCITY = 1.0f;
-    readonly float COOLDOWN_POINT = 0.1f;
+    readonly float COOLDOWN_POINT = 0.05f;
 
     //Quaternion standardOrientation = new Quaternion(0, 0, 0, 0);
 

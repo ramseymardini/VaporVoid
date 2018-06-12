@@ -23,7 +23,7 @@ public class OrbitingFirerer : MonoBehaviour
 
     protected float maxScaleX = 1.3f;
     protected float maxScaleY = 1.3f;
-    protected float timeToExpand = 0.7f;
+    protected float timeToExpand = 6.6f;
 
     protected float originalScaleX;
     protected float originalScaleY;
@@ -73,7 +73,7 @@ public class OrbitingFirerer : MonoBehaviour
     }
    
     IEnumerator IncreaseSizeAndStartRotation() {
-        float currentScaleIncrementerAmount = 0.02f;
+        float currentScaleIncrementerAmount = 0.01f;
         float timeToWait = timeToExpand * currentScaleIncrementerAmount;
 
         float angleToCenter = FindAngleToCenter();
@@ -116,7 +116,9 @@ public class OrbitingFirerer : MonoBehaviour
     }
 
     IEnumerator StartAttacking() {
-        yield return new WaitForSeconds(timeToExpand);
+        while (!finishedIncreasing) {
+            yield return new WaitForEndOfFrame();
+        }
         while (true) {
             if (!isLastOrb) {
                 AttackPlayer();

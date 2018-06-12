@@ -11,14 +11,13 @@ public class PointController : MonoBehaviour {
     float minY = -3.7f;
     float maxY = 3.7f;
 
-    bool valid;
-
 	// Use this for initialization
 	void Start () {
         Reposition();
 	}
 	
     public void Reposition() {
+        Debug.Log(gameObject.tag);
         Vector2 newPosition = player.transform.position;
 
         while (Mathf.Sqrt(Mathf.Pow(newPosition.x - player.transform.position.x, 2) + Mathf.Pow(newPosition.y - player.transform.position.y, 2)) < 4.5f) {

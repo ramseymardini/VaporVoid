@@ -9,7 +9,7 @@ public class MusicManager : MonoBehaviour {
 
     float timeToPhaseTitle = 0f;
     float timeToPhaseFirstLevel = 0.75f;
-    float timeToPhaseFirstBoss = 3f;
+    float timeToPhaseFirstBoss = 1.5f;
 
     AudioSource playingAudio;
     AudioSource queuedAudio;
@@ -25,7 +25,7 @@ public class MusicManager : MonoBehaviour {
 	}
 
     public void PlayTitle() {
-        if (playingAudio != null && playingAudio.name.Equals("Title Screen Music")) {
+        if (playingAudio != null && playingAudio.clip.name.Equals("Title Screen Music")) {
             return;
         }
         queuedAudio = titleMusic;
@@ -43,7 +43,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void PlayFirstBoss() {
-        if (playingAudio != null && playingAudio.name.Equals("Stage 1 Boss Music")) {
+        if (playingAudio != null && playingAudio.clip.name.Equals("Stage 1 Boss Music")) {
             return;
         }
         queuedAudio = firstBossMusic;

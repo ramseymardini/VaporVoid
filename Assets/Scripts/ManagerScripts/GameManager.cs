@@ -49,6 +49,8 @@ public class GameManager : MonoBehaviour
     float gapTimeStairMoves;
     float gapTimeDiagonalMoves;
 
+    int numBallsRandomAttacks;
+
     float startingAccelVertCircles = 7.2f;
     float startingAccelHorCircles = 7.2f;
     float startingAccelDefaultCircles = 7.2f;
@@ -433,9 +435,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Rain Random Down");
         //float gapTime = 0.11f - Mathf.Log(timeSinceGameStarted) * 0.015f;
 
-        int numBalls = (int) Mathf.Floor(2.5f / gapTimeRainMoves);
-
-        for (int i = 0; i < numBalls; i++) {
+        for (int i = 0; i < numBallsRandomAttacks; i++) {
             GameObject verticalFaller_1 = Instantiate(circleEnemy, new Vector2(UnityEngine.Random.Range(farLeftCircleDropPosX, farRightCircleDropPosX), vertDropPos), defaultOrientation);
             verticalFaller_1.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, -currAccelVertCircles));
             yield return new WaitForSeconds(gapTimeRainMoves);
@@ -449,9 +449,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Bubble Up");
         //float gapTime = 0.11f - Mathf.Log(timeSinceGameStarted) * 0.015f;
 
-        int numBalls = (int) Mathf.Floor(2.5f / gapTimeRainMoves);
-
-        for (int i = 0; i < numBalls; i++) {
+        for (int i = 0; i < numBallsRandomAttacks; i++) {
             GameObject verticalRiser_1 = Instantiate(circleEnemy, new Vector2(UnityEngine.Random.Range(farLeftCircleDropPosX, farRightCircleDropPosX), -vertDropPos), defaultOrientation);
             verticalRiser_1.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, currAccelVertCircles));
             yield return new WaitForSeconds(gapTimeRainMoves);
@@ -465,9 +463,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Rain Random Left");
         //float gapTime = 0.11f - Mathf.Log(timeSinceGameStarted) * 0.015f;
 
-        int numBalls = (int) Mathf.Floor(2.5f / gapTimeRainMoves);
-
-        for (int i = 0; i < numBalls; i++) {
+        for (int i = 0; i < numBallsRandomAttacks; i++) {
             GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, UnityEngine.Random.Range(minHorCircleDropPosY, maxHorCircleDropPosY)), defaultOrientation);
             circleLeftToRight.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(currAccelHorCircles, 0));
             yield return new WaitForSeconds(gapTimeRainMoves);
@@ -481,9 +477,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Rain Random Right");
         //float gapTime = 0.11f - Mathf.Log(timeSinceGameStarted) * 0.015f;
 
-        int numBalls = (int) Mathf.Floor(2.5f / gapTimeRainMoves);
-
-        for (int i = 0; i < numBalls; i++) {
+        for (int i = 0; i < numBallsRandomAttacks; i++) {
             GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, UnityEngine.Random.Range(minHorCircleDropPosY, maxHorCircleDropPosY)), defaultOrientation);
             circleRightToLeft.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(-currAccelHorCircles, 0));
             yield return new WaitForSeconds(gapTimeRainMoves);
@@ -638,16 +632,22 @@ public class GameManager : MonoBehaviour
     }
 
     public void IncrementLevel() {
+        pointController.SetIsWorthPoint(!pointController.GetIsWorthPoint());
+        StartCoroutine(IncrementLevelHelper());
+    }
+
+    IEnumerator IncrementLevelHelper() {
+        while (inMove) {
+            yield return new WaitForEndOfFrame();
+        }
+
         level++;
 
         if (level == 2) {
             musicManagerScript.PlayFirstBoss();
         }
 
-        currAccelVertCircles = (level * 0.2f) + startingAccelVertCircles;
-        currAccelHorCircles = (level * 0.2f) + startingAccelHorCircles;
-        currAccelDefaultCircles = (level * 0.2f) + startingAccelDefaultCircles;
-        pointController.SetIsWorthPoint(!pointController.GetIsWorthPoint());
+        UpdateDifficulty();
     }
 
     public bool IsGameEnded() {
@@ -655,10 +655,16 @@ public class GameManager : MonoBehaviour
     }
 
     void UpdateDifficulty() {
+        currAccelVertCircles = (level * 0.2f) + startingAccelVertCircles;
+        currAccelHorCircles = (level * 0.2f) + startingAccelHorCircles;
+        currAccelDefaultCircles = (level * 0.2f) + startingAccelDefaultCircles;
+
         gapTimePatternMoves = 0.1f - level * 0.002f;;
-        gapTimeRainMoves = 0.11f - level * 0.005f;;
+        gapTimeRainMoves = 0.095f - level * 0.005f;;
         gapTimeStairMoves = 0.1f - level * 0.002f;;
         gapTimeDiagonalMoves = 0.28f - level * 0.0025f;
+
+        numBallsRandomAttacks = (int) Mathf.Floor(3f / gapTimeRainMoves);
     }
 
     public float getFarRightCircleDropPosX() {
