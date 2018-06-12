@@ -13,6 +13,8 @@ TagManager:
   - Wall
   - BossEnemy
   - ShieldPoint
+  - LevelManager
+  - MusicManager
   layers:
   - Default
   - TransparentFX

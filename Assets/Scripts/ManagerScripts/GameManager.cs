@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
 
     public GameObject levelDataManager;
 
+    GameObject musicManager;
+    MusicManager musicManagerScript;
+
     PointController pointController;
 
     bool inMove;
@@ -79,6 +82,9 @@ public class GameManager : MonoBehaviour
         inMove = false;
         gameEnded = false;
 
+        musicManager = GameObject.FindWithTag("MusicManager");
+        musicManagerScript = musicManager.GetComponent<MusicManager>();
+
         currAccelVertCircles = startingAccelVertCircles;
         currAccelHorCircles = startingAccelHorCircles;
         currAccelDefaultCircles = startingAccelDefaultCircles;
@@ -97,6 +103,7 @@ public class GameManager : MonoBehaviour
         wallCoordinateManager = levelDataManager.GetComponent<WallCoordinateManager>();
 
         SetScreenCoordinates();
+        musicManagerScript.PlayFirstLevel();
         /*Debug.Log(lowerLeftToTopRightDropAngle);
         Debug.Log("Bottom left: " + lowerLeftCornerDropPos);
         Debug.Log("Upper Right: " + UpperRightCornerDropPos);*/
@@ -172,7 +179,7 @@ public class GameManager : MonoBehaviour
         int move = UnityEngine.Random.Range(0, numMoves);
 
         //StartCoroutine(DiagonalCirclesRightToLeft());
-        return;
+        //return;
         switch (move) {
             case 0:
                 StartCoroutine(StairLeftToRight());
@@ -563,6 +570,14 @@ public class GameManager : MonoBehaviour
         inMove = false;
     }
 
+    IEnumerator floaterAllSidesAttack() {
+        yield return new WaitForEndOfFrame();
+    }
+
+    IEnumerator floaterFromTopAttack() {
+        yield return new WaitForEndOfFrame();
+    }
+
     /*IEnumerator HastagMove() {
         
     }*/
@@ -624,6 +639,11 @@ public class GameManager : MonoBehaviour
 
     public void IncrementLevel() {
         level++;
+
+        if (level == 2) {
+            musicManagerScript.PlayFirstBoss();
+        }
+
         currAccelVertCircles = (level * 0.2f) + startingAccelVertCircles;
         currAccelHorCircles = (level * 0.2f) + startingAccelHorCircles;
         currAccelDefaultCircles = (level * 0.2f) + startingAccelDefaultCircles;

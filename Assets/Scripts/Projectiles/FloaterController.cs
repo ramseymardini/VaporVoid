@@ -13,10 +13,10 @@ public class FloaterController : Projectile {
 
     protected float correctingForce = 5f;
 
-    readonly float DEFAULT_ACCELERATION_X = 0f;
-    readonly float DEFAULT_ACCELERATION_Y = -10f;
+    readonly float DEFAULT_ACCELERATION_X = -10;
+    readonly float DEFAULT_ACCELERATION_Y = 0;
 
-    protected Vector2 velocityBeforePerch = new Vector2(0, -10);
+    protected Vector2 velocityBeforePerch;
     protected float distanceBeforePerch = 2.5f;
     protected Vector2 accelerationToSlowBeforePerch = new Vector2(5, 5);
     protected float distanceToStartSlowing;
@@ -24,21 +24,27 @@ public class FloaterController : Projectile {
 
     protected Vector2 originalPos;
 
-    protected float originalAccelX;
-    protected float originalAccelY;
+    protected float accelDive;
 
     protected bool accelSet;
     protected bool isEnabled;
 
     protected GameObject player;
 
+    bool isLeftToRight;
+    bool isRightToLeft;
+    bool isTopToBottom;
+    bool isBottomToTop;
+
     protected override void Start() {
         base.Start();
-        /*accelerationX = DEFAULT_ACCELERATION_X;
-        accelerationY = DEFAULT_ACCELERATION_Y;*/
+        //accelerationX = DEFAULT_ACCELERATION_X;
+        //accelerationY = DEFAULT_ACCELERATION_Y;
         player = GameObject.FindGameObjectWithTag("Player");
         UpdateDistanceToStartSlowing();
         SetPositionAsOriginalPosition();
+        velocityBeforePerch = new Vector2(-2.5f, 0);
+        SetDirection();
     }
    
     protected override void FixedUpdate() {
@@ -52,22 +58,9 @@ public class FloaterController : Projectile {
             return;
         }
         base.FixedUpdate();
-        float newAccelX = originalAccelX + correctingForce * Mathf.Cos(FindAngleToPlayer());
-        float newAccelY = originalAccelY + correctingForce * Mathf.Sin(FindAngleToPlayer());
-        SetAcceleration(new Vector2(newAccelX, newAccelY));
-    }
-
-    public override void SetAcceleration(Vector2 accel)
-    {
-        base.SetAcceleration(accel);
-
-        if (!accelSet)
-        {
-            originalAccelX = accel.x;
-            originalAccelY = accel.y;
-        }
-
-        accelSet = true;
+        float accelX = correctingForce * Mathf.Cos(FindAngleToPlayer());
+        float accelY = correctingForce * Mathf.Sin(FindAngleToPlayer());
+        SetAcceleration(new Vector2(accelX, accelY));
     }
 
     protected float FindDistanceTraveled() {
@@ -154,6 +147,9 @@ public class FloaterController : Projectile {
     }
 
     public void MaintainVelocityBeforePerch() {
+        //Debug.Log(rb.name);
+        //Debug.Log(velocityBeforePerch);
+        rb = GetComponent<Rigidbody2D>();
         rb.velocity = velocityBeforePerch;
     }
 
@@ -175,5 +171,14 @@ public class FloaterController : Projectile {
     {
         hasPerched = false;
         isSlowing = false;
+    }
+
+    protected void SetDirection() {
+        float angleToPlayer = FindAngleToPlayer();
+        if (angleToPlayer < Mathf.PI / 4 && angleToPlayer > Mathf.PI) {
+            isLeftToRight = true;
+        } else if (angleToPlayer < Mathf.PI * 3 / 4 && angleToPlayer > Mathf.PI / 4) {
+            isBottomToTop = true;
+        }
     }
 }

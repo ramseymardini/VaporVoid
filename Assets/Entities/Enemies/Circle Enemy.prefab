@@ -89,10 +89,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4e768746079d343991b9b87d898dff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blue: {fileID: 21300036, guid: 88fcb2b70a31e264498908d37fed251f, type: 3}
-  yellow: {fileID: 21300038, guid: 88fcb2b70a31e264498908d37fed251f, type: 3}
-  green: {fileID: 21300044, guid: 88fcb2b70a31e264498908d37fed251f, type: 3}
-  red: {fileID: 21300046, guid: 88fcb2b70a31e264498908d37fed251f, type: 3}
+  blue: {fileID: 21300004, guid: 9c426bb50197e481abc0727540da4e58, type: 3}
+  yellow: {fileID: 21300006, guid: 9c426bb50197e481abc0727540da4e58, type: 3}
+  green: {fileID: 21300008, guid: 9c426bb50197e481abc0727540da4e58, type: 3}
+  red: {fileID: 21300002, guid: 9c426bb50197e481abc0727540da4e58, type: 3}
 --- !u!212 &212993785908952170
 SpriteRenderer:
   m_ObjectHideFlags: 1

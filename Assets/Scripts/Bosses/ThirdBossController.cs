@@ -25,10 +25,9 @@ public class ThirdBossController : FloaterController {
     Vector2 wingScale;
     float wingAngle;
 
-    float angelAccel = 10;
-    float angelCorrectingForce = 10;
+    float angelCorrectingForce = 100;
     float angelSpeedUntilStop = 1.75f;
-    float distanceBeforePerchAngels = 1.5f;
+    float distanceBeforePerchAngels = 4f;
 
     float bossCorrectingForce = 40;
     //float speedUntilStop = 1.1f;
@@ -57,7 +56,6 @@ public class ThirdBossController : FloaterController {
 
         SetDistanceBeforePerch(2);
         //SetDirection("TopToBottom");
-        SetAcceleration(new Vector2(0, diveBombAccel));
         SetVelocityBeforePerch(new Vector2(0, -1));
         SetAccelerationBeforePerch(new Vector2(0, 1));
         SetCorrectingForce(bossCorrectingForce);
@@ -77,6 +75,9 @@ public class ThirdBossController : FloaterController {
     {
         if (!hasPerched) {
             base.FixedUpdate();
+        }
+        else {
+            GoBackAndForth();
         }
 
     }
@@ -114,8 +115,18 @@ public class ThirdBossController : FloaterController {
     }
 
     IEnumerator HorizontalAssault() {
-        for (float pos = gmScript.getMaxHorCircleDropPosY(); pos >= 0; pos -= 1)
+        Debug.Log("Horizontal Assault!");
+
+        /*GameObject angelTopRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), gmScript.getMaxHorCircleDropPosY()), standardOrientation);
+        FloaterController angelTopRightController = angelTopRight.GetComponent<FloaterController>();
+        angelTopRightController.SetDistanceBeforePerch(distanceBeforePerchAngels);
+        angelTopRightController.SetCorrectingForce(distanceBeforePerchAngels);
+        angelTopRightController.SetAcceleration(new Vector2(-1 * angelAccel, 0));
+        angelTopRightController.SetVelocityBeforePerch(new Vector2(-1 * angelSpeedUntilStop, 0));*/
+
+        /* (float pos = gmScript.getMaxHorCircleDropPosY(); pos >= 0; pos -= 1)
         {
+            //Debug.Log(pos);
             GameObject angelTopRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), pos), standardOrientation);
             GameObject angelTopLeft = Instantiate(angel, new Vector2(-1 * gmScript.getHorDropPos(), pos), standardOrientation);
             GameObject angelBotRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), -1 * pos), standardOrientation);
@@ -145,10 +156,10 @@ public class ThirdBossController : FloaterController {
             angelTopLeftController.SetVelocityBeforePerch(new Vector2(angelSpeedUntilStop, 0));
             angelBotRightController.SetVelocityBeforePerch(new Vector2(-1 * angelSpeedUntilStop, 0));
             angelBotLeftController.SetVelocityBeforePerch(new Vector2(angelSpeedUntilStop, 0));
-
-        }
-
-        yield return new WaitForEndOfFrame();
+            //yield return new WaitForFixedUpdate();
+        }*/
+        Debug.Log("Done!");
+        yield return new WaitForSeconds(1.0f);
         inMove = false;
     }
 
@@ -163,7 +174,11 @@ public class ThirdBossController : FloaterController {
     }
 
     IEnumerator RainDownAtOnce() {
-        yield return new WaitForEndOfFrame();
+        for (float i = 1; i <= wingPosition.x + wingScale.x / 2; i++) {
+            //angelLeft
+        }
+
+        yield return new WaitForSeconds(0.7f);
         inMove = false;
     }
 
@@ -220,6 +235,10 @@ public class ThirdBossController : FloaterController {
     void SetGameManager (GameObject newGameManager) {
         gameManager = newGameManager;
         gmScript = gameManager.GetComponent<GameManager>();
+    }
+
+    void GoBackAndForth() {
+        return;
     }
 
 
