@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BounceAndExplodeController : Projectile {
+
+    SoundManager soundManager;
     
     float sizeToReachInExplosion = 1.6f;
 
@@ -24,6 +26,7 @@ public class BounceAndExplodeController : Projectile {
         base.Start();
         SetDirection("TopToBottom");
         SetAcceleration(new Vector2(2, -defaultAccel));
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 	}
 
     protected override void FixedUpdate() {
@@ -68,6 +71,7 @@ public class BounceAndExplodeController : Projectile {
     }
 
     IEnumerator Explode() {
+        soundManager.PlayExplosionNoise();
         hasExploded = true;
         transform.localScale = new Vector2(sizeToReachInExplosion, sizeToReachInExplosion);
         gameObject.tag = "ExplosionEnemy";

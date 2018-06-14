@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour {
     public Sprite threePointsShield;
     public Sprite fourPointsShield;
 
-    readonly float MAX_VELOCITY = 1.0f;
+    readonly float MAX_VELOCITY = 0.9f;
     readonly float COOLDOWN_POINT = 0.05f;
 
     //Quaternion standardOrientation = new Quaternion(0, 0, 0, 0);
@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour {
     Rigidbody2D rb;
     public GameObject gm;
     GameObject scoreboard;
+
+    SoundManager soundManagerScript;
 
     bool gameEnded;
     int playerSpeed;
@@ -38,6 +40,7 @@ public class PlayerMovement : MonoBehaviour {
         //gm = GameObject.FindGameObjectWithTag("GameController");
         playerSpeed = PlayerPrefs.GetInt("Mouse Sensitivity");
         scoreboard = GameObject.FindGameObjectWithTag("Score");
+        soundManagerScript = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         gameEnded = false;
         shieldCounter = 0;
         hasShield = false;
@@ -197,7 +200,12 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     void SetGameEnded() {
+        Die();
         gameEnded = true;
+    }
+
+    void Die() {
+        soundManagerScript.PlayPlayerDeathNoise();
         gameObject.SetActive(false);
     }
 

@@ -15,6 +15,7 @@ TagManager:
   - ShieldPoint
   - LevelManager
   - MusicManager
+  - SoundManager
   layers:
   - Default
   - TransparentFX

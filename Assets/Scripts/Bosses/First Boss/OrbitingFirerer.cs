@@ -23,7 +23,7 @@ public class OrbitingFirerer : MonoBehaviour
 
     protected float maxScaleX = 1.3f;
     protected float maxScaleY = 1.3f;
-    protected float timeToExpand = 6.6f;
+    protected float timeToExpand = 6.5f;
 
     protected float originalScaleX;
     protected float originalScaleY;
@@ -76,9 +76,6 @@ public class OrbitingFirerer : MonoBehaviour
         float currentScaleIncrementerAmount = 0.01f;
         float timeToWait = timeToExpand * currentScaleIncrementerAmount;
 
-        float angleToCenter = FindAngleToCenter();
-        float anglePerpToCenter = angleToCenter - Mathf.PI / 2;
-
         float currentScale = 0; //If currentScale = 0 , circle at original scale. If currentScale = 1 then the circle will be at maxScale
 
         while (currentScale < 1) {
@@ -87,7 +84,7 @@ public class OrbitingFirerer : MonoBehaviour
             yield return new WaitForSeconds(timeToWait);
         }
 
-        rb.velocity = new Vector2(speedOfRotation * Mathf.Cos(anglePerpToCenter), speedOfRotation * Mathf.Sin(anglePerpToCenter));
+        GoCounterClockwise();
 
         finishedIncreasing = true;
     }
@@ -136,6 +133,20 @@ public class OrbitingFirerer : MonoBehaviour
         ProjectileFirstBoss scriptOfProjectile = firedProjectile.GetComponent<ProjectileFirstBoss>();
         scriptOfProjectile.SetParent(gameObject);
         scriptOfProjectile.SetAcceleration(new Vector2(currAccelProjectile * Mathf.Cos(angleBetweenPlayerAndCircle), currAccelProjectile * Mathf.Sin(angleBetweenPlayerAndCircle)));
+    }
+
+    public void GoCounterClockwise() {
+        float angleToCenter = FindAngleToCenter();
+        float anglePerpToCenter = angleToCenter - Mathf.PI / 2;
+
+        rb.velocity = new Vector2(speedOfRotation * Mathf.Cos(anglePerpToCenter), speedOfRotation * Mathf.Sin(anglePerpToCenter));
+    }
+
+    public void GoClockwise(){
+        float angleToCenter = FindAngleToCenter();
+        float anglePerpToCenter = angleToCenter - Mathf.PI / 2;
+
+        rb.velocity = new Vector2(speedOfRotation * -1 * Mathf.Cos(anglePerpToCenter), speedOfRotation * Mathf.Sin(anglePerpToCenter));
     }
 
     protected IEnumerator TakeDamage(float damage) {

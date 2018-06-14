@@ -105,6 +105,7 @@ MonoBehaviour:
   twoPointsShield: {fileID: 21300002, guid: 25227c78581958c4f9169e501bbf774c, type: 3}
   threePointsShield: {fileID: 21300004, guid: 25227c78581958c4f9169e501bbf774c, type: 3}
   fourPointsShield: {fileID: 21300006, guid: 25227c78581958c4f9169e501bbf774c, type: 3}
+  gm: {fileID: 0}
 --- !u!212 &212032708733951752
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour {
     
     public GameObject musicManager;
+    public GameObject soundManager;
 
     MusicManager musicManagerScript;
 
@@ -20,18 +21,23 @@ public class LevelManager : MonoBehaviour {
             musicManagerScript.PlayTitle();
         }
 
+        if (soundManager == null) {
+            soundManager = GameObject.FindGameObjectWithTag("SoundManager");
+        }
+
     }
 
     public void LoadGame() {
         DontDestroyOnLoad(musicManager);
+        DontDestroyOnLoad(soundManager);
         //musicManagerScript.PlayFirstLevel();
         UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
 
     }
 
     public void LoadMenu() {
-        DontDestroyOnLoad(musicManager);
-        musicManagerScript.PlayTitle();
+        Destroy(musicManager);
+        //DontDestroyOnLoad(musicManager);
         UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
     }
 

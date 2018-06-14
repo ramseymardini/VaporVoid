@@ -56,8 +56,9 @@ public class ThirdBossController : FloaterController {
 
         SetDistanceBeforePerch(2);
         //SetDirection("TopToBottom");
-        SetVelocityBeforePerch(new Vector2(0, -1));
-        SetAccelerationBeforePerch(new Vector2(0, 1));
+        //SetVelocityBeforePerch(new Vector2(0, -1));
+        //SetAccelerationBeforePerch(new Vector2(0, 1));
+        SetAccelerationBeforePerch(1);
         SetCorrectingForce(bossCorrectingForce);
 	}
 

@@ -51,6 +51,7 @@ public class FirstBossController : MonoBehaviour {
             {
                 orb.GetComponent<OrbitingFirerer>().SetAsFinalOrb();
             }
+            orbs[0].GetComponent<OrbitingFirerer>().GoClockwise();
             //orbs[0].GetComponent<OrbitingFirerer>().SetAsFinalOrb();
             return;
         }

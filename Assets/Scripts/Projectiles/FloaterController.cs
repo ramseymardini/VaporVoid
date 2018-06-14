@@ -7,26 +7,23 @@ public class FloaterController : Projectile {
     protected bool hasPerched;
     protected bool isSlowing;
 
-    /*bool isVertical;
-    bool isTopToBottom;
-    bool isLeftToRight;*/
-
     protected float correctingForce = 5f;
 
-    readonly float DEFAULT_ACCELERATION_X = -10;
-    readonly float DEFAULT_ACCELERATION_Y = 0;
-
+    protected float speedBeforePerch;
     protected Vector2 velocityBeforePerch;
+
+    protected float accelerationToSlowBeforePerch;
     protected float distanceBeforePerch = 2.5f;
-    protected Vector2 accelerationToSlowBeforePerch = new Vector2(5, 5);
     protected float distanceToStartSlowing;
     protected float timeToStayPerched = 0.5f;
+
+    protected float minSpeed = 1.5f;
 
     protected Vector2 originalPos;
 
     protected float accelDive;
 
-    protected bool accelSet;
+    //protected bool accelSet;
     protected bool isEnabled;
 
     protected GameObject player;
@@ -36,6 +33,8 @@ public class FloaterController : Projectile {
     bool isTopToBottom;
     bool isBottomToTop;
 
+    bool canReverse;
+
     protected override void Start() {
         base.Start();
         //accelerationX = DEFAULT_ACCELERATION_X;
@@ -43,12 +42,18 @@ public class FloaterController : Projectile {
         player = GameObject.FindGameObjectWithTag("Player");
         UpdateDistanceToStartSlowing();
         SetPositionAsOriginalPosition();
-        velocityBeforePerch = new Vector2(-2.5f, 0);
+
+        speedBeforePerch = 2.5f;
+        accelerationToSlowBeforePerch = 5f;
+        distanceToStartSlowing = 1f;
+        //velocityBeforePerch = new Vector2(-2.5f, 0);
         SetDirection();
+        SetVelocityBeforePerch();
     }
    
     protected override void FixedUpdate() {
         if (!hasPerched) {
+            Debug.Log(gameObject.name + " " + distanceToStartSlowing);
             if (!isSlowing && FindDistanceTraveled() > distanceToStartSlowing) {
                 StartCoroutine(StartSlowing());
             } else if (!isSlowing){
@@ -60,6 +65,9 @@ public class FloaterController : Projectile {
         base.FixedUpdate();
         float accelX = correctingForce * Mathf.Cos(FindAngleToPlayer());
         float accelY = correctingForce * Mathf.Sin(FindAngleToPlayer());
+        if (!canReverse) {
+            PreventReverse();
+        }
         SetAcceleration(new Vector2(accelX, accelY));
     }
 
@@ -80,19 +88,19 @@ public class FloaterController : Projectile {
 
         while (Mathf.Abs(rb.velocity.x) > 0.001f || Mathf.Abs(rb.velocity.y) > 0.001f) {
             if (rb.velocity.y > 0) {
-                rb.AddForce(new Vector2(0, -rb.mass * accelerationToSlowBeforePerch.y));
+                rb.AddForce(new Vector2(0, -rb.mass * accelerationToSlowBeforePerch));
             }
 
             if (rb.velocity.y < 0) {
-                rb.AddForce(new Vector2(0, rb.mass * accelerationToSlowBeforePerch.y));
+                rb.AddForce(new Vector2(0, rb.mass * accelerationToSlowBeforePerch));
             }
 
             if (rb.velocity.x > 0) {
-                rb.AddForce(new Vector2(-rb.mass * accelerationToSlowBeforePerch.x, 0));
+                rb.AddForce(new Vector2(-rb.mass * accelerationToSlowBeforePerch, 0));
             }
 
             if (rb.velocity.x < 0) {
-                rb.AddForce(new Vector2(rb.mass * accelerationToSlowBeforePerch.x, 0));
+                rb.AddForce(new Vector2(rb.mass * accelerationToSlowBeforePerch, 0));
             }
             yield return new WaitForFixedUpdate();
         }
@@ -113,8 +121,8 @@ public class FloaterController : Projectile {
         player = newPlayer;
     }
 
-    public void SetDirection(string direction) {
-        /*if (direction.Equals("TopToBottom")) {
+    /*public void SetDirection(string direction) {
+        if (direction.Equals("TopToBottom")) {
             isVertical = true;
             isTopToBottom = true;
         } else if (direction.Equals("BottomToTop")) {
@@ -126,8 +134,8 @@ public class FloaterController : Projectile {
         } else {
             isVertical = false;
             isLeftToRight = false;
-        }*/
-    }
+        }
+    }*/
 
     public void SetDistanceBeforePerch(float newDistance) {
         distanceBeforePerch = newDistance;
@@ -135,29 +143,51 @@ public class FloaterController : Projectile {
         UpdateDistanceToStartSlowing();
     }
 
-    public void SetVelocityBeforePerch(Vector2 vel) {
-        velocityBeforePerch = vel;
+    public void SetVelocityBeforePerch() {
+        if (isLeftToRight) {
+            velocityBeforePerch = new Vector2(speedBeforePerch, 0);
+        } else if (isBottomToTop) {
+            velocityBeforePerch = new Vector2(0, speedBeforePerch);
+        } else if (isRightToLeft) {
+            velocityBeforePerch = new Vector2(-1 * speedBeforePerch, 0);
+        } else if (isTopToBottom) {
+            velocityBeforePerch = new Vector2(0, -1 * speedBeforePerch);
+        }
+
         MaintainVelocityBeforePerch();
+
         UpdateDistanceToStartSlowing();
     }
 
-    public void SetAccelerationBeforePerch(Vector2 accel) {
+    /*public void SetVelocityBeforePerch(Vector2 vel) {
+        velocityBeforePerch = vel;
+        MaintainVelocityBeforePerch();
+        UpdateDistanceToStartSlowing();
+    }*/
+
+    public void SetAccelerationBeforePerch(float accel) {
         accelerationToSlowBeforePerch = accel;
         UpdateDistanceToStartSlowing();
     }
 
+    /*public void SetAccelerationBeforePerch(Vector2 accel) {
+        accelerationToSlowBeforePerch = accel;
+        UpdateDistanceToStartSlowing();
+    }*/
+
     public void MaintainVelocityBeforePerch() {
         //Debug.Log(rb.name);
         //Debug.Log(velocityBeforePerch);
-        rb = GetComponent<Rigidbody2D>();
+        //rb = GetComponent<Rigidbody2D>();
         rb.velocity = velocityBeforePerch;
     }
 
     protected void UpdateDistanceToStartSlowing() {
-        float timeToStop = Mathf.Max(velocityBeforePerch.x / accelerationToSlowBeforePerch.x, velocityBeforePerch.y / accelerationToSlowBeforePerch.y);
-        float distanceTraveledWhileSlowingX = Mathf.Abs(velocityBeforePerch.x * timeToStop) - Mathf.Abs(0.5f * accelerationToSlowBeforePerch.x * timeToStop * timeToStop);
-        float distanceTraveledWhileSlowingY = Mathf.Abs(velocityBeforePerch.y * timeToStop) - Mathf.Abs(0.5f * accelerationToSlowBeforePerch.y * timeToStop * timeToStop);
+        float timeToStop = Mathf.Max(velocityBeforePerch.x / accelerationToSlowBeforePerch, velocityBeforePerch.y / accelerationToSlowBeforePerch);
+        float distanceTraveledWhileSlowingX = Mathf.Abs(velocityBeforePerch.x * timeToStop) - Mathf.Abs(0.5f * accelerationToSlowBeforePerch * timeToStop * timeToStop);
+        float distanceTraveledWhileSlowingY = Mathf.Abs(velocityBeforePerch.y * timeToStop) - Mathf.Abs(0.5f * accelerationToSlowBeforePerch * timeToStop * timeToStop);
         float distanceTraveledWhileSlowing = Mathf.Sqrt(Mathf.Pow(distanceTraveledWhileSlowingX, 2) + Mathf.Pow(distanceTraveledWhileSlowingY, 2));
+
         distanceToStartSlowing = Mathf.Max(0, distanceBeforePerch - distanceTraveledWhileSlowing);
         //Debug.Log("Distance to start slowing: " + distanceToStartSlowing);
     }
@@ -175,10 +205,31 @@ public class FloaterController : Projectile {
 
     protected void SetDirection() {
         float angleToPlayer = FindAngleToPlayer();
-        if (angleToPlayer < Mathf.PI / 4 && angleToPlayer > Mathf.PI) {
+        if (angleToPlayer <= Mathf.PI / 4 && angleToPlayer > -1 * Mathf.PI / 4) {
             isLeftToRight = true;
-        } else if (angleToPlayer < Mathf.PI * 3 / 4 && angleToPlayer > Mathf.PI / 4) {
+        } else if (angleToPlayer <= Mathf.PI * 3 / 4 && angleToPlayer > Mathf.PI / 4) {
             isBottomToTop = true;
+        } else if (angleToPlayer <= -1 * Mathf.PI * 3 / 4 && angleToPlayer > Mathf.PI * 3 / 4) {
+            isRightToLeft = true;
+        } else {
+            isTopToBottom = true;
+        }
+    }
+
+    public void SetCanReverse(bool canReverse) {
+        this.canReverse = canReverse;
+    }
+
+    //It might be better to do this by keeping track of a maximum speed reached and prevent the ball from ever slowing down. ex: if leftToRight velocity will always have the max x velocity it reached.
+    protected void PreventReverse() {
+        if (isLeftToRight) {
+            SetVelocity(new Vector2(Mathf.Max(minSpeed, rb.velocity.x), rb.velocity.y));
+        } else if (isBottomToTop) {
+            SetVelocity(new Vector2(rb.velocity.x, Mathf.Max(minSpeed, rb.velocity.y)));
+        } else if (isRightToLeft) {
+            SetVelocity(new Vector2(Mathf.Min(-1 * minSpeed, rb.velocity.x), rb.velocity.y));
+        } else if (isTopToBottom) {
+            SetVelocity(new Vector2(rb.velocity.x, Mathf.Min(-1 * minSpeed, rb.velocity.y)));
         }
     }
 }

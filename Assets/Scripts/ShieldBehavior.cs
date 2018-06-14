@@ -5,6 +5,8 @@ using UnityEngine;
 public class ShieldBehavior : MonoBehaviour {
 
     GameObject parent;
+
+    SoundManager soundManagerScript;
     
     float originalScaleX;
     float originalScaleY;
@@ -18,6 +20,7 @@ public class ShieldBehavior : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         //GetComponent<SpriteRenderer>().color = new Color(0, 0, 0);
+        soundManagerScript = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         originalScaleX = transform.localScale.x;
         originalScaleY = transform.localScale.y;
         StartCoroutine(ExpandToFullScale());
@@ -28,6 +31,7 @@ public class ShieldBehavior : MonoBehaviour {
     }
 
     IEnumerator ExpandToFullScale() {
+        soundManagerScript.PlayShieldGainNoise();
         float timeToExpand = 0.7f;
         float currentScaleIncrementerAmount = 0.02f;
         float timeToWait = timeToExpand * currentScaleIncrementerAmount;

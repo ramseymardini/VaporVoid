@@ -181,7 +181,7 @@ public class GameManager : MonoBehaviour
         int move = UnityEngine.Random.Range(0, numMoves);
 
         //StartCoroutine(DiagonalCirclesRightToLeft());
-        //return;
+        return;
         switch (move) {
             case 0:
                 StartCoroutine(StairLeftToRight());

@@ -33,11 +33,10 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void PlayFirstLevel() {
-        if (playingAudio != null && playingAudio.clip.name.Equals("Stage 1 Music"))
-        {
+        if (playingAudio != null && playingAudio.clip.name.Equals("Stage 1 Music")) {
             return;
         }
-        Debug.Log(playingAudio.clip.name);
+        //Debug.Log(playingAudio.clip.name);
         queuedAudio = firstLevelMusic;
         StartCoroutine(phaseOutTracks(timeToPhaseFirstLevel));
     }
