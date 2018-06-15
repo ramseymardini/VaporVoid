@@ -201,8 +201,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ffd91d5148bc46fb826802d10676b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  angel: {fileID: 0}
+  angel: {fileID: 1602016095710542, guid: 623df8e1d13f948b8b6c2a07da5c7b1d, type: 2}
   gameManager: {fileID: 0}
+  levelDataManager: {fileID: 0}
 --- !u!212 &212487043337383082
 SpriteRenderer:
   m_ObjectHideFlags: 1

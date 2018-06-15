@@ -31,14 +31,12 @@ public class ThirdBossController : FloaterController {
 
     float bossCorrectingForce = 40;
     //float speedUntilStop = 1.1f;
-    float diveBombAccel = -5;
 
     Quaternion standardOrientation = new Quaternion(0, 0, 0, 0);
 
 	// Use this for initialization
-	protected override void Start () {
+	protected override void Start () { 
         base.Start();
-
         SetHealth(30);
         damageTakenPerProjectile = 1;
         leftWing = transform.GetChild(0).gameObject;
@@ -55,10 +53,11 @@ public class ThirdBossController : FloaterController {
         //SetPlayer(GameObject.FindGameObjectWithTag("Player"));
 
         SetDistanceBeforePerch(2);
+        SetAccelDive(6f);
         //SetDirection("TopToBottom");
         //SetVelocityBeforePerch(new Vector2(0, -1));
         //SetAccelerationBeforePerch(new Vector2(0, 1));
-        SetAccelerationBeforePerch(1);
+        SetAccelerationBeforePerch(5);
         SetCorrectingForce(bossCorrectingForce);
 	}
 
@@ -116,7 +115,7 @@ public class ThirdBossController : FloaterController {
     }
 
     IEnumerator HorizontalAssault() {
-        Debug.Log("Horizontal Assault!");
+        //Debug.Log("Horizontal Assault!");
 
         /*GameObject angelTopRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), gmScript.getMaxHorCircleDropPosY()), standardOrientation);
         FloaterController angelTopRightController = angelTopRight.GetComponent<FloaterController>();
@@ -125,41 +124,16 @@ public class ThirdBossController : FloaterController {
         angelTopRightController.SetAcceleration(new Vector2(-1 * angelAccel, 0));
         angelTopRightController.SetVelocityBeforePerch(new Vector2(-1 * angelSpeedUntilStop, 0));*/
 
-        /* (float pos = gmScript.getMaxHorCircleDropPosY(); pos >= 0; pos -= 1)
+        for (float pos = gmScript.getMaxHorCircleDropPosY(); pos >= 0; pos -= 1)
         {
             //Debug.Log(pos);
             GameObject angelTopRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), pos), standardOrientation);
             GameObject angelTopLeft = Instantiate(angel, new Vector2(-1 * gmScript.getHorDropPos(), pos), standardOrientation);
             GameObject angelBotRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), -1 * pos), standardOrientation);
             GameObject angelBotLeft = Instantiate(angel, new Vector2(-1 * gmScript.getHorDropPos(), pos), standardOrientation);
-
-            FloaterController angelTopRightController = angelTopRight.GetComponent<FloaterController>();
-            FloaterController angelTopLeftController = angelTopLeft.GetComponent<FloaterController>();
-            FloaterController angelBotRightController = angelBotRight.GetComponent<FloaterController>();
-            FloaterController angelBotLeftController = angelBotLeft.GetComponent<FloaterController>();
-
-            angelTopRightController.SetDistanceBeforePerch(distanceBeforePerchAngels);
-            angelTopLeftController.SetDistanceBeforePerch(distanceBeforePerchAngels);
-            angelBotRightController.SetDistanceBeforePerch(distanceBeforePerchAngels);
-            angelBotLeftController.SetDistanceBeforePerch(distanceBeforePerchAngels);
-
-            angelTopRightController.SetCorrectingForce(distanceBeforePerchAngels);
-            angelTopLeftController.SetCorrectingForce(distanceBeforePerchAngels);
-            angelBotRightController.SetCorrectingForce(distanceBeforePerchAngels);
-            angelBotLeftController.SetCorrectingForce(distanceBeforePerchAngels);
-
-            angelTopRightController.SetAcceleration(new Vector2(-1 * angelAccel, 0));
-            angelTopLeftController.SetAcceleration(new Vector2(angelAccel, 0));
-            angelBotRightController.SetAcceleration(new Vector2(-1 * angelAccel, 0));
-            angelBotLeftController.SetAcceleration(new Vector2(angelAccel, 0));
-
-            angelTopRightController.SetVelocityBeforePerch(new Vector2(-1 * angelSpeedUntilStop, 0));
-            angelTopLeftController.SetVelocityBeforePerch(new Vector2(angelSpeedUntilStop, 0));
-            angelBotRightController.SetVelocityBeforePerch(new Vector2(-1 * angelSpeedUntilStop, 0));
-            angelBotLeftController.SetVelocityBeforePerch(new Vector2(angelSpeedUntilStop, 0));
             //yield return new WaitForFixedUpdate();
-        }*/
-        Debug.Log("Done!");
+        }
+        //Debug.Log("Done!");
         yield return new WaitForSeconds(1.0f);
         inMove = false;
     }

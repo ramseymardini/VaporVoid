@@ -13,11 +13,11 @@ public class FloaterController : Projectile {
     protected Vector2 velocityBeforePerch;
 
     protected float accelerationToSlowBeforePerch;
-    protected float distanceBeforePerch = 2.5f;
+    protected float distanceBeforePerch = 2f;
     protected float distanceToStartSlowing;
     protected float timeToStayPerched = 0.5f;
 
-    protected float minSpeed = 1.5f;
+    protected float minSpeed = 2f;
 
     protected Vector2 originalPos;
 
@@ -28,10 +28,10 @@ public class FloaterController : Projectile {
 
     protected GameObject player;
 
-    bool isLeftToRight;
-    bool isRightToLeft;
-    bool isTopToBottom;
-    bool isBottomToTop;
+    protected bool isLeftToRight;
+    protected bool isRightToLeft;
+    protected bool isTopToBottom;
+    protected bool isBottomToTop;
 
     bool canReverse;
 
@@ -43,25 +43,25 @@ public class FloaterController : Projectile {
         UpdateDistanceToStartSlowing();
         SetPositionAsOriginalPosition();
 
-        speedBeforePerch = 2.5f;
-        accelerationToSlowBeforePerch = 5f;
-        distanceToStartSlowing = 1f;
+        SetDistanceBeforePerch(2f);
+        distanceToStartSlowing = Mathf.Infinity;
+
         //velocityBeforePerch = new Vector2(-2.5f, 0);
         SetDirection();
-        SetVelocityBeforePerch();
+        SetSpeedBeforePerch(2f);
+        SetAccelerationBeforePerch(5f);
     }
    
     protected override void FixedUpdate() {
         if (!hasPerched) {
-            Debug.Log(gameObject.name + " " + distanceToStartSlowing);
-            if (!isSlowing && FindDistanceTraveled() > distanceToStartSlowing) {
+            if (!isSlowing && FindDistanceTraveled() >= distanceToStartSlowing) {
                 StartCoroutine(StartSlowing());
             } else if (!isSlowing){
                 MaintainVelocityBeforePerch();
             }
-            //Debug.Log(Mathf.Sqrt(Mathf.Pow(transform.position.x - originalPos.x, 2) + Mathf.Pow(transform.position.y - originalPos.y, 2)) + " " + distanceToStartSlowing);
             return;
         }
+
         base.FixedUpdate();
         float accelX = correctingForce * Mathf.Cos(FindAngleToPlayer());
         float accelY = correctingForce * Mathf.Sin(FindAngleToPlayer());
@@ -104,6 +104,8 @@ public class FloaterController : Projectile {
             }
             yield return new WaitForFixedUpdate();
         }
+
+        isSlowing = false;
 
         yield return new WaitForSeconds(timeToStayPerched);
 
@@ -165,9 +167,18 @@ public class FloaterController : Projectile {
         UpdateDistanceToStartSlowing();
     }*/
 
+    public void SetSpeedBeforePerch(float speed) {
+        speedBeforePerch = speed;
+        SetVelocityBeforePerch();
+    }
+
     public void SetAccelerationBeforePerch(float accel) {
         accelerationToSlowBeforePerch = accel;
         UpdateDistanceToStartSlowing();
+    }
+
+    protected void SetAccelDive(float accel) {
+        accelDive = accel;
     }
 
     /*public void SetAccelerationBeforePerch(Vector2 accel) {
@@ -183,12 +194,22 @@ public class FloaterController : Projectile {
     }
 
     protected void UpdateDistanceToStartSlowing() {
-        float timeToStop = Mathf.Max(velocityBeforePerch.x / accelerationToSlowBeforePerch, velocityBeforePerch.y / accelerationToSlowBeforePerch);
-        float distanceTraveledWhileSlowingX = Mathf.Abs(velocityBeforePerch.x * timeToStop) - Mathf.Abs(0.5f * accelerationToSlowBeforePerch * timeToStop * timeToStop);
-        float distanceTraveledWhileSlowingY = Mathf.Abs(velocityBeforePerch.y * timeToStop) - Mathf.Abs(0.5f * accelerationToSlowBeforePerch * timeToStop * timeToStop);
-        float distanceTraveledWhileSlowing = Mathf.Sqrt(Mathf.Pow(distanceTraveledWhileSlowingX, 2) + Mathf.Pow(distanceTraveledWhileSlowingY, 2));
+        /*float timeToStop = Mathf.Max(velocityBeforePerch.x / accelerationToSlowBeforePerch, velocityBeforePerch.y / accelerationToSlowBeforePerch);
+        Debug.Log(timeToStop);
+        float distanceTraveledWhileSlowingX = Mathf.Max(0, Mathf.Abs(velocityBeforePerch.x * timeToStop) - Mathf.Abs(0.5f * accelerationToSlowBeforePerch * timeToStop * timeToStop));
+        Debug.Log("Distance traveled while slowing x" + distanceTraveledWhileSlowingX);
+        float distanceTraveledWhileSlowingY = Mathf.Max(0, Mathf.Abs(velocityBeforePerch.y * timeToStop) - Mathf.Abs(0.5f * accelerationToSlowBeforePerch * timeToStop * timeToStop));
+        Debug.Log("Distance traveled while slowing y" + distanceTraveledWhileSlowingY);
+        float distanceTraveledWhileSlowing = Mathf.Sqrt(Mathf.Pow(distanceTraveledWhileSlowingX, 2) + Mathf.Pow(distanceTraveledWhileSlowingY, 2));*/
+
+        float timeToStop = speedBeforePerch / accelerationToSlowBeforePerch;
+        //Debug.Log("Time to stop" + rb.name + timeToStop);
+
+        float distanceTraveledWhileSlowing = (speedBeforePerch * timeToStop) - (0.5f * accelerationToSlowBeforePerch * Mathf.Pow(timeToStop, 2));
 
         distanceToStartSlowing = Mathf.Max(0, distanceBeforePerch - distanceTraveledWhileSlowing);
+        //Debug.Log(rb.name + " " + distanceToStartSlowing);
+        //Debug.Log(distanceToStartSlowing);
         //Debug.Log("Distance to start slowing: " + distanceToStartSlowing);
     }
 
@@ -214,6 +235,8 @@ public class FloaterController : Projectile {
         } else {
             isTopToBottom = true;
         }
+
+        UpdateDistanceToStartSlowing();
     }
 
     public void SetCanReverse(bool canReverse) {

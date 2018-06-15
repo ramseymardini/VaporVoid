@@ -32,7 +32,7 @@ public class Scoreboard : MonoBehaviour {
         currScore++;
         text.text = "" + currScore;
 
-        if (currScore == 15) {
+        if (currScore == 20) {
             gameManager.GetComponent<GameManager>().IncrementLevel();
         }
     }
