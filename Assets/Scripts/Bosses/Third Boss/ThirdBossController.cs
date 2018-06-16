@@ -111,26 +111,22 @@ public class ThirdBossController : FloaterController {
     {
         if (collision.gameObject.tag.Equals("ProjectileEnemy")) {
             StartCoroutine(TakeDamage(damageTakenPerProjectile));
+            Destroy(collision.gameObject);
         }
     }
 
     IEnumerator HorizontalAssault() {
         //Debug.Log("Horizontal Assault!");
 
-        /*GameObject angelTopRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), gmScript.getMaxHorCircleDropPosY()), standardOrientation);
-        FloaterController angelTopRightController = angelTopRight.GetComponent<FloaterController>();
-        angelTopRightController.SetDistanceBeforePerch(distanceBeforePerchAngels);
-        angelTopRightController.SetCorrectingForce(distanceBeforePerchAngels);
-        angelTopRightController.SetAcceleration(new Vector2(-1 * angelAccel, 0));
-        angelTopRightController.SetVelocityBeforePerch(new Vector2(-1 * angelSpeedUntilStop, 0));*/
-
-        for (float pos = gmScript.getMaxHorCircleDropPosY(); pos >= 0; pos -= 1)
+        /*GameObject angelTopRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), gmScript.getMaxHorCircleDropPosY() - 2), standardOrientation);
+        FloaterController angelTopRightController = angelTopRight.GetComponent<FloaterController>();*/
+        for (float pos = gmScript.getMaxHorCircleDropPosY() - 1; pos >= 0; pos -= 2)
         {
             //Debug.Log(pos);
             GameObject angelTopRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), pos), standardOrientation);
             GameObject angelTopLeft = Instantiate(angel, new Vector2(-1 * gmScript.getHorDropPos(), pos), standardOrientation);
             GameObject angelBotRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), -1 * pos), standardOrientation);
-            GameObject angelBotLeft = Instantiate(angel, new Vector2(-1 * gmScript.getHorDropPos(), pos), standardOrientation);
+            GameObject angelBotLeft = Instantiate(angel, new Vector2(-1 * gmScript.getHorDropPos(), -1 * pos), standardOrientation);
             //yield return new WaitForFixedUpdate();
         }
         //Debug.Log("Done!");

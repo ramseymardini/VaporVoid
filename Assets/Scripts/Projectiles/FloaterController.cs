@@ -17,7 +17,7 @@ public class FloaterController : Projectile {
     protected float distanceToStartSlowing;
     protected float timeToStayPerched = 0.5f;
 
-    protected float minSpeed = 2f;
+    protected float minSpeed = 1.5f;
 
     protected Vector2 originalPos;
 
@@ -226,11 +226,12 @@ public class FloaterController : Projectile {
 
     protected void SetDirection() {
         float angleToPlayer = FindAngleToPlayer();
+        //Debug.Log(gameObject.name + " " + angleToPlayer);
         if (angleToPlayer <= Mathf.PI / 4 && angleToPlayer > -1 * Mathf.PI / 4) {
             isLeftToRight = true;
         } else if (angleToPlayer <= Mathf.PI * 3 / 4 && angleToPlayer > Mathf.PI / 4) {
             isBottomToTop = true;
-        } else if (angleToPlayer <= -1 * Mathf.PI * 3 / 4 && angleToPlayer > Mathf.PI * 3 / 4) {
+        } else if (angleToPlayer <= -1 * Mathf.PI * 3 / 4 || angleToPlayer > Mathf.PI * 3 / 4) {
             isRightToLeft = true;
         } else {
             isTopToBottom = true;

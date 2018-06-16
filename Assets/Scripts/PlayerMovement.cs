@@ -15,8 +15,11 @@ public class PlayerMovement : MonoBehaviour {
 
     //Quaternion standardOrientation = new Quaternion(0, 0, 0, 0);
 
+    float playerScale;
+
     Rigidbody2D rb;
     public GameObject gm;
+    WallCoordinateManager wallCoordinateManager;
     GameObject scoreboard;
 
     SoundManager soundManagerScript;
@@ -36,10 +39,12 @@ public class PlayerMovement : MonoBehaviour {
     // Use this for initialization
     void Start() {
         SetOriginalPosition();
+        playerScale = transform.localScale.x;
         rb = GetComponent<Rigidbody2D>();
         //gm = GameObject.FindGameObjectWithTag("GameController");
         playerSpeed = PlayerPrefs.GetInt("Mouse Sensitivity");
         scoreboard = GameObject.FindGameObjectWithTag("Score");
+        wallCoordinateManager = GameObject.Find("Level Data Manager").GetComponent<WallCoordinateManager>();
         soundManagerScript = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         gameEnded = false;
         shieldCounter = 0;
@@ -58,6 +63,7 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         SetVelocity();
+        ConfirmInPlayerSpace();
 	}
 
     private void OnTriggerEnter2D (Collider2D collision) {
@@ -119,6 +125,15 @@ public class PlayerMovement : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.tag.Equals("Wall")) {
+            //Debug.Log(collision.gameObject.name);
+            if (collision.gameObject.name.Equals("Left Wall") || collision.gameObject.name.Equals("Right Wall")) {
+                rb.velocity = new Vector2(0, rb.velocity.y);
+            } else if (collision.gameObject.name.Equals("Top Wall") || collision.gameObject.name.Equals("Bottom Wall")) {
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+            }
+        }
+
         OnTriggerEnter2D(collision.collider);
     }
 
@@ -153,7 +168,6 @@ public class PlayerMovement : MonoBehaviour {
 
         //rb.velocity = new Vector2(touchX * playerSpeed, touchY * playerSpeed);
         rb.velocity = new Vector2(Mathf.Min(mouseX, MAX_VELOCITY) * playerSpeed, Mathf.Min(mouseY, MAX_VELOCITY) * playerSpeed);
-
     }
 
     IEnumerator WaitCooldownPoint() {
@@ -207,6 +221,24 @@ public class PlayerMovement : MonoBehaviour {
     void Die() {
         soundManagerScript.PlayPlayerDeathNoise();
         gameObject.SetActive(false);
+    }
+
+    void ConfirmInPlayerSpace() {
+        if (transform.position.x < wallCoordinateManager.getLeftWallPositionX() + playerScale / 2) {
+            transform.position = new Vector2(wallCoordinateManager.getLeftWallPositionX() + playerScale / 2, transform.position.y);
+        }
+
+        if (transform.position.x > wallCoordinateManager.getRightWallPositionX() - playerScale / 2) {
+            transform.position = new Vector2(wallCoordinateManager.getRightWallPositionX() - playerScale / 2, transform.position.y);
+        }
+
+        if (transform.position.y < wallCoordinateManager.getBottomWallPositionY() + playerScale / 2) {
+            transform.position = new Vector2(transform.position.x, wallCoordinateManager.getBottomWallPositionY() + playerScale / 2);
+        }
+
+        if (transform.position.y > wallCoordinateManager.getTopWallPositionY() - playerScale / 2) {
+            transform.position = new Vector2(transform.position.x, wallCoordinateManager.getTopWallPositionY() - playerScale / 2);
+        }
     }
 
 

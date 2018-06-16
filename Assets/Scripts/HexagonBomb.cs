@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HexagonBomb : MonoBehaviour {
 
+    SoundManager soundManager;
+
     Color originalColor;
     Color currColor;
     float explosionSizeX = 2.0f;
@@ -20,6 +22,7 @@ public class HexagonBomb : MonoBehaviour {
         GetComponent<SpriteRenderer>().color = currColor;
         StartCoroutine(Blink());
         transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
 
     IEnumerator Blink() {
@@ -53,6 +56,7 @@ public class HexagonBomb : MonoBehaviour {
 
     IEnumerator Explode() {
         transform.localScale = new Vector2(explosionSizeX, explosionSizeY);
+        soundManager.PlayExplosionNoise();
         currColor = new Color(255, 0, 0);
         GetComponent<SpriteRenderer>().color = currColor;
         //yield return new WaitForEndOfFrame();
