@@ -86,7 +86,8 @@ public class FloaterController : Projectile {
         isSlowing = true;
         //Debug.Log("Started slowing at " + FindDistanceTraveled());
 
-        while (Mathf.Abs(rb.velocity.x) > 0.001f || Mathf.Abs(rb.velocity.y) > 0.001f) {
+        while (Mathf.Abs(rb.velocity.x) > 0.01f || Mathf.Abs(rb.velocity.y) > 0.01f) {
+            //Debug.Log(rb.velocity);
             if (rb.velocity.y > 0) {
                 rb.AddForce(new Vector2(0, -rb.mass * accelerationToSlowBeforePerch));
             }
@@ -104,6 +105,7 @@ public class FloaterController : Projectile {
             }
             yield return new WaitForFixedUpdate();
         }
+        //Debug.Log("MEH");
 
         isSlowing = false;
 
@@ -242,6 +244,10 @@ public class FloaterController : Projectile {
 
     public void SetCanReverse(bool canReverse) {
         this.canReverse = canReverse;
+    }
+
+    public void SetTimeToStayPerched(float time) {
+        timeToStayPerched = time;
     }
 
     //It might be better to do this by keeping track of a maximum speed reached and prevent the ball from ever slowing down. ex: if leftToRight velocity will always have the max x velocity it reached.

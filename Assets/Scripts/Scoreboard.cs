@@ -6,31 +6,41 @@ public class Scoreboard : MonoBehaviour {
 
     public GameObject gameManager;
     public GameObject bestScoreIndicator;
-    public GameObject bestText;
-    public GameObject yourScoreText;
+    public GameObject best;
+    public GameObject yourScore;
+    public GameObject levelMessages;
+
+    UnityEngine.UI.Text bestText;
+    UnityEngine.UI.Text yourScoreText;
+    UnityEngine.UI.Text levelMessagesText;
+    UnityEngine.UI.Text gameObjectText;
+
     bool newHighScore;
     int currScore;
     int highestScore;
-    UnityEngine.UI.Text text;
 
 
 	// Use this for initialization
 	void Start () {
         currScore = 0;
         highestScore = PlayerPrefs.GetInt("highestScore");
-        bestText.GetComponent<UnityEngine.UI.Text>().text = "Best: \n" + highestScore;
-        yourScoreText.GetComponent<UnityEngine.UI.Text>().text = "Your Score: \n" + currScore;
-        text = gameObject.GetComponent<UnityEngine.UI.Text>();
+        bestText = best.GetComponent<UnityEngine.UI.Text>();
+        bestText.text = "Best: \n" + highestScore;
+
+        yourScoreText = yourScore.GetComponent<UnityEngine.UI.Text>();
+        yourScoreText.text = "Your Score: \n" + currScore;
+
+        gameObjectText = gameObject.GetComponent<UnityEngine.UI.Text>();
         newHighScore = false;
 	}
 
     public void IncrementScore() {
         if (!newHighScore && currScore > highestScore) {
             newHighScore = true;
-            text.color = new Color(255, 255, 255);
+            gameObjectText.color = new Color(255, 255, 255);
         }
         currScore++;
-        text.text = "" + currScore;
+        gameObjectText.text = "" + currScore;
 
         if (currScore == 20) {
             gameManager.GetComponent<GameManager>().IncrementLevel();
@@ -44,12 +54,12 @@ public class Scoreboard : MonoBehaviour {
 
         if (newHighScore) {
             bestScoreIndicator.SetActive(true);
-            bestText.transform.position = new Vector2(bestText.transform.position.x, bestText.transform.position.y - 10f);
-            yourScoreText.transform.position = new Vector2(yourScoreText.transform.position.x, yourScoreText.transform.position.y - 10f);
+            best.transform.position = new Vector2(best.transform.position.x, best.transform.position.y - 10f);
+            yourScore.transform.position = new Vector2(yourScore.transform.position.x, yourScore.transform.position.y - 10f);
         }
 
-        bestText.GetComponent<UnityEngine.UI.Text>().text = "Best: \n" + PlayerPrefs.GetInt("highestScore");
-        yourScoreText.GetComponent<UnityEngine.UI.Text>().text = "Your Score: \n" + currScore;
+        bestText.text = "Best: \n" + PlayerPrefs.GetInt("highestScore");
+        yourScoreText.text = "Your Score: \n" + currScore;
         Destroy(gameObject);
     }
 

@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ThirdBossController : FloaterController {
+
+    /*Things to do:
+     * Make it so projectiles don't damage the boss originally
+     * Make the projectiles go correctly across the wing */
     
     public GameObject angel;
+    public GameObject angelNoPerch;
     public GameObject gameManager;
     public GameObject levelDataManager;
 
@@ -25,10 +30,11 @@ public class ThirdBossController : FloaterController {
     Vector2 wingScale;
     float wingAngle;
 
-    float angelCorrectingForce = 100;
+    /*(float angelCorrectingForce = 100;
     float angelSpeedUntilStop = 1.75f;
-    float distanceBeforePerchAngels = 4f;
+    float distanceBeforePerchAngels = 4f;*/
 
+    float bossSpeedBeforePerch = 1f;
     float bossCorrectingForce = 40;
     //float speedUntilStop = 1.1f;
 
@@ -37,7 +43,7 @@ public class ThirdBossController : FloaterController {
 	// Use this for initialization
 	protected override void Start () { 
         base.Start();
-        SetHealth(30);
+        SetHealth(300);
         damageTakenPerProjectile = 1;
         leftWing = transform.GetChild(0).gameObject;
         rightWing = transform.GetChild(1).gameObject;
@@ -50,23 +56,25 @@ public class ThirdBossController : FloaterController {
         maxXDropPosTopLocal = wingPosition.x + (wingScale.x / 2) * Mathf.Cos(wingAngle);
         minXDropPosTopLocal = -1 * maxXDropPosTopLocal;
 
-        //SetPlayer(GameObject.FindGameObjectWithTag("Player"));
+        SetPlayer(GameObject.FindGameObjectWithTag("Player"));
 
-        SetDistanceBeforePerch(2);
+        SetDistanceBeforePerch(2.5f);
         SetAccelDive(6f);
         //SetDirection("TopToBottom");
-        //SetVelocityBeforePerch(new Vector2(0, -1));
+        SetSpeedBeforePerch(bossSpeedBeforePerch);
         //SetAccelerationBeforePerch(new Vector2(0, 1));
         SetAccelerationBeforePerch(5);
         SetCorrectingForce(bossCorrectingForce);
+        //Debug.Log("Start");
 	}
 
-    private void Update()
-    {
+    private void Update() {
+        //Debug.Log("Update!");
         if (inMove || gmScript.IsGameEnded() || !hasPerched) {
+            //Debug.Log(hasPerched);
             return;
         }
-            
+
         inMove = true;
         DoMove();
     }
@@ -85,7 +93,7 @@ public class ThirdBossController : FloaterController {
     private void DoMove() {
         int numMoves = 5;
         int move = Random.Range(0, numMoves);
-        StartCoroutine(HorizontalAssault());
+        StartCoroutine(RainDownAtOnce());
         return;
 
         switch (move) {
@@ -111,7 +119,7 @@ public class ThirdBossController : FloaterController {
     {
         if (collision.gameObject.tag.Equals("ProjectileEnemy")) {
             StartCoroutine(TakeDamage(damageTakenPerProjectile));
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
         }
     }
 
@@ -145,11 +153,16 @@ public class ThirdBossController : FloaterController {
     }
 
     IEnumerator RainDownAtOnce() {
-        for (float i = 1; i <= wingPosition.x + wingScale.x / 2; i++) {
-            //angelLeft
+        float posYAngel;
+        //Debug.Log(wingPosition.x + wingScale.x / 2);
+        for (float i = transform.position.x + 0.5f; i <= transform.position.x + wingPosition.x + wingScale.x  *  transform.localScale.x / 2; i += 0.8f) {
+            posYAngel = i * Mathf.Sin(wingAngle);
+            Instantiate(angelNoPerch, transform.position + new Vector3(i, posYAngel, 0), standardOrientation);
+            Instantiate(angelNoPerch, transform.position + new Vector3(-i, posYAngel, 0), standardOrientation);
+            yield return new WaitForSeconds(0.7f);
         }
 
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(5f);
         inMove = false;
     }
 
