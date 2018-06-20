@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class OrbitingFirerer : MonoBehaviour
 {
+    public Sprite[] damageTakenSprites;
     public GameObject projectile;
 
     protected GameObject controller;
@@ -24,6 +25,8 @@ public class OrbitingFirerer : MonoBehaviour
     protected float maxScaleX = 1.3f;
     protected float maxScaleY = 1.3f;
     protected float timeToExpand = 6.5f;
+
+    protected float damageTakenSpriteIndicator;
 
     protected float originalScaleX;
     protected float originalScaleY;
@@ -47,7 +50,7 @@ public class OrbitingFirerer : MonoBehaviour
         originalScaleX = transform.localScale.x;
         originalScaleY = transform.localScale.y;
 
-        health = 100f;
+        health = 5f;
         centerOfRotation = new Vector2(0, 0);
         defaultAccelProjectile = 3f;
         currAccelProjectile = defaultAccelProjectile;
@@ -59,8 +62,10 @@ public class OrbitingFirerer : MonoBehaviour
 
         StartCoroutine(IncreaseSizeAndStartRotation());
 
-        damageTakenPerProjectile = 10f;
+        damageTakenPerProjectile = 1f;
         timePerProjectile = 1f;
+
+        damageTakenSpriteIndicator = 1;
 
         StartCoroutine(StartAttacking());
     }

@@ -9,7 +9,7 @@ public class PestilenceOrbController : OrbitingFirerer {
         base.Start();
 
         SetAccelerationOfProjectiles(8f);
-        SetHealth(30);
+        SetHealth(3);
         SetTimePerProjectile(1.7f);
 	}
 }

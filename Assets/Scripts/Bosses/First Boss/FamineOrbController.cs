@@ -9,7 +9,7 @@ public class FamineOrbController : OrbitingFirerer {
         base.Start();
 
         SetAccelerationOfProjectiles(9f);
-        SetHealth(30);
+        SetHealth(3);
         SetTimePerProjectile(1.5f);
 		
 	}

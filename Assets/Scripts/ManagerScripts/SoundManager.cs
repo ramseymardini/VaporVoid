@@ -3,19 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour {
+    AudioSource buttonClickSound;
+    AudioSource pointGainNoise;
     AudioSource shieldGainNoise;
     AudioSource playerDeathNoise;
     AudioSource explosionNoise;
 
     float volume;
 
-    private void Start()
-    {
+    private void Start() {
         AudioSource[] noises = GetComponents<AudioSource>();
         shieldGainNoise = noises[0];
         playerDeathNoise = noises[1];
         explosionNoise = noises[2];
         volume = 0.5f;
+    }
+
+    public void PlayButtonClickSound() {
+        
+    }
+
+    public void PlayPointGainNoise() {
+        pointGainNoise.Play();
     }
 
     public void PlayShieldGainNoise() {
@@ -35,4 +44,13 @@ public class SoundManager : MonoBehaviour {
         explosionNoise.volume = volume;
         explosionNoise.Play();
     }
+
+    public void BossDeathNoise() {
+        return;
+    }
+
+    public void FirstTransition() {
+        return;
+    }
+
 }

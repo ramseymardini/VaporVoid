@@ -18,9 +18,11 @@ public class GameManager : MonoBehaviour
     public GameObject fourthBoss;
 
     public GameObject levelDataManager;
+    public GameObject stageMessages;
 
     GameObject musicManager;
     MusicManager musicManagerScript;
+    StageMessagesController stageMessagesScript;
 
     PointController pointController;
 
@@ -103,6 +105,7 @@ public class GameManager : MonoBehaviour
         level = 1;
 
         wallCoordinateManager = levelDataManager.GetComponent<WallCoordinateManager>();
+        stageMessagesScript = stageMessages.GetComponent<StageMessagesController>();
 
         SetScreenCoordinates();
         musicManagerScript.PlayFirstLevel();
@@ -181,7 +184,7 @@ public class GameManager : MonoBehaviour
         int move = UnityEngine.Random.Range(0, numMoves);
 
         //StartCoroutine(DiagonalCirclesRightToLeft());
-        return;
+        //return;
         switch (move) {
             case 0:
                 StartCoroutine(StairLeftToRight());
@@ -596,18 +599,25 @@ public class GameManager : MonoBehaviour
     public void EndFirstBoss() {
         StartCoroutine(EndBoss());
         scoreboard.GetComponent<Scoreboard>().AddPoints(5);
+        stageMessagesScript.DisplayFirstStageCompleted();
     }
 
     public void EndSecondBoss() {
         StartCoroutine(EndBoss());
+        scoreboard.GetComponent<Scoreboard>().AddPoints(5);
+        stageMessagesScript.DisplaySecondStageCompleted();
     }
 
     public void EndThirdBoss() {
         StartCoroutine(EndBoss());
+        scoreboard.GetComponent<Scoreboard>().AddPoints(5);
+        stageMessagesScript.DisplayThirdStageCompleted();
     }
 
     public void EndFourthBoss() {
         StartCoroutine(EndBoss());
+        scoreboard.GetComponent<Scoreboard>().AddPoints(20);
+        stageMessagesScript.DisplayFourthStageCompleted();
     }
 
     IEnumerator EndBoss() {
@@ -660,7 +670,7 @@ public class GameManager : MonoBehaviour
         currAccelDefaultCircles = (level * 0.2f) + startingAccelDefaultCircles;
 
         gapTimePatternMoves = 0.1f - level * 0.002f;;
-        gapTimeRainMoves = 0.095f - level * 0.005f;;
+        gapTimeRainMoves = 0.1f - level * 0.005f;;
         gapTimeStairMoves = 0.1f - level * 0.002f;;
         gapTimeDiagonalMoves = 0.28f - level * 0.0025f;
 

@@ -483,8 +483,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1001779336}
   bestScoreIndicator: {fileID: 83432075}
-  bestText: {fileID: 91060963}
-  yourScoreText: {fileID: 232637733}
+  best: {fileID: 91060963}
+  yourScore: {fileID: 232637733}
+  stageMessages: {fileID: 358672873}
 --- !u!1 &232637733
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,8 +734,9 @@ GameObject:
   - component: {fileID: 358672874}
   - component: {fileID: 358672876}
   - component: {fileID: 358672875}
+  - component: {fileID: 358672877}
   m_Layer: 5
-  m_Name: Level Messages
+  m_Name: Stage Messages
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -764,13 +766,13 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 358672873}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -797,6 +799,20 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 358672873}
+--- !u!114 &358672877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 358672873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c652b7810d824a63b427e57667f6cfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  numBlinks: 3
+  timeToBlink: 0.4
 --- !u!1001 &472007376
 Prefab:
   m_ObjectHideFlags: 0
@@ -1383,6 +1399,7 @@ MonoBehaviour:
   thirdBoss: {fileID: 1899781817}
   fourthBoss: {fileID: 0}
   levelDataManager: {fileID: 1848697288}
+  stageMessages: {fileID: 358672873}
 --- !u!1001 &1070005571
 Prefab:
   m_ObjectHideFlags: 0

@@ -8,12 +8,13 @@ public class Scoreboard : MonoBehaviour {
     public GameObject bestScoreIndicator;
     public GameObject best;
     public GameObject yourScore;
-    public GameObject levelMessages;
+    public GameObject stageMessages;
 
     UnityEngine.UI.Text bestText;
     UnityEngine.UI.Text yourScoreText;
-    UnityEngine.UI.Text levelMessagesText;
     UnityEngine.UI.Text gameObjectText;
+
+    StageMessagesController stageMessagesScript;
 
     bool newHighScore;
     int currScore;
@@ -32,6 +33,8 @@ public class Scoreboard : MonoBehaviour {
 
         gameObjectText = gameObject.GetComponent<UnityEngine.UI.Text>();
         newHighScore = false;
+
+        stageMessagesScript = stageMessages.GetComponent<StageMessagesController>();
 	}
 
     public void IncrementScore() {
@@ -44,6 +47,7 @@ public class Scoreboard : MonoBehaviour {
 
         if (currScore == 20) {
             gameManager.GetComponent<GameManager>().IncrementLevel();
+            //stageMessagesScript.DisplayFirstStageCompleted();
         }
     }
 

@@ -89,6 +89,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a6060aef71424b0088608485ee50716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageTakenSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   projectile: {fileID: 1933386926343856, guid: c5616887b40804f84bf82f53154064bd, type: 2}
 --- !u!212 &212973559623784324
 SpriteRenderer:

@@ -9,7 +9,7 @@ public class DeathOrbController : OrbitingFirerer {
         base.Start();
 
         SetAccelerationOfProjectiles(10.5f);
-        SetHealth(30);
+        SetHealth(3);
         SetTimePerProjectile(1f);
 		
 	}

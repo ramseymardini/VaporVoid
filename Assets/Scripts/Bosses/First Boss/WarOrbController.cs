@@ -9,7 +9,7 @@ public class WarOrbController : OrbitingFirerer {
         base.Start();
 
         SetAccelerationOfProjectiles(7f);
-        SetHealth(40);
+        SetHealth(4);
         SetTimePerProjectile(1.9f);
 	}
 }
