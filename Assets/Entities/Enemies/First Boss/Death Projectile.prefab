@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 50510706796221160}
   - component: {fileID: 114951912629451916}
   m_Layer: 0
-  m_Name: ProjectileFirstBoss
+  m_Name: Death Projectile
   m_TagString: ProjectileEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,7 +124,7 @@ SpriteRenderer:
   m_SortingLayerID: -1728786191
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300038, guid: 88fcb2b70a31e264498908d37fed251f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c5c853a55125245a79f25edc942e18d3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
