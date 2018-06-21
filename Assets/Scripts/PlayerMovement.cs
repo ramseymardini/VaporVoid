@@ -73,7 +73,7 @@ public class PlayerMovement : MonoBehaviour {
 
         if (collision.gameObject.tag.Equals("ProjectileEnemy") || collision.gameObject.tag.Equals("ExplosionEnemy") || collision.gameObject.tag.Equals("BossEnemy")) {
             //Handheld.Vibrate();
-            if (hasShield) {
+            if (this.HasShield()) {
                 return;
             }
             gm.GetComponent<GameManager>().EndGame();
@@ -211,6 +211,10 @@ public class PlayerMovement : MonoBehaviour {
 
     public void RemoveShield() {
         hasShield = false;
+    }
+
+    public bool HasShield() {
+        return hasShield;
     }
 
     void SetGameEnded() {
