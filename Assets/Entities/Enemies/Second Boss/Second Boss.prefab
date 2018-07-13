@@ -91,6 +91,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entranceTime: 3
   accelSpeed: 60
+  health: 3
+  bBackMulipl: 10
 --- !u!212 &212886764921893308
 SpriteRenderer:
   m_ObjectHideFlags: 1

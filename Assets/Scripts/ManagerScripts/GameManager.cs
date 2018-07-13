@@ -589,7 +589,7 @@ public class GameManager : MonoBehaviour
     }
 
     void SecondBoss() {
-        GameObject secondBossController = Instantiate(secondBoss, new Vector2(0, 0), defaultOrientation);
+        SecondBossController secondBossController = this.GetComponent<SecondBossController>(); //Instantiate(secondBoss, new Vector2(0, 0), new Quaternion(0, 0, 0, 0));
     }
 
     void ThirdBoss() {
