@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
     public GameObject shield;
     public Sprite noPointsShield;
     public Sprite onePointShield;
@@ -239,6 +239,10 @@ public class PlayerMovement : MonoBehaviour {
         if (transform.position.y > wallCoordinateManager.getTopWallPositionY() - playerScale / 2) {
             transform.position = new Vector2(transform.position.x, wallCoordinateManager.getTopWallPositionY() - playerScale / 2);
         }
+    }
+
+    public bool IsGameEnded() {
+        return gameEnded;
     }
 
 

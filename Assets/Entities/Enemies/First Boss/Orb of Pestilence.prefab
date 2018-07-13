@@ -90,10 +90,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageTakenSprites:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  projectile: {fileID: 1933386926343856, guid: c5616887b40804f84bf82f53154064bd, type: 2}
+  - {fileID: 21300000, guid: 237c98d77a5f24aea9679b2270445e68, type: 3}
+  - {fileID: 21300012, guid: 237c98d77a5f24aea9679b2270445e68, type: 3}
+  - {fileID: 21300018, guid: 237c98d77a5f24aea9679b2270445e68, type: 3}
+  projectile: {fileID: 1898532840517258, guid: 392d53bc17d5c496a9e4626ce584cdce, type: 2}
 --- !u!212 &212975963472782728
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -129,7 +129,7 @@ SpriteRenderer:
   m_SortingLayerID: 118638557
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300006, guid: 406aba10f680445e78d16a2bf46599a3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 237c98d77a5f24aea9679b2270445e68, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

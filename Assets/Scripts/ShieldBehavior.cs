@@ -81,7 +81,7 @@ public class ShieldBehavior : MonoBehaviour {
 
         cc.isTrigger = true;
         //collision.isTrigger = true;
-        parent.GetComponent<PlayerMovement>().RemoveShield();
+        parent.GetComponent<PlayerController>().RemoveShield();
         Destroy(gameObject);
     }
 
@@ -91,7 +91,7 @@ public class ShieldBehavior : MonoBehaviour {
         //collision.gameObject.tag = "Untagged";
         yield return new WaitForSeconds(timeToDeletion);
         cc.isTrigger = true;
-        parent.GetComponent<PlayerMovement>().RemoveShield();
+        parent.GetComponent<PlayerController>().RemoveShield();
         Destroy(gameObject);
     }
 }

@@ -102,13 +102,16 @@ public class GameManager : MonoBehaviour
 
         pointController = point.GetComponent<PointController>();
 
-        level = 1;
+        level = 2;
 
         wallCoordinateManager = levelDataManager.GetComponent<WallCoordinateManager>();
         stageMessagesScript = stageMessages.GetComponent<StageMessagesController>();
 
         SetScreenCoordinates();
-        musicManagerScript.PlayFirstLevel();
+
+        if (level == 1) {
+            musicManagerScript.PlayFirstLevel();
+        }
         /*Debug.Log(lowerLeftToTopRightDropAngle);
         Debug.Log("Bottom left: " + lowerLeftCornerDropPos);
         Debug.Log("Upper Right: " + UpperRightCornerDropPos);*/
@@ -582,6 +585,7 @@ public class GameManager : MonoBehaviour
     void FirstBoss() {
         GameObject firstBossController = Instantiate(firstBoss, new Vector2(0, 0), defaultOrientation);
         firstBossController.GetComponent<FirstBossController>().SetGameManager(gameObject);
+        musicManagerScript.PlayFirstBoss();
     }
 
     void SecondBoss() {
@@ -652,10 +656,6 @@ public class GameManager : MonoBehaviour
         }
 
         level++;
-
-        if (level == 2) {
-            musicManagerScript.PlayFirstBoss();
-        }
 
         UpdateDifficulty();
     }

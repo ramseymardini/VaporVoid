@@ -7,7 +7,7 @@ public class StageMessagesController : MonoBehaviour {
     UnityEngine.UI.Text text;
 
     int numBlinks = 3;
-    float timeToBlink = 0.4f;
+    float timeToBlink = 0.8f;
 
     private void Start() {
         text = GetComponent<UnityEngine.UI.Text>();
@@ -38,7 +38,7 @@ public class StageMessagesController : MonoBehaviour {
             text.enabled = true;
             yield return new WaitForSeconds(timeToBlink);
             text.enabled = false;
-            yield return new WaitForSeconds(timeToBlink);
+            yield return new WaitForSeconds(timeToBlink / 2);
         }
     }
 }

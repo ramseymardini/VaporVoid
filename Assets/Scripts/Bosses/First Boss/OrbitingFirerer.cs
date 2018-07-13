@@ -26,7 +26,7 @@ public class OrbitingFirerer : MonoBehaviour
     protected float maxScaleY = 1.3f;
     protected float timeToExpand = 6.5f;
 
-    protected float damageTakenSpriteIndicator;
+    protected int damageTakenSpriteIndicator;
 
     protected float originalScaleX;
     protected float originalScaleY;
@@ -64,8 +64,6 @@ public class OrbitingFirerer : MonoBehaviour
 
         damageTakenPerProjectile = 1f;
         timePerProjectile = 1f;
-
-        damageTakenSpriteIndicator = 1;
 
         StartCoroutine(StartAttacking());
     }
@@ -122,6 +120,10 @@ public class OrbitingFirerer : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         while (true) {
+            if (player.GetComponent<PlayerController>().IsGameEnded()) {
+                break;
+            }
+
             if (!isLastOrb) {
                 AttackPlayer();
             } else {
@@ -158,6 +160,9 @@ public class OrbitingFirerer : MonoBehaviour
         GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);
         health -= damage;
         CheckIfDead();
+        damageTakenSpriteIndicator += 1;
+        GetComponent<SpriteRenderer>().sprite = damageTakenSprites[damageTakenSpriteIndicator];
+
         yield return new WaitForSeconds(0.1f);
 
         GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
