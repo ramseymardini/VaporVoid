@@ -12,12 +12,12 @@ public class PestilenceProjectileFirstBoss : ProjectileFirstBoss {
 
     // Update is called once per frame
     void FixedUpdate () {
-        Vector2 dir = rb.velocity;
+        /*Vector2 dir = rb.velocity;
         //transform.rotation = Quaternion.LookRotation(dir);
 
         transform.rotation = Quaternion.Slerp(
         transform.rotation,
         Quaternion.LookRotation(dir),
-        Time.deltaTime * rotationSpeed);
+        Time.deltaTime * rotationSpeed);*/
 	}
 }

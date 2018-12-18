@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1343158412992792}
+  m_IsPrefabAsset: 1
+--- !u!1 &1343158412992792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4884578425937630}
+  - component: {fileID: 114488476955970772}
+  m_Layer: 0
+  m_Name: Gameplay Manager
+  m_TagString: GameController
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4884578425937630
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1343158412992792}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.75173587, y: 0.30168456, z: -0.021133859}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114488476955970772
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1343158412992792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1160c0e92cd24504182601d92ebb6cde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  circleEnemy: {fileID: 1337885840170736, guid: 14fdde595bad88b4e9ce0934f21529c6,
+    type: 2}
+  hexagonBomb: {fileID: 1192391113393388, guid: 1a9b917770155ad48888653362581843,
+    type: 2}
+  pointPrefab: {fileID: 1204400312601998, guid: fe45f8424445c45a096ebe3719188207,
+    type: 2}
+  playerPrefab: {fileID: 1201735955642776, guid: 814c140b9e3b70741bbf5282f89405af,
+    type: 2}
+  firstBoss: {fileID: 1630147004829990, guid: 15b58924d6e174c4c8b764cd7b62c433, type: 2}
+  secondBoss: {fileID: 1298964867918322, guid: 445efe2340fd7446497a1e2c5238d63f, type: 2}
+  thirdBoss: {fileID: 1413447595120342, guid: fc56961da750744e1897b5aed46ea067, type: 2}
+  fourthBoss: {fileID: 0}
+  scoreboardPrefab: {fileID: 1421038651263670, guid: 7171d62441fe14eacbf5dcfacdc59f97,
+    type: 2}
+  stageMessagesPrefab: {fileID: 1192901417776054, guid: a0ad7e6647add407cb644084062dff77,
+    type: 2}
+  lossMenuPrefab: {fileID: 1760458638080110, guid: a30884ec232964497813291c46e9259e,
+    type: 2}

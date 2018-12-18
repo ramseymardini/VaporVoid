@@ -18,6 +18,10 @@ public class PointController : MonoBehaviour {
 	
     public void Reposition() {
         //Debug.Log(gameObject.tag);
+        if (player == null) {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+
         Vector2 newPosition = player.transform.position;
 
         while (Mathf.Sqrt(Mathf.Pow(newPosition.x - player.transform.position.x, 2) + Mathf.Pow(newPosition.y - player.transform.position.y, 2)) < 4.5f) {

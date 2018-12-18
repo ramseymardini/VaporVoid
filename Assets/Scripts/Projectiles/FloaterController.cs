@@ -53,6 +53,9 @@ public class FloaterController : Projectile {
     }
    
     protected override void FixedUpdate() {
+        if (player == null) {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
         if (!hasPerched) {
             if (!isSlowing && FindDistanceTraveled() >= distanceToStartSlowing) {
                 StartCoroutine(StartSlowing());

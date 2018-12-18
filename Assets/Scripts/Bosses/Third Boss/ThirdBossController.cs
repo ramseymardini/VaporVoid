@@ -10,10 +10,10 @@ public class ThirdBossController : FloaterController {
     
     public GameObject angel;
     public GameObject angelNoPerch;
-    public GameObject gameManager;
+    public GameObject gameplayManager;
     public GameObject levelDataManager;
 
-    GameManager gmScript;
+    GameplayManager gpmScript;
 
     GameObject leftWing;
     GameObject rightWing;
@@ -47,8 +47,9 @@ public class ThirdBossController : FloaterController {
         damageTakenPerProjectile = 1;
         leftWing = transform.GetChild(0).gameObject;
         rightWing = transform.GetChild(1).gameObject;
+        gameplayManager = GameObject.FindGameObjectWithTag("GameController");
 
-        gmScript = gameManager.GetComponent<GameManager>();
+        gpmScript = gameplayManager.GetComponent<GameplayManager>();
 
         radiusOfBody = transform.localScale.x;
         wingPosition = rightWing.transform.localPosition;
@@ -70,7 +71,7 @@ public class ThirdBossController : FloaterController {
 
     private void Update() {
         //Debug.Log("Update!");
-        if (inMove || gmScript.IsGameEnded() || !hasPerched) {
+        if (inMove || gpmScript.IsGameEnded() || !hasPerched) {
             //Debug.Log(hasPerched);
             return;
         }
@@ -126,15 +127,15 @@ public class ThirdBossController : FloaterController {
     IEnumerator HorizontalAssault() {
         //Debug.Log("Horizontal Assault!");
 
-        /*GameObject angelTopRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), gmScript.getMaxHorCircleDropPosY() - 2), standardOrientation);
+        /*GameObject angelTopRight = Instantiate(angel, new Vector2(gpmScript.getHorDropPos(), gpmScript.getMaxHorCircleDropPosY() - 2), standardOrientation);
         FloaterController angelTopRightController = angelTopRight.GetComponent<FloaterController>();*/
-        for (float pos = gmScript.getMaxHorCircleDropPosY() - 1; pos >= 0; pos -= 2)
+        for (float pos = gpmScript.getMaxHorCircleDropPosY() - 1; pos >= 0; pos -= 2)
         {
             //Debug.Log(pos);
-            GameObject angelTopRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), pos), standardOrientation);
-            GameObject angelTopLeft = Instantiate(angel, new Vector2(-1 * gmScript.getHorDropPos(), pos), standardOrientation);
-            GameObject angelBotRight = Instantiate(angel, new Vector2(gmScript.getHorDropPos(), -1 * pos), standardOrientation);
-            GameObject angelBotLeft = Instantiate(angel, new Vector2(-1 * gmScript.getHorDropPos(), -1 * pos), standardOrientation);
+            GameObject angelTopRight = Instantiate(angel, new Vector2(gpmScript.getHorDropPos(), pos), standardOrientation);
+            GameObject angelTopLeft = Instantiate(angel, new Vector2(-1 * gpmScript.getHorDropPos(), pos), standardOrientation);
+            GameObject angelBotRight = Instantiate(angel, new Vector2(gpmScript.getHorDropPos(), -1 * pos), standardOrientation);
+            GameObject angelBotLeft = Instantiate(angel, new Vector2(-1 * gpmScript.getHorDropPos(), -1 * pos), standardOrientation);
             //yield return new WaitForFixedUpdate();
         }
         //Debug.Log("Done!");
@@ -207,7 +208,7 @@ public class ThirdBossController : FloaterController {
 
     private void Die()
     {
-        gmScript.EndThirdBoss();
+        gpmScript.EndThirdBoss();
         Destroy(gameObject);
     }
 
@@ -217,8 +218,8 @@ public class ThirdBossController : FloaterController {
     }
 
     void SetGameManager (GameObject newGameManager) {
-        gameManager = newGameManager;
-        gmScript = gameManager.GetComponent<GameManager>();
+        gameplayManager = newGameManager;
+        gpmScript = gameplayManager.GetComponent<GameplayManager>();
     }
 
     void GoBackAndForth() {

@@ -5,36 +5,33 @@ using UnityEngine;
 public class Scoreboard : MonoBehaviour {
 
     public GameObject gameManager;
-    public GameObject bestScoreIndicator;
+    public GameObject gamePlayManager;
     public GameObject best;
     public GameObject yourScore;
-    public GameObject stageMessages;
+    //public GameObject stageMessages;
 
-    UnityEngine.UI.Text bestText;
-    UnityEngine.UI.Text yourScoreText;
+
     UnityEngine.UI.Text gameObjectText;
 
     StageMessagesController stageMessagesScript;
 
+    int highestScore;
     bool newHighScore;
     int currScore;
-    int highestScore;
 
+    readonly int SCORE_FOR_FIRST_BOSS = 5;
+    readonly int SCORE_FOR_SECOND_BOSS = 40;
 
 	// Use this for initialization
 	void Start () {
         currScore = 0;
+        gameManager = GameObject.Find("Game Manager");
         highestScore = PlayerPrefs.GetInt("highestScore");
-        bestText = best.GetComponent<UnityEngine.UI.Text>();
-        bestText.text = "Best: \n" + highestScore;
-
-        yourScoreText = yourScore.GetComponent<UnityEngine.UI.Text>();
-        yourScoreText.text = "Your Score: \n" + currScore;
 
         gameObjectText = gameObject.GetComponent<UnityEngine.UI.Text>();
         newHighScore = false;
 
-        stageMessagesScript = stageMessages.GetComponent<StageMessagesController>();
+        //stageMessagesScript = stageMessages.GetComponent<StageMessagesController>();
 	}
 
     public void IncrementScore() {
@@ -45,10 +42,14 @@ public class Scoreboard : MonoBehaviour {
         currScore++;
         gameObjectText.text = "" + currScore;
 
-        if (currScore == 20) {
-            gameManager.GetComponent<GameManager>().IncrementLevel();
+        if (currScore == SCORE_FOR_FIRST_BOSS || currScore == SCORE_FOR_SECOND_BOSS) {
+            if (gamePlayManager == null) {
+                SetGamePlayManager();
+            }
+                gamePlayManager.GetComponent<GameplayManager>().IncrementLevel();
             //stageMessagesScript.DisplayFirstStageCompleted();
         }
+
     }
 
     public void ChangeHighScore() {
@@ -56,19 +57,17 @@ public class Scoreboard : MonoBehaviour {
             PlayerPrefs.SetInt("highestScore", currScore);
         }
 
-        if (newHighScore) {
-            bestScoreIndicator.SetActive(true);
-            best.transform.position = new Vector2(best.transform.position.x, best.transform.position.y - 10f);
-            yourScore.transform.position = new Vector2(yourScore.transform.position.x, yourScore.transform.position.y - 10f);
-        }
+        gameManager.GetComponent<GameManager>().DisplayLossMenu(newHighScore, highestScore, currScore);
 
-        bestText.text = "Best: \n" + PlayerPrefs.GetInt("highestScore");
-        yourScoreText.text = "Your Score: \n" + currScore;
         Destroy(gameObject);
     }
 
     public void AddPoints(int points) {
         StartCoroutine(AddPointsHelper(points));
+    }
+
+    void SetGamePlayManager() {
+        gamePlayManager = GameObject.FindGameObjectWithTag("GameController");
     }
 
     IEnumerator AddPointsHelper(int points) {
@@ -77,4 +76,6 @@ public class Scoreboard : MonoBehaviour {
             yield return new WaitForSeconds(0.1f);
         }
     }
+
+
 }

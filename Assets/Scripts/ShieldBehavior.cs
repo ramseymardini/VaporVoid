@@ -26,7 +26,7 @@ public class ShieldBehavior : MonoBehaviour {
         StartCoroutine(ExpandToFullScale());
         cc = GetComponent<CircleCollider2D>();
         Color decreasedOpacity = new Color(255, 255, 255);
-        decreasedOpacity.a = 0.5f;
+        decreasedOpacity.a = 1f;
         GetComponent<SpriteRenderer>().color = decreasedOpacity;
     }
 

@@ -8,15 +8,15 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1192391113393388}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1
 --- !u!1 &1192391113393388
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4342329426281416}
   - component: {fileID: 212871343815011264}
@@ -32,7 +32,7 @@ GameObject:
 --- !u!4 &4342329426281416
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1192391113393388}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -45,7 +45,7 @@ Transform:
 --- !u!60 &60871266349746562
 PolygonCollider2D:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1192391113393388}
   m_Enabled: 0
@@ -58,7 +58,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 0.98, y: 1.1266667}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -75,7 +75,7 @@ PolygonCollider2D:
 --- !u!114 &114205606825039932
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1192391113393388}
   m_Enabled: 1
@@ -86,7 +86,7 @@ MonoBehaviour:
 --- !u!212 &212871343815011264
 SpriteRenderer:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1192391113393388}
   m_Enabled: 1
@@ -118,7 +118,7 @@ SpriteRenderer:
   m_SortingLayerID: -1728786191
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 086335b5d261bc8488bd8a5aeec99231, type: 3}
+  m_Sprite: {fileID: 21300002, guid: 9172da7516c234213a71dfabf07c46cc, type: 3}
   m_Color: {r: 1, g: 0, b: 0.49331045, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -128,3 +128,4 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+  m_SpriteSortPoint: 0

@@ -14,7 +14,7 @@ public class CircleEnemyController : Projectile {
     // Use this for initialization
     protected override void Start() {
         base.Start();
-        int numColors = 4;
+        /*int numColors = 4;
         int color = Random.Range(0, numColors);
         switch (color) {
             case 0:
@@ -29,6 +29,7 @@ public class CircleEnemyController : Projectile {
             case 3:
                 GetComponent<SpriteRenderer>().sprite = red;
                 break;
-        }
+        }*/
+        //GetComponent<SpriteRenderer>().sprite = red;
     }
 }

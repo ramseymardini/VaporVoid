@@ -9,7 +9,7 @@ public class FirstBossController : MonoBehaviour {
     public GameObject orbiterPestilence;
     public GameObject orbiterWar;
 
-    GameObject gameManager;
+    GameObject gameplayManager;
 
     List<GameObject> orbs;
 
@@ -35,13 +35,13 @@ public class FirstBossController : MonoBehaviour {
     }
 
     public void SetGameManager(GameObject newGameManager) {
-        gameManager = newGameManager;
+        gameplayManager = newGameManager;
     }
 
     public void SetOrbDead(GameObject deadOrb) {
         orbs.Remove(deadOrb);
         if (orbs.Count == 0) {
-            gameManager.GetComponent<GameManager>().EndFirstBoss();
+            gameplayManager.GetComponent<GameplayManager>().EndFirstBoss();
             Destroy(gameObject);
             return;
         }

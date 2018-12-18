@@ -160,8 +160,8 @@ public class OrbitingFirerer : MonoBehaviour
         GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);
         health -= damage;
         CheckIfDead();
-        damageTakenSpriteIndicator += 1;
-        GetComponent<SpriteRenderer>().sprite = damageTakenSprites[damageTakenSpriteIndicator];
+        //damageTakenSpriteIndicator += 1;
+        //GetComponent<SpriteRenderer>().sprite = damageTakenSprites[damageTakenSpriteIndicator];
 
         yield return new WaitForSeconds(0.1f);
 

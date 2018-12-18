@@ -102,8 +102,8 @@ public class SecondBossController : MonoBehaviour
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
         if (collision.gameObject.tag.Equals("Player")) {
-            PlayerMovement playerMovController = collision.gameObject.GetComponent<PlayerMovement>();
-            if (playerMovController.HasShield())
+            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+            if (playerController.HasShield())
             {
                 if (health <= 0)
                 {

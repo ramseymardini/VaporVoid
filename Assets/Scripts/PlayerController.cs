@@ -18,8 +18,8 @@ public class PlayerController : MonoBehaviour {
     float playerScale;
 
     Rigidbody2D rb;
-    public GameObject gm;
-    WallCoordinateManager wallCoordinateManager;
+    public GameObject gameplayManager;
+    SettingsManager settingsManager;
     GameObject scoreboard;
 
     SoundManager soundManagerScript;
@@ -41,11 +41,13 @@ public class PlayerController : MonoBehaviour {
         SetOriginalPosition();
         playerScale = transform.localScale.x;
         rb = GetComponent<Rigidbody2D>();
-        //gm = GameObject.FindGameObjectWithTag("GameController");
+        //gameplayManager = GameObject.FindGameObjectWithTag("GameController");
         playerSpeed = PlayerPrefs.GetInt("Mouse Sensitivity");
         scoreboard = GameObject.FindGameObjectWithTag("Score");
-        wallCoordinateManager = GameObject.Find("Level Data Manager").GetComponent<WallCoordinateManager>();
+        settingsManager = GameObject.Find("Settings Manager").GetComponent<SettingsManager>();
         soundManagerScript = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        gameplayManager = GameObject.FindGameObjectWithTag("GameController");
+        scoreboard = GameObject.FindGameObjectWithTag("Score");
         gameEnded = false;
         shieldCounter = 0;
         hasShield = false;
@@ -76,7 +78,7 @@ public class PlayerController : MonoBehaviour {
             if (this.HasShield()) {
                 return;
             }
-            gm.GetComponent<GameManager>().EndGame();
+            gameplayManager.GetComponent<GameplayManager>().EndGame();
             SetGameEnded();
         }
 
@@ -112,7 +114,7 @@ public class PlayerController : MonoBehaviour {
 
         if (collider.gameObject.tag.Equals("Enemy"))
         {
-            gm.SendMessage("EndGame");
+            gameplayManager.SendMessage("EndGame");
         }
 
         if (collider.gameObject.tag.Equals("Point"))
@@ -228,20 +230,20 @@ public class PlayerController : MonoBehaviour {
     }
 
     void ConfirmInPlayerSpace() {
-        if (transform.position.x < wallCoordinateManager.getLeftWallPositionX() + playerScale / 2) {
-            transform.position = new Vector2(wallCoordinateManager.getLeftWallPositionX() + playerScale / 2, transform.position.y);
+        if (transform.position.x < settingsManager.GetLeftWallPositionX() + playerScale / 2) {
+            transform.position = new Vector2(settingsManager.GetLeftWallPositionX() + playerScale / 2, transform.position.y);
         }
 
-        if (transform.position.x > wallCoordinateManager.getRightWallPositionX() - playerScale / 2) {
-            transform.position = new Vector2(wallCoordinateManager.getRightWallPositionX() - playerScale / 2, transform.position.y);
+        if (transform.position.x > settingsManager.GetRightWallPositionX() - playerScale / 2) {
+            transform.position = new Vector2(settingsManager.GetRightWallPositionX() - playerScale / 2, transform.position.y);
         }
 
-        if (transform.position.y < wallCoordinateManager.getBottomWallPositionY() + playerScale / 2) {
-            transform.position = new Vector2(transform.position.x, wallCoordinateManager.getBottomWallPositionY() + playerScale / 2);
+        if (transform.position.y < settingsManager.GetBottomWallPositionY() + playerScale / 2) {
+            transform.position = new Vector2(transform.position.x, settingsManager.GetBottomWallPositionY() + playerScale / 2);
         }
 
-        if (transform.position.y > wallCoordinateManager.getTopWallPositionY() - playerScale / 2) {
-            transform.position = new Vector2(transform.position.x, wallCoordinateManager.getTopWallPositionY() - playerScale / 2);
+        if (transform.position.y > settingsManager.GetTopWallPositionY() - playerScale / 2) {
+            transform.position = new Vector2(transform.position.x, settingsManager.GetTopWallPositionY() - playerScale / 2);
         }
     }
 
