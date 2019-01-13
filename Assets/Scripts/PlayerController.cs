@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
     public Sprite threePointsShield;
     public Sprite fourPointsShield;
 
-    readonly float MAX_VELOCITY = 0.9f;
+    readonly float MAX_VELOCITY = 1.5f;
     readonly float COOLDOWN_POINT = 0.05f;
 
     //Quaternion standardOrientation = new Quaternion(0, 0, 0, 0);

@@ -196,15 +196,15 @@ public class GameplayManager : MonoBehaviour
             FirstBoss();
         } else if (level == 3) {
             DoMoveLevelTwo();
-        } else if (level == 3) {
-            SecondBoss();
         } else if (level == 4) {
-            DoMoveLevelThree();
+            SecondBoss();
         } else if (level == 5) {
-            ThirdBoss();
+            DoMoveLevelThree();
         } else if (level == 6) {
-            DoMoveLevelFour();
+            ThirdBoss();
         } else if (level == 7) {
+            DoMoveLevelFour();
+        } else if (level == 8) {
             FourthBoss();
         } else {
             DoMoveLevelFour();
@@ -213,8 +213,7 @@ public class GameplayManager : MonoBehaviour
 
     void DoMoveLevelOne()
     {
-        int numMoves = NUM_MOVES_LEVEL_ONE;
-        int move = UnityEngine.Random.Range(0, numMoves);
+        int move = UnityEngine.Random.Range(0, NUM_MOVES_LEVEL_ONE);
         DoMoveLevelOne(move);
 
         //StartCoroutine(DiagonalCirclesRightToLeft());
@@ -257,6 +256,7 @@ public class GameplayManager : MonoBehaviour
 
     void DoMoveLevelTwo()
     {
+        Debug.Log("Doing Level Two!!!");
         int numMoves = NUM_MOVES_LEVEL_TWO;
         inMove = true;
         int move = UnityEngine.Random.Range(0, numMoves);
@@ -329,7 +329,6 @@ public class GameplayManager : MonoBehaviour
     }
 
     IEnumerator VerticalCrossingMove() {
-
         for (float currX = farLeftCircleDropPosX + 1; currX <= farRightCircleDropPosX; currX += 2f) {
             Instantiate(circleEnemy, new Vector2(currX, vertDropPos), defaultOrientation);
         }
@@ -339,7 +338,7 @@ public class GameplayManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(timeToWaitVertCircleFall);
-
+        inMove = false;
     }
 
     IEnumerator HorizontalCrossingMove() {
@@ -461,7 +460,7 @@ public class GameplayManager : MonoBehaviour
         //Debug.Log("Rain Sides");
         //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
-        for (float currX = farRightCircleDropPosX; currX > 0.6f; currX -= 0.9f) {
+        for (float currX = farRightCircleDropPosX; currX > 1.5f; currX -= 0.9f) {
             if (currX > farRightCircleDropPosX - 3)
             {
                 GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, 0), defaultOrientation);
@@ -562,23 +561,11 @@ public class GameplayManager : MonoBehaviour
         inMove = false;
     }
 
-    bool isValidPos(Vector2 pos) {
-        bool isValidPlayer;
-        if (player != null) {
-            isValidPlayer = Mathf.Abs(pos.x - player.transform.position.x) > 0.3f || Mathf.Abs(pos.y - player.transform.position.y) > 0.3f;
-        }
-        else {
-            isValidPlayer = false;
-        }
-        bool isValidPoint = Mathf.Abs(pos.x - point.transform.position.x) > 0.3f || Mathf.Abs(pos.y - point.transform.position.y) > 0.3f;
-
-        return (isValidPlayer && isValidPoint);
-    }
 
     IEnumerator StairTopToBottom() {
         //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
-        for (float currY = maxHorCircleDropPosY; currY > minHorCircleDropPosY; currY -= 1) {
+        for (float currY = maxHorCircleDropPosY; currY > minHorCircleDropPosY + 1f; currY -= 1) {
             GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, currY), defaultOrientation);
             GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, currY), defaultOrientation);
             circleLeftToRight.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(currAccelHorCircles, 0));
@@ -593,7 +580,7 @@ public class GameplayManager : MonoBehaviour
     IEnumerator StairBottomToTop() {
         //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
-        for (float currY = minHorCircleDropPosY; currY < maxHorCircleDropPosY; currY += 1) {
+        for (float currY = minHorCircleDropPosY; currY < maxHorCircleDropPosY - 1f; currY += 1) {
             GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, currY), defaultOrientation);
             GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, currY), defaultOrientation);
             circleLeftToRight.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(currAccelHorCircles, 0));
@@ -630,28 +617,51 @@ public class GameplayManager : MonoBehaviour
     }*/
 
     void FirstBoss() {
-        /*GameObject firstBossController = Instantiate(firstBoss, new Vector2(0, 0), defaultOrientation);
+        GameObject firstBossController = Instantiate(firstBoss, new Vector2(0, 0), defaultOrientation);
         firstBossController.GetComponent<FirstBossController>().SetGameManager(gameObject);
-        musicManagerScript.PlayFirstBoss();*/
+        musicManagerScript.PlayFirstBoss();
 
         //GameObject secondBossController = Instantiate(secondBoss, new Vector2(0, 0), defaultOrientation);
-        Instantiate(thirdBoss, new Vector2(0, 0), defaultOrientation);
+        //Instantiate(thirdBoss, new Vector2(0, 0), defaultOrientation);
     }
 
     void SecondBoss() {
-        GameObject secondBossController = Instantiate(secondBoss, new Vector2(0, 0), thirdBoss);
+        GameObject secondBossController = Instantiate(secondBoss, new Vector2(0, 0), defaultOrientation);
+        secondBossController.GetComponent<SecondBossController>().SetGameManager(gameObject);
+        StartCoroutine(SecondBossMines());
+    }
+
+    IEnumerator SecondBossMines() {
+        float gapTime = 1.3f;
+        float minMinePosX = -5.5f;
+        float maxMinePosX = 5.5f;
+        float minMinePosY = -4.25f;
+        float maxMinePosY = 4.25f;
+        Vector2 nextMinePos;
+        
+        while (level == 4)
+        {
+            do
+            {
+                nextMinePos = new Vector2(UnityEngine.Random.Range(minMinePosX, maxMinePosX), UnityEngine.Random.Range(minMinePosY, maxMinePosY));
+            } while (!isValidPos(nextMinePos));
+
+            Instantiate(hexagonBomb, nextMinePos, defaultOrientation);
+            yield return new WaitForSeconds(gapTime);
+        }
     }
 
     void ThirdBoss() {
-        Instantiate(thirdBoss, new Vector2(0, 0), defaultOrientation);
+        //Instantiate(thirdBoss, new Vector2(0, 0), defaultOrientation);
     }
 
     void FourthBoss() {
-        Instantiate(fourthBoss, new Vector2(0, 0), defaultOrientation);
+        //Instantiate(fourthBoss, new Vector2(0, 0), defaultOrientation);
     }
 
     public void EndFirstBoss() {
         StartCoroutine(EndBoss());
+        Debug.Log("Finished first boss");
         scoreboard.GetComponent<Scoreboard>().AddPoints(5);
         //stageMessagesScript.DisplayFirstStageCompleted();
     }
@@ -695,6 +705,7 @@ public class GameplayManager : MonoBehaviour
     }
 
     public void IncrementLevel() {
+        Debug.Log("Increment Level!");
         pointController.SetIsWorthPoint(!pointController.GetIsWorthPoint());
         StartCoroutine(IncrementLevelHelper());
     }
@@ -724,6 +735,22 @@ public class GameplayManager : MonoBehaviour
         gapTimeDiagonalMoves = 0.28f - level * 0.0025f;
 
         numBallsRandomAttacks = (int) Mathf.Floor(3f / gapTimeRainMoves);
+    }
+
+    bool isValidPos(Vector2 pos)
+    {
+        bool isValidPlayer;
+        if (player != null)
+        {
+            isValidPlayer = Mathf.Abs(pos.x - player.transform.position.x) > 0.3f || Mathf.Abs(pos.y - player.transform.position.y) > 0.3f;
+        }
+        else
+        {
+            isValidPlayer = false;
+        }
+        bool isValidPoint = Mathf.Abs(pos.x - point.transform.position.x) > 0.3f || Mathf.Abs(pos.y - point.transform.position.y) > 0.3f;
+
+        return (isValidPlayer && isValidPoint);
     }
 
     public float getFarRightCircleDropPosX() {

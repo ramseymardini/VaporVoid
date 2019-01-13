@@ -56,8 +56,7 @@ public class FirstBossController : MonoBehaviour {
             return;
         }
         
-        if (orbs.Count == 1)
-        {
+        if (orbs.Count == 1) {
             return;
         }
 

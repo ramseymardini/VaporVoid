@@ -11,6 +11,14 @@ public class SecondBossController : MonoBehaviour
     private float timeCreated;
     private bool didEntrance;
     private bool takingDamage;
+    private GameObject gameplayManager;
+    private float timeToDelete = 1.5f;
+
+
+    private float originalScaleX;
+    private float originalScaleY;
+    private float maxScaleX = 1f;
+    private float maxScaleY = 1f;
 
     public float entranceTime;
     public float accelSpeed;
@@ -31,9 +39,16 @@ public class SecondBossController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        originalScaleX = transform.localScale.x;
+        originalScaleY = transform.localScale.y;
         timeCreated = Time.time;
         state = State.ENTRANCE;
         takingDamage = false;
+    }
+
+    public void SetGameManager(GameObject newGameManager)
+    {
+        gameplayManager = newGameManager;
     }
 
     // Update is called once per frame
@@ -41,6 +56,7 @@ public class SecondBossController : MonoBehaviour
     {
         switch (state) {
             case State.ENTRANCE:
+                if (didEntrance) break;
                 StartCoroutine(EntranceAnimation());
                 break;
             case State.ATTACK:
@@ -51,7 +67,7 @@ public class SecondBossController : MonoBehaviour
                 //TakeDamage();
                 break;
             case State.DEATH:
-                DoDeath();
+                Die();
                 break;
         }
     }
@@ -66,14 +82,31 @@ public class SecondBossController : MonoBehaviour
 
     private IEnumerator EntranceAnimation() {
         // Entrance animation
-        if (!didEntrance) {
-            Debug.Log("Doing Entrance");
-            didEntrance = true;
-            for (int i = 0; i < 3; i++) {
-                yield return flashRed();
+        didEntrance = true;
+        float currentScaleIncrementerAmount = 0.005f;
+        float timeToWait = entranceTime * currentScaleIncrementerAmount;
+
+        float currentScale = 0; //If currentScale = 0 , circle at original scale. If currentScale = 1 then the circle will be at maxScale
+
+        while (currentScale < 1)
+        {
+            currentScale += currentScaleIncrementerAmount;
+            transform.localScale = new Vector2(Mathf.Lerp(originalScaleX, maxScaleX, currentScale), Mathf.Lerp(originalScaleY, maxScaleY, currentScale));
+
+            if (Mathf.Abs(currentScale - 0.3f) < 0.002f || Mathf.Abs(currentScale - 0.6f) < 0.002f || Mathf.Abs(currentScale - 1f) < 0.002f)
+            {
+                Debug.Log("Blink: " + currentScale);
+                spriteRenderer.color = new Color(255, 0, 0);
+                yield return new WaitForSeconds(0.5f);
+                spriteRenderer.color = new Color(255, 255, 255);
+                yield return new WaitForSeconds(0.5f);
             }
-            state = State.ATTACK;
+
+            yield return new WaitForSeconds(timeToWait);
+
         }
+
+        state = State.ATTACK;
     }
 
     private void MoveTowardPlayer() {
@@ -115,12 +148,23 @@ public class SecondBossController : MonoBehaviour
                 }
             }
         }
+
+        if (collision.gameObject.tag.Equals("ExplosionEnemy"))
+        {
+            if (health <= 0)
+            {
+                state = State.DEATH;
+            }
+            else
+            {
+                state = State.DAMAGE;
+            }
+        }
 	}
 
     //private void TakeDamage() {
     private IEnumerator TakeDamage() {
         if (!takingDamage) {
-            Debug.Log("Boss collision damage");
             takingDamage = true;
             health--;
             StartCoroutine(bounceAwayFromPlayer());
@@ -138,8 +182,24 @@ public class SecondBossController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
     }
 
-    private void DoDeath() {
-        Debug.Log("Death");
+    private void Die() {
+        StartCoroutine(DieHelper());
+    }
+
+    IEnumerator DieHelper() {
+        float currentScaleDecrementerAmount = 0.005f;
+        float timeToWait = timeToDelete  * currentScaleDecrementerAmount;
+
+        float currentScale = 1; //If currentScale = 0 , circle at original scale. If currentScale = 1 then the circle will be at maxScale
+
+        while (currentScale > 0)
+        {
+            transform.localScale = new Vector2(Mathf.Lerp(originalScaleX, maxScaleX, currentScale), Mathf.Lerp(originalScaleY, maxScaleY, currentScale));
+            currentScale -= currentScaleDecrementerAmount;
+            yield return new WaitForSeconds(timeToWait);
+        }
+
+        gameplayManager.GetComponent<GameplayManager>().EndSecondBoss();
         Destroy(this.gameObject);
     }
 }

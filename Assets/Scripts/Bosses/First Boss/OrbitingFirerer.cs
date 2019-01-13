@@ -22,9 +22,10 @@ public class OrbitingFirerer : MonoBehaviour
     protected float radiusOfRotation;
     protected float speedOfRotation;
 
-    protected float maxScaleX = 1.3f;
-    protected float maxScaleY = 1.3f;
-    protected float timeToExpand = 6.5f;
+    protected float maxScaleX = 1.2f;
+    protected float maxScaleY = 1.2f;
+    protected float timeToExpand = 5f;
+    protected float timeToDelete = 1.25f;
 
     protected int damageTakenSpriteIndicator;
 
@@ -76,7 +77,7 @@ public class OrbitingFirerer : MonoBehaviour
     }
    
     IEnumerator IncreaseSizeAndStartRotation() {
-        float currentScaleIncrementerAmount = 0.01f;
+        float currentScaleIncrementerAmount = 0.005f;
         float timeToWait = timeToExpand * currentScaleIncrementerAmount;
 
         float currentScale = 0; //If currentScale = 0 , circle at original scale. If currentScale = 1 then the circle will be at maxScale
@@ -176,6 +177,21 @@ public class OrbitingFirerer : MonoBehaviour
     }
 
     protected void Die() {
+        StartCoroutine(DieHelper());
+    }
+    IEnumerator DieHelper() {
+        float currentScaleDecrementerAmount = 0.005f;
+        float timeToWait = timeToDelete * currentScaleDecrementerAmount;
+
+        float currentScale = 1; //If currentScale = 0 , circle at original scale. If currentScale = 1 then the circle will be at maxScale
+
+        while (currentScale > 0)
+        {
+            transform.localScale = new Vector2(Mathf.Lerp(originalScaleX, maxScaleX, currentScale), Mathf.Lerp(originalScaleY, maxScaleY, currentScale));
+            currentScale -= currentScaleDecrementerAmount;
+            yield return new WaitForSeconds(timeToWait);
+        }
+
         controller.GetComponent<FirstBossController>().SetOrbDead(gameObject);
         Destroy(gameObject);
     }
