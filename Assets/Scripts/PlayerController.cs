@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour {
         playerScale = transform.localScale.x;
         rb = GetComponent<Rigidbody2D>();
         //gameplayManager = GameObject.FindGameObjectWithTag("GameController");
-        playerSpeed = PlayerPrefs.GetInt("Mouse Sensitivity");
+        playerSpeed = 40;
         scoreboard = GameObject.FindGameObjectWithTag("Score");
         settingsManager = GameObject.Find("Settings Manager").GetComponent<SettingsManager>();
         soundManagerScript = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();

@@ -10,8 +10,8 @@ public class ShieldBehavior : MonoBehaviour {
     
     float originalScaleX;
     float originalScaleY;
-    float maxScaleX = 1.55f;
-    float maxScaleY = 1.55f;
+    float maxScaleX = 1.3f;
+    float maxScaleY = 1.3f;
 
     float timeToDeletion = 0.35f;
 

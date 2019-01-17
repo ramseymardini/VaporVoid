@@ -88,6 +88,8 @@ public class OrbitingFirerer : MonoBehaviour
             yield return new WaitForSeconds(timeToWait);
         }
 
+        rb.AddTorque(-30f);
+
         GoCounterClockwise();
 
         finishedIncreasing = true;

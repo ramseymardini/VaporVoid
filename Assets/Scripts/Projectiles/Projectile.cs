@@ -58,6 +58,6 @@ public class Projectile : MonoBehaviour
     public void Deactivate() {
         deactivated = true;
         SetAcceleration(new Vector2(0, -10));
-        gameObject.tag = "Untagged";
+        gameObject.tag = "DisabledProjectile";
     }
 }

@@ -7,6 +7,11 @@ public class ProjectileFirstBoss : Projectile
 
     protected GameObject parent;
 
+    protected virtual void Start() {
+        base.Start();
+        rb.AddTorque(50f);
+    }
+
     public void SetParent(GameObject newParent) {
         parent = newParent;
     }

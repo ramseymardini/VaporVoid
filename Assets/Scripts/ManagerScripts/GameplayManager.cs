@@ -428,7 +428,7 @@ public class GameplayManager : MonoBehaviour
         //Debug.Log("Rain Left");
         //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
-        for (float currX = farLeftCircleDropPosX; currX <= farRightCircleDropPosX - 1; currX += 1f) {
+        for (float currX = farLeftCircleDropPosX; currX <= farRightCircleDropPosX; currX += 1f) {
             GameObject verticalFaller = Instantiate(circleEnemy, new Vector2(currX, vertDropPos), defaultOrientation);
             GameObject verticalRiser = Instantiate(circleEnemy, new Vector2(currX, -vertDropPos), defaultOrientation);
             verticalFaller.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, -currAccelVertCircles));
@@ -444,7 +444,7 @@ public class GameplayManager : MonoBehaviour
         //Debug.Log("Rain Right");
         //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
-        for (float currX = farRightCircleDropPosX; currX >= farLeftCircleDropPosX + 1; currX -= 1) {
+        for (float currX = farRightCircleDropPosX; currX >= farLeftCircleDropPosX; currX -= 1) {
             GameObject verticalFaller = Instantiate(circleEnemy, new Vector2(currX, vertDropPos), defaultOrientation);
             GameObject verticalRiser = Instantiate(circleEnemy, new Vector2(currX, -vertDropPos), defaultOrientation);
             verticalFaller.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, -currAccelVertCircles));
@@ -460,7 +460,7 @@ public class GameplayManager : MonoBehaviour
         //Debug.Log("Rain Sides");
         //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
-        for (float currX = farRightCircleDropPosX; currX > 1.5f; currX -= 0.9f) {
+        for (float currX = farRightCircleDropPosX; currX > 0.5f; currX -= 0.9f) {
             if (currX > farRightCircleDropPosX - 3)
             {
                 GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, 0), defaultOrientation);
@@ -565,7 +565,7 @@ public class GameplayManager : MonoBehaviour
     IEnumerator StairTopToBottom() {
         //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
-        for (float currY = maxHorCircleDropPosY; currY > minHorCircleDropPosY + 1f; currY -= 1) {
+        for (float currY = maxHorCircleDropPosY; currY > minHorCircleDropPosY; currY -= 1) {
             GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, currY), defaultOrientation);
             GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, currY), defaultOrientation);
             circleLeftToRight.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(currAccelHorCircles, 0));
@@ -580,7 +580,7 @@ public class GameplayManager : MonoBehaviour
     IEnumerator StairBottomToTop() {
         //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
-        for (float currY = minHorCircleDropPosY; currY < maxHorCircleDropPosY - 1f; currY += 1) {
+        for (float currY = minHorCircleDropPosY; currY < maxHorCircleDropPosY; currY += 1) {
             GameObject circleLeftToRight = Instantiate(circleEnemy, new Vector2(-horDropPos, currY), defaultOrientation);
             GameObject circleRightToLeft = Instantiate(circleEnemy, new Vector2(horDropPos, currY), defaultOrientation);
             circleLeftToRight.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(currAccelHorCircles, 0));
@@ -725,16 +725,16 @@ public class GameplayManager : MonoBehaviour
     }
 
     void UpdateDifficulty() {
-        currAccelVertCircles = (level * 0.2f) + startingAccelVertCircles;
-        currAccelHorCircles = (level * 0.2f) + startingAccelHorCircles;
-        currAccelDefaultCircles = (level * 0.2f) + startingAccelDefaultCircles;
+        currAccelVertCircles = (level * 0.05f) + startingAccelVertCircles;
+        currAccelHorCircles = (level * 0.05f) + startingAccelHorCircles;
+        currAccelDefaultCircles = (level * 0.05f) + startingAccelDefaultCircles;
 
         gapTimePatternMoves = 0.1f - level * 0.002f;;
         gapTimeRainMoves = 0.1f - level * 0.005f;;
         gapTimeStairMoves = 0.1f - level * 0.002f;;
         gapTimeDiagonalMoves = 0.28f - level * 0.0025f;
 
-        numBallsRandomAttacks = (int) Mathf.Floor(3f / gapTimeRainMoves);
+        numBallsRandomAttacks = (int) Mathf.Floor(2.5f / gapTimeRainMoves);
     }
 
     bool isValidPos(Vector2 pos)
