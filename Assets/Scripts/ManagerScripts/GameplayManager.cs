@@ -132,7 +132,7 @@ public class GameplayManager : MonoBehaviour
 
         pointController = point.GetComponent<PointController>();
 
-        level = 1;
+        level = 4;
 
         settingsManager = settingsManager.GetComponent<SettingsManager>();
         //stageMessagesScript = stageMessages.GetComponent<StageMessagesController>();
@@ -632,7 +632,7 @@ public class GameplayManager : MonoBehaviour
     }
 
     IEnumerator SecondBossMines() {
-        float gapTime = 1.3f;
+        float gapTime = 0.8f;
         float minMinePosX = -5.5f;
         float maxMinePosX = 5.5f;
         float minMinePosY = -4.25f;

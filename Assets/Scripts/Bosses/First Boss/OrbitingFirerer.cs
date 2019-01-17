@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OrbitingFirerer : MonoBehaviour
 {
-    public Sprite[] damageTakenSprites;
+    //public Sprite[] damageTakenSprites;
     public GameObject projectile;
 
     protected GameObject controller;
@@ -27,7 +27,7 @@ public class OrbitingFirerer : MonoBehaviour
     protected float timeToExpand = 5f;
     protected float timeToDelete = 1.25f;
 
-    protected int damageTakenSpriteIndicator;
+    //protected int damageTakenSpriteIndicator;
 
     protected float originalScaleX;
     protected float originalScaleY;
@@ -83,12 +83,13 @@ public class OrbitingFirerer : MonoBehaviour
         float currentScale = 0; //If currentScale = 0 , circle at original scale. If currentScale = 1 then the circle will be at maxScale
 
         while (currentScale < 1) {
+            if (Mathf.Abs(currentScale - 0.4f) < currentScaleIncrementerAmount / 2) tag = "BossEnemy";
             transform.localScale = new Vector2(Mathf.Lerp(originalScaleX, maxScaleX, currentScale), Mathf.Lerp(originalScaleY, maxScaleY, currentScale));
             currentScale += currentScaleIncrementerAmount;
             yield return new WaitForSeconds(timeToWait);
         }
 
-        rb.AddTorque(-30f);
+        rb.AddTorque(-40f);
 
         GoCounterClockwise();
 

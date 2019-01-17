@@ -12,6 +12,7 @@ public class SecondBossController : MonoBehaviour
     private bool didEntrance;
     private bool takingDamage;
     private GameObject gameplayManager;
+    private bool canTakeDamage;
     private float timeToDelete = 1.5f;
 
 
@@ -24,6 +25,9 @@ public class SecondBossController : MonoBehaviour
     public float accelSpeed;
     public int health;
     public int bBackMulipl;
+
+    private Sprite normalSprite;
+    public Sprite DamagedSprite;
     private State state;
 
     private enum State {
@@ -41,9 +45,11 @@ public class SecondBossController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         originalScaleX = transform.localScale.x;
         originalScaleY = transform.localScale.y;
+        normalSprite = spriteRenderer.sprite;
         timeCreated = Time.time;
         state = State.ENTRANCE;
         takingDamage = false;
+        canTakeDamage = false;
     }
 
     public void SetGameManager(GameObject newGameManager)
@@ -93,13 +99,22 @@ public class SecondBossController : MonoBehaviour
             currentScale += currentScaleIncrementerAmount;
             transform.localScale = new Vector2(Mathf.Lerp(originalScaleX, maxScaleX, currentScale), Mathf.Lerp(originalScaleY, maxScaleY, currentScale));
 
+            if (Mathf.Abs(currentScale - 0.4f) < currentScaleIncrementerAmount / 2) {
+                    canTakeDamage = true;
+                    gameObject.tag = "BossEnemy";
+            } 
+
             if (Mathf.Abs(currentScale - 0.3f) < 0.002f || Mathf.Abs(currentScale - 0.6f) < 0.002f || Mathf.Abs(currentScale - 1f) < 0.002f)
             {
-                Debug.Log("Blink: " + currentScale);
-                spriteRenderer.color = new Color(255, 0, 0);
+                //Debug.Log("Blink: " + currentScale);
+                
+                /*spriteRenderer.color = new Color(255, 0, 0);
                 yield return new WaitForSeconds(0.5f);
                 spriteRenderer.color = new Color(255, 255, 255);
                 yield return new WaitForSeconds(0.5f);
+                */
+                StartCoroutine(flashRed());
+
             }
 
             yield return new WaitForSeconds(timeToWait);
@@ -134,6 +149,8 @@ public class SecondBossController : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
+        if (!canTakeDamage) return;
+
         if (collision.gameObject.tag.Equals("Player")) {
             PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
             if (playerController.HasShield())
@@ -149,7 +166,7 @@ public class SecondBossController : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.tag.Equals("ExplosionEnemy"))
+        /* if (collision.gameObject.tag.Equals("ExplosionEnemy"))
         {
             if (health <= 0)
             {
@@ -159,7 +176,8 @@ public class SecondBossController : MonoBehaviour
             {
                 state = State.DAMAGE;
             }
-        }
+        } */
+
 	}
 
     //private void TakeDamage() {
@@ -176,10 +194,9 @@ public class SecondBossController : MonoBehaviour
     }
 
 	private IEnumerator flashRed() {
-        spriteRenderer.color = new Color(255, 0, 0);
+        spriteRenderer.sprite = DamagedSprite;
         yield return new WaitForSeconds(0.5f);
-        spriteRenderer.color = new Color(255, 255, 255);
-        yield return new WaitForSeconds(0.5f);
+        spriteRenderer.sprite = normalSprite;
     }
 
     private void Die() {
