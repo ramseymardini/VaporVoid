@@ -19,8 +19,8 @@ public class Scoreboard : MonoBehaviour {
     bool newHighScore;
     int currScore;
 
-    readonly int SCORE_FOR_FIRST_BOSS = 5;
-    readonly int SCORE_FOR_SECOND_BOSS = 10;
+    readonly int SCORE_FOR_FIRST_BOSS = 15;
+    readonly int SCORE_FOR_SECOND_BOSS = 40;
 
 	// Use this for initialization
 	void Start () {

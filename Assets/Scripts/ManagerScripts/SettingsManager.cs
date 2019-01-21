@@ -23,7 +23,7 @@ public class SettingsManager : MonoBehaviour {
     public void PlaceWalls() {
         screenWidthPixels = Screen.width;
         screenHeightPixels = Screen.height;
-        Debug.Log(camera.ScreenToWorldPoint(new Vector3(screenWidthPixels, screenHeightPixels, 0)));
+        //Debug.Log(camera.ScreenToWorldPoint(new Vector3(screenWidthPixels, screenHeightPixels, 0)));
         topWall.transform.position = camera.ScreenToWorldPoint(new Vector3(screenWidthPixels / 2, screenHeightPixels, 0)) + new Vector3(0, topWall.transform.localScale.y / 2, 0);
         rightWall.transform.position = camera.ScreenToWorldPoint(new Vector3(screenWidthPixels, screenHeightPixels / 2, 0)) + new Vector3(rightWall.transform.localScale.x / 2, 0, 0);
         bottomWall.transform.position = -camera.ScreenToWorldPoint(new Vector3(screenWidthPixels / 2, screenHeightPixels, 0)) - new Vector3(0, bottomWall.transform.localScale.y / 2, 0);

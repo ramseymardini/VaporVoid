@@ -52,11 +52,18 @@ public class Projectile : MonoBehaviour
 
     protected void SetRigidBodyAndCollider() {
         rb = GetComponent<Rigidbody2D>();
-        coll = GetComponent<CircleCollider2D>();
+        coll = GetComponent<Collider2D>();
     }
 
     public void Deactivate() {
         deactivated = true;
+
+        //if (gameObject.transform.parent != null && gameObject.transform.parent.gameObject.tag == "Projectile") gameObject.transform.parent.gameObject.GetComponent<Projectile>().Deactivate();
+
+        foreach (Transform c in transform) {
+            Projectile p = c.gameObject.GetComponent<Projectile>();
+            if (p != null) p.Deactivate();
+        }
         SetAcceleration(new Vector2(0, -10));
         gameObject.tag = "DisabledProjectile";
     }

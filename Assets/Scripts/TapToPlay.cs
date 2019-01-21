@@ -5,7 +5,7 @@ using UnityEngine;
 public class TapToPlay : MonoBehaviour
 {
     private UnityEngine.UI.Text textComponent;
-    float timePerBlink = 1.5f;
+    float timePerBlink = 0.5f;
     float changeAmount = 0.005f;
 
     // Update is called once per frame

@@ -36,6 +36,9 @@ public class OrbitingFirerer : MonoBehaviour
     float timeCreated;
 
     protected bool finishedIncreasing;
+    protected bool canTakeDamage;
+
+    protected bool startedAttacking;
 
     protected float damageTakenPerProjectile;
 
@@ -60,20 +63,24 @@ public class OrbitingFirerer : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         timeCreated = Time.time;
+        canTakeDamage = false;
+        startedAttacking = false;
 
         StartCoroutine(IncreaseSizeAndStartRotation());
 
         damageTakenPerProjectile = 1f;
         timePerProjectile = 1f;
-
-        StartCoroutine(StartAttacking());
     }
 
     // Update is called once per frame
     protected void FixedUpdate() {
         if (finishedIncreasing) {
             MoveInCircle();
+            if (!startedAttacking) {
+                StartCoroutine(StartAttacking());
+            }
         }
+        
     }
    
     IEnumerator IncreaseSizeAndStartRotation() {
@@ -83,7 +90,11 @@ public class OrbitingFirerer : MonoBehaviour
         float currentScale = 0; //If currentScale = 0 , circle at original scale. If currentScale = 1 then the circle will be at maxScale
 
         while (currentScale < 1) {
-            if (Mathf.Abs(currentScale - 0.4f) < currentScaleIncrementerAmount / 2) tag = "BossEnemy";
+            if (Mathf.Abs(currentScale - 0.4f) < currentScaleIncrementerAmount / 2) {
+                gameObject.tag = "BossEnemy";
+                canTakeDamage = true;
+            } 
+
             transform.localScale = new Vector2(Mathf.Lerp(originalScaleX, maxScaleX, currentScale), Mathf.Lerp(originalScaleY, maxScaleY, currentScale));
             currentScale += currentScaleIncrementerAmount;
             yield return new WaitForSeconds(timeToWait);
@@ -107,22 +118,23 @@ public class OrbitingFirerer : MonoBehaviour
     }
 
     protected void OnTriggerEnter2D(Collider2D collision) {
-        if (isLastOrb)
+        if (isLastOrb || !canTakeDamage)
         {
             return;
         }
 
-         if (collision.gameObject.tag.Equals("ProjectileEnemy") && collision.gameObject.GetComponent<ProjectileFirstBoss>().GetParent() != gameObject) 
+        if ((collision.gameObject.tag.Equals("ProjectileEnemy") && collision.gameObject.GetComponent<ProjectileFirstBoss>().GetParent() != gameObject) || collision.gameObject.tag.Equals("DisabledProjectile"))
         {
             Destroy(collision.gameObject);
             StartCoroutine(TakeDamage(damageTakenPerProjectile));
         }
+
+        if (collision.gameObject.tag.Equals("Player")) StartCoroutine(TakeDamage(damageTakenPerProjectile));
     }
 
     IEnumerator StartAttacking() {
-        while (!finishedIncreasing) {
-            yield return new WaitForEndOfFrame();
-        }
+        startedAttacking = true;
+
         while (true) {
             if (player.GetComponent<PlayerController>().IsGameEnded()) {
                 break;

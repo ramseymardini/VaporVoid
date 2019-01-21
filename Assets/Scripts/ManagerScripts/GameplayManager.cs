@@ -132,7 +132,7 @@ public class GameplayManager : MonoBehaviour
 
         pointController = point.GetComponent<PointController>();
 
-        level = 4;
+        level = 6;
 
         settingsManager = settingsManager.GetComponent<SettingsManager>();
         //stageMessagesScript = stageMessages.GetComponent<StageMessagesController>();
@@ -652,7 +652,7 @@ public class GameplayManager : MonoBehaviour
     }
 
     void ThirdBoss() {
-        //Instantiate(thirdBoss, new Vector2(0, 0), defaultOrientation);
+        Instantiate(thirdBoss, new Vector2(0, vertDropPos), defaultOrientation);
     }
 
     void FourthBoss() {
@@ -661,7 +661,7 @@ public class GameplayManager : MonoBehaviour
 
     public void EndFirstBoss() {
         StartCoroutine(EndBoss());
-        Debug.Log("Finished first boss");
+        //Debug.Log("Finished first boss");
         scoreboard.GetComponent<Scoreboard>().AddPoints(5);
         //stageMessagesScript.DisplayFirstStageCompleted();
     }
@@ -705,7 +705,7 @@ public class GameplayManager : MonoBehaviour
     }
 
     public void IncrementLevel() {
-        Debug.Log("Increment Level!");
+        //Debug.Log("Increment Level!");
         pointController.SetIsWorthPoint(!pointController.GetIsWorthPoint());
         StartCoroutine(IncrementLevelHelper());
     }

@@ -79,6 +79,8 @@ public class SecondBossController : MonoBehaviour
     }
 
     private void DoAttack() {
+        if (health < 0) return;
+        
         MoveTowardPlayer();
     }
 

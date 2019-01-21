@@ -28,8 +28,8 @@ public class LevelManager : MonoBehaviour {
     }
 
     public void LoadGame() {
-        DontDestroyOnLoad(musicManager);
-        DontDestroyOnLoad(soundManager);
+        //DontDestroyOnLoad(musicManager);
+        //DontDestroyOnLoad(soundManager);
         //musicManagerScript.PlayFirstLevel();
         UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
 
