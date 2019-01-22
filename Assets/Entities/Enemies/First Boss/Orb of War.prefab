@@ -76,7 +76,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.2931035, y: 1.2931035}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -131,9 +131,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a6060aef71424b0088608485ee50716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageTakenSprites:
-  - {fileID: 21300020, guid: 237c98d77a5f24aea9679b2270445e68, type: 3}
-  - {fileID: 21300026, guid: 237c98d77a5f24aea9679b2270445e68, type: 3}
-  - {fileID: 21300034, guid: 237c98d77a5f24aea9679b2270445e68, type: 3}
-  - {fileID: 21300038, guid: 237c98d77a5f24aea9679b2270445e68, type: 3}
   projectile: {fileID: 1375851044396066, guid: 71b5f293c531f4486b9a70cc98521b8a, type: 3}
