@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameplayManager : MonoBehaviour
 {
-    /*These are the possible enemies that you can face */
+    /* These are the possible enemies that you can face */
     public GameObject circleEnemy;
     public GameObject hexagonBomb;
 
@@ -17,7 +17,6 @@ public class GameplayManager : MonoBehaviour
     public GameObject firstBoss;
     public GameObject secondBoss;
     public GameObject thirdBoss;
-    public GameObject fourthBoss;
 
     GameObject canvas;
 
@@ -132,19 +131,15 @@ public class GameplayManager : MonoBehaviour
 
         pointController = point.GetComponent<PointController>();
 
-        level = 6;
+        level = 1;
 
         settingsManager = settingsManager.GetComponent<SettingsManager>();
-        //stageMessagesScript = stageMessages.GetComponent<StageMessagesController>();
 
         SetScreenCoordinates();
 
         if (level == 1) {
             musicManagerScript.PlayFirstLevel();
         }
-        /*Debug.Log(lowerLeftToTopRightDropAngle);
-        Debug.Log("Bottom left: " + lowerLeftCornerDropPos);
-        Debug.Log("Upper Right: " + UpperRightCornerDropPos);*/
 
     }
 
@@ -204,8 +199,6 @@ public class GameplayManager : MonoBehaviour
             ThirdBoss();
         } else if (level == 7) {
             DoMoveLevelFour();
-        } else if (level == 8) {
-            FourthBoss();
         } else {
             DoMoveLevelFour();
         }
@@ -218,7 +211,7 @@ public class GameplayManager : MonoBehaviour
 
         //StartCoroutine(DiagonalCirclesRightToLeft());
         //return;
-       
+
     }
 
     void DoMoveLevelOne(int move) {
@@ -270,7 +263,7 @@ public class GameplayManager : MonoBehaviour
                 StartCoroutine(RandomMines());
                 break;
         }
- 
+
 
     }
 
@@ -428,7 +421,7 @@ public class GameplayManager : MonoBehaviour
         //Debug.Log("Rain Left");
         //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
-        for (float currX = farLeftCircleDropPosX; currX <= farRightCircleDropPosX; currX += 1f) {
+        for (float currX = farLeftCircleDropPosX; currX <= farRightCircleDropPosX - 1; currX += 1f) {
             GameObject verticalFaller = Instantiate(circleEnemy, new Vector2(currX, vertDropPos), defaultOrientation);
             GameObject verticalRiser = Instantiate(circleEnemy, new Vector2(currX, -vertDropPos), defaultOrientation);
             verticalFaller.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, -currAccelVertCircles));
@@ -444,7 +437,7 @@ public class GameplayManager : MonoBehaviour
         //Debug.Log("Rain Right");
         //float gapTime = 0.1f - Mathf.Log(timeSinceGameStarted) * 0.005f;
 
-        for (float currX = farRightCircleDropPosX; currX >= farLeftCircleDropPosX; currX -= 1) {
+        for (float currX = farRightCircleDropPosX; currX >= farLeftCircleDropPosX + 1; currX -= 1) {
             GameObject verticalFaller = Instantiate(circleEnemy, new Vector2(currX, vertDropPos), defaultOrientation);
             GameObject verticalRiser = Instantiate(circleEnemy, new Vector2(currX, -vertDropPos), defaultOrientation);
             verticalFaller.GetComponent<CircleEnemyController>().SetAcceleration(new Vector2(0, -currAccelVertCircles));
@@ -613,7 +606,7 @@ public class GameplayManager : MonoBehaviour
     }
 
     /*IEnumerator HastagMove() {
-        
+
     }*/
 
     void FirstBoss() {
@@ -638,7 +631,7 @@ public class GameplayManager : MonoBehaviour
         float minMinePosY = -4.25f;
         float maxMinePosY = 4.25f;
         Vector2 nextMinePos;
-        
+
         while (level == 4)
         {
             do
@@ -653,10 +646,6 @@ public class GameplayManager : MonoBehaviour
 
     void ThirdBoss() {
         Instantiate(thirdBoss, new Vector2(0, vertDropPos), defaultOrientation);
-    }
-
-    void FourthBoss() {
-        //Instantiate(fourthBoss, new Vector2(0, 0), defaultOrientation);
     }
 
     public void EndFirstBoss() {
@@ -676,12 +665,6 @@ public class GameplayManager : MonoBehaviour
         StartCoroutine(EndBoss());
         scoreboard.GetComponent<Scoreboard>().AddPoints(5);
         //stageMessagesScript.DisplayThirdStageCompleted();
-    }
-
-    public void EndFourthBoss() {
-        StartCoroutine(EndBoss());
-        scoreboard.GetComponent<Scoreboard>().AddPoints(20);
-        //stageMessagesScript.DisplayFourthStageCompleted();
     }
 
     IEnumerator EndBoss() {
